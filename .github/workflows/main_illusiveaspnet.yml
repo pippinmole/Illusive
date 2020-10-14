@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - illusiveaspnet
+name: Build and deploy ASP.Net Core app to Azure Web App - illusive
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'illusiveaspnet'
+        app-name: 'illusive'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_77b9474acfae48f3b40cd9ee1387f18d }}
         package: ${{env.DOTNET_ROOT}}
