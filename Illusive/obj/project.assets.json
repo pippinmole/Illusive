@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\icond\\Documents\\Coding\\Illusive\\Illusive\\Illusive.csproj",
+      "projectUniqueName": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive\\Illusive.csproj",
       "projectName": "Illusive",
-      "projectPath": "C:\\Users\\icond\\Documents\\Coding\\Illusive\\Illusive\\Illusive.csproj",
+      "projectPath": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive\\Illusive.csproj",
       "packagesPath": "C:\\Users\\icond\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\icond\\Documents\\Coding\\Illusive\\Illusive\\obj\\",
+      "outputPath": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\icond\\AppData\\Roaming\\NuGet\\NuGet.Config",
