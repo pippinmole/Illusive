@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\icond\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\icond\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Illusive.274020911.00" t="ExcludeRecursive" />
+    <e p="C:\Users\icond\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Illusive.-535032687.00" t="ExcludeRecursive" />
     <e p="C:\Users\icond\AppData\Roaming\JetBrains\Rider2020.2\consoles\db" t="IncludeRecursive" />
-    <e p="C:\Users\icond\Desktop\Illusive\Illusive" t="IncludeFlat">
+    <e p="C:\Users\icond\Documents\Coding\C# Projects\Illusive Project" t="IncludeFlat">
       <e p="Illusive" t="IncludeRecursive">
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
@@ -27,26 +27,6 @@
           <e p="Index.cshtml.cs" t="Include" />
           <e p="Login.cshtml" t="Include" />
           <e p="Login.cshtml.cs" t="Include" />
-          <e p="obj" t="Include">
-            <e p="Debug" t="Include">
-              <e p="netcoreapp3.1" t="Include">
-                <e p=".NETCoreApp,Version=v3.1.AssemblyAttributes.cs" t="Include" />
-                <e p="Illusive.AssemblyInfo.cs" t="Include" />
-                <e p="Illusive.AssemblyInfoInputs.cache" t="Include" />
-                <e p="Illusive.assets.cache" t="Include" />
-                <e p="Illusive.csprojAssemblyReference.cache" t="Include" />
-                <e p="Illusive.RazorAssemblyInfo.cache" t="Include" />
-                <e p="Illusive.RazorAssemblyInfo.cs" t="Include" />
-              </e>
-            </e>
-            <e p="Illusive.csproj.nuget.dgspec.json" t="Include" />
-            <e p="Illusive.csproj.nuget.g.props" t="Include" />
-            <e p="Illusive.csproj.nuget.g.targets" t="Include" />
-            <e p="project.assets.json" t="Include" />
-            <e p="project.nuget.cache" t="Include" />
-            <e p="project.packagespec.json" t="Include" />
-            <e p="rider.project.restore.info" t="Include" />
-          </e>
           <e p="Privacy.cshtml" t="Include" />
           <e p="Privacy.cshtml.cs" t="Include" />
           <e p="Shared" t="Include">
