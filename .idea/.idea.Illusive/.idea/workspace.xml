@@ -22,20 +22,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="66dd799e-e2b2-4c5b-9048-72248e316b74" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Illusive/Illusive.sln" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive/Illusive/Illusive.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive/obj/Debug/netcoreapp3.1/Illusive.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive/obj/Debug/netcoreapp3.1/Illusive.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive/obj/Release/netcoreapp3.1/Illusive.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive/obj/Release/netcoreapp3.1/Illusive.csprojAssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive/obj/rider.project.restore.info" afterDir="false" />
-    </list>
+    <list default="true" id="66dd799e-e2b2-4c5b-9048-72248e316b74" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Illusive" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1it9rvbL2D1cyQAJ9ce0TKwpfw5" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -88,10 +82,11 @@
       <option name="presentableId" value="Default" />
       <updated>1602716224724</updated>
       <workItem from="1602716227376" duration="25000" />
+      <workItem from="1602716415770" duration="11000" />
     </task>
     <servers />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -103,6 +98,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
