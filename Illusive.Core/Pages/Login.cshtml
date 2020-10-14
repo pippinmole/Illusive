@@ -1,0 +1,23 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Login</h1>
+    
+    <div align="center">
+        
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            Username: <input asp-for="loginData.Username" value="username" /><br/>
+            Password: <input asp-for="loginData.Password" value="password" /><br />
+            Remember me: <input asp-for="loginData.RememberMe" type="checkbox" /><br />
+            <input type="submit" value="Login" />
+            @Html.AntiForgeryToken()
+        </form>
+        
+    </div>
+    
+</div>
