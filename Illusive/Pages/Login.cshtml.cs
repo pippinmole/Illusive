@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Illusive.Core.Pages {
+namespace Illusive.Pages {
     public class LoginModel : PageModel {
 
         [BindProperty] public LoginPost loginData { get; set; }
