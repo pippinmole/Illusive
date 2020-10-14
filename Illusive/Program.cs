@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 namespace Illusive {
     public class Program {
         public static void Main(string[] args) {
-            Console.WriteLine($"Starting main weeeeeeeeeee");
             CreateHostBuilder(args).Build().Run();
         }
 
