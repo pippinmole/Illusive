@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Illusive.Core.Pages {
+namespace Illusive.Pages {
     public class PrivacyModel : PageModel {
         private readonly ILogger<PrivacyModel> _logger;
 

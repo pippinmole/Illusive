@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive.Core\\Illusive.Core.csproj",
-    "projectName": "Illusive.Core",
-    "projectPath": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive.Core\\Illusive.Core.csproj",
-    "outputPath": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive.Core\\obj\\",
+    "projectUniqueName": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive\\Illusive.csproj",
+    "projectName": "Illusive",
+    "projectPath": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive\\Illusive.csproj",
+    "outputPath": "C:\\Users\\icond\\Documents\\Coding\\C# Projects\\Illusive\\Illusive\\obj\\",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netcoreapp3.1"
