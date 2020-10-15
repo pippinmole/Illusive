@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,9 +13,7 @@ namespace Illusive.Pages {
         [BindProperty] public LoginPost loginData { get; set; }
 
         public IActionResult OnGet() {
-            
-            Console.WriteLine($"OnGet IsAuth: {this.User.Identity.IsAuthenticated}");
-            
+            Console.WriteLine("OnLoginPageGet");
             try {
                 if ( this.User.Identity.IsAuthenticated ) {
                     return this.RedirectToPage("/Index");
@@ -25,7 +23,6 @@ namespace Illusive.Pages {
             }
 
             return this.Page();
-
         }
 
         public async Task<IActionResult> OnPostAsync() {

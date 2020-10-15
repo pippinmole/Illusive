@@ -14,6 +14,8 @@ namespace Illusive.Pages {
             _logger = logger;
         }
 
-        public void OnGet() { }
+        public void OnGet() {
+            Console.WriteLine("OnGet Index");
+        }
     }
 }

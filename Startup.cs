@@ -25,6 +25,7 @@ namespace Illusive {
             services.AddMvc().AddRazorPagesOptions(options => {
                 options.Conventions.AuthorizeFolder("/");
                 options.Conventions.AllowAnonymousToPage("/Login");
+                options.Conventions.AllowAnonymousToPage("/Logout");
                 options.Conventions.AllowAnonymousToPage("/Index");
             });
             
