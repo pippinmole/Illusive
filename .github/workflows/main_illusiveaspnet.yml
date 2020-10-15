@@ -30,6 +30,6 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'Illusive'
-        slot-name: 'Production'
+        slot-name: 'Development'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_77b9474acfae48f3b40cd9ee1387f18d }}
         package: ${{env.DOTNET_ROOT}}
