@@ -1,0 +1,26 @@
+﻿@page
+@model SignupModel
+
+@{
+    ViewData["Title"] = "Sign up";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div align="center">
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        Username: <input asp-for="SignupData.Username" value="username" /><br/>
+        Password: <input asp-for="SignupData.Email" value="email" /><br />
+        Remember me: <input asp-for="SignupData.Password" value="password" /><br />
+        <input type="submit" value="Login" />
+        @Html.AntiForgeryToken()
+    </form>
+</div>
+</body>
+</html>

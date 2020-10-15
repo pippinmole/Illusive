@@ -37,3 +37,5 @@ C:\Users\icond\Documents\Coding\C# Projects\Illusive\Illusive\obj\Debug\netcorea
 C:\Users\icond\Documents\Coding\C# Projects\Illusive\Illusive\obj\Debug\netcoreapp3.1\Illusive.genruntimeconfig.cache
 C:\Users\icond\Documents\Coding\C# Projects\Illusive\Illusive\obj\Debug\netcoreapp3.1\Illusive.csproj.CopyComplete
 C:\Users\icond\Documents\Coding\C# Projects\Illusive\Illusive\obj\Debug\netcoreapp3.1\Razor\Pages\Logout.cshtml.g.cs
+C:\Users\icond\Documents\Coding\C# Projects\Illusive\Illusive\obj\Debug\netcoreapp3.1\Razor\Pages\Account.cshtml.g.cs
+C:\Users\icond\Documents\Coding\C# Projects\Illusive\Illusive\obj\Debug\netcoreapp3.1\Razor\Pages\Signup.cshtml.g.cs

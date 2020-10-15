@@ -26,6 +26,7 @@ namespace Illusive {
                 options.Conventions.AuthorizeFolder("/");
                 options.Conventions.AllowAnonymousToPage("/Login");
                 options.Conventions.AllowAnonymousToPage("/Logout");
+                options.Conventions.AllowAnonymousToPage("/Signup");
                 options.Conventions.AllowAnonymousToPage("/Index");
             });
             
