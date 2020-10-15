@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\obj\Illusive.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Pages\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Pages\obj\project.packagespec.json" />
+    </ItemGroup>
+
+</Project>
