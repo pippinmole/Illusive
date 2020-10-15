@@ -29,7 +29,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'illusive'
+        app-name: 'Illusive'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_77b9474acfae48f3b40cd9ee1387f18d }}
         package: ${{env.DOTNET_ROOT}}
