@@ -15,6 +15,11 @@ namespace Illusive {
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureWebHostDefaults(webBuilder => {
+                    webBuilder.ConfigureAppConfiguration(config => {
+                        var settings = config.Build();
+                        var connection = settings.GetConnectionString("MongoDBConnectionString");
+                        config.AddAzureAppConfiguration(connection);
+                    }).webBuilder.UseStartup<Startup>(); });
     }
 }
