@@ -1,13 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
-    <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Pages\obj\Illusive.csproj.nuget.dgspec.json" />
-      <_ContentIncludedByDefault Remove="Pages\obj\project.assets.json" />
-      <_ContentIncludedByDefault Remove="Pages\obj\project.packagespec.json" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>280fd33c-94c2-4cee-8d18-d8442f0e9894</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\obj\Illusive.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Pages\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Pages\obj\project.packagespec.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.2" />
+  </ItemGroup>
 </Project>

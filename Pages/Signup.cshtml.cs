@@ -37,9 +37,9 @@ namespace Illusive.Pages {
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
                     new AuthenticationProperties {IsPersistent = true});
 
-                Console.WriteLine($"Redirecting to /Index");
+                Console.WriteLine($"Redirecting to /Account");
                 
-                return this.RedirectToPage("/Index");
+                return this.RedirectToPage("/Account");
             } else {
                 this.ModelState.AddModelError("", "username or password is blank");
                 return this.Page();

@@ -1,3 +1,5 @@
+using Illusive.Illusive.Database.Behaviour;
+using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,16 +21,21 @@ namespace Illusive {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
-            }).AddCookie(options => { options.LoginPath = "/Login"; });
+            }).AddCookie(options => {
+                options.LoginPath = "/Login";
+                options.LogoutPath = "/Logout";
+            });
             
             services.AddMvc().AddRazorPagesOptions(options => {
-                options.Conventions.AuthorizeFolder("/");
-                options.Conventions.AllowAnonymousToPage("/Login");
-                options.Conventions.AllowAnonymousToPage("/Logout");
-                options.Conventions.AllowAnonymousToPage("/Signup");
-                options.Conventions.AllowAnonymousToPage("/Index");
+                // options.Conventions.AuthorizeFolder("/");
+                // options.Conventions.AllowAnonymousToPage("/Login");
+                // options.Conventions.AllowAnonymousToPage("/Logout");
+                // options.Conventions.AllowAnonymousToPage("/Signup");
+                // options.Conventions.AllowAnonymousToPage("/Index");
             });
+
+            services.AddScoped<IDatabaseContext, DatabaseContext>();
+            new DatabaseContext(this.Configuration);
             
             services.AddRazorPages();
         }

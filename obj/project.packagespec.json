@@ -27,6 +27,20 @@
   },
   "frameworks": {
     "netcoreapp3.1": {
+      "dependencies": {
+        "Microsoft.Azure.AppConfiguration.AspNetCore": {
+          "target": "Package",
+          "version": "[4.0.0, )"
+        },
+        "Microsoft.Azure.Services.AppAuthentication": {
+          "target": "Package",
+          "version": "[1.6.0, )"
+        },
+        "MongoDB.Driver": {
+          "target": "Package",
+          "version": "[2.11.2, )"
+        }
+      },
       "imports": [
         "net461",
         "net462",
