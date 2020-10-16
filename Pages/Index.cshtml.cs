@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Illusive.Pages {
     public class IndexModel : PageModel {
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
         private readonly ILogger<IndexModel> _logger;
 
         public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration) {
