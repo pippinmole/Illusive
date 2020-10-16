@@ -1,8 +1,6 @@
 ﻿using System;
 using Illusive.Illusive.Database.Interfaces;
-using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace Illusive.Illusive.Database.Behaviour {
@@ -10,16 +8,14 @@ namespace Illusive.Illusive.Database.Behaviour {
         
         public IMongoClient Client { get; }
         public string ConnectionString { get; }
-
-        public DatabaseContext() {
-            Console.WriteLine($"Couldn't find an IConfiguration dependency!");
-        }
         
         public DatabaseContext(IConfiguration configuration) {
-            this.ConnectionString = configuration.GetConnectionString("MongoDBConnectionString");
+            this.ConnectionString = configuration.GetConnectionString("AppConfig");
             this.Client = new MongoClient(this.ConnectionString);
             
             Console.WriteLine($"Creating database context: ConnString: {this.ConnectionString}");
         }
+        
+        public IMongoDatabase GetDatabase(string name) => this.Client.GetDatabase(name);
     }
 }

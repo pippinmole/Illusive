@@ -1,5 +1,6 @@
 using Illusive.Illusive.Database.Behaviour;
 using Illusive.Illusive.Database.Interfaces;
+using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +36,7 @@ namespace Illusive {
             });
 
             services.AddScoped<IDatabaseContext, DatabaseContext>();
-            new DatabaseContext(this.Configuration);
+            services.AddScoped<IAccountService, AccountService>();
             
             services.AddRazorPages();
         }

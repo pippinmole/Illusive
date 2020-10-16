@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Illusive.Illusive.Database.Interfaces;
+using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +11,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Illusive.Pages {
     public class LoginModel : PageModel {
-
+        
         [BindProperty] public LoginPost loginData { get; set; }
-
+        
         public IActionResult OnGet() {
             Console.WriteLine("OnLoginPageGet");
             try {
@@ -60,7 +62,6 @@ namespace Illusive.Pages {
 
             [Required, DataType(DataType.Password)]
             public string Password { get; set; }
-
             public bool RememberMe { get; set; }
 
         }

@@ -6,5 +6,7 @@ namespace Illusive.Illusive.Database.Interfaces {
         IMongoClient Client { get; }
         string ConnectionString { get; }
 
+        IMongoDatabase GetDatabase(string name);
+
     }
 }
