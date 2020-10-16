@@ -28,6 +28,8 @@ namespace Illusive.Pages {
         }
 
         public string GetData() {
+            Console.WriteLine("Getting data for client");
+            
             var account = this.accountService.GetAccount("email@email.com");
             if ( account != null ) {
                 return $"Account ID: {account.Id} \n" +
