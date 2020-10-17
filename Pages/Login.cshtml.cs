@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,12 @@ namespace Illusive.Pages {
     public class LoginModel : PageModel {
         
         [BindProperty] public LoginPost loginData { get; set; }
+
+        private readonly IAccountService _accountService;
+        
+        public LoginModel(IAccountService accountService) {
+            this._accountService = accountService;
+        }
         
         public IActionResult OnGet() {
             Console.WriteLine("OnLoginPageGet");
@@ -31,17 +36,20 @@ namespace Illusive.Pages {
             if ( this.ModelState.IsValid ) {
                 
                 Console.WriteLine($"Login request from {this.loginData.Username}");
-                
-                var isValid = (this.loginData.Username == "username" && this.loginData.Password == "password");
+
+                var username = this.loginData.Username;
+
+                var isValid = this._accountService.AccountExists(x => x.AccountName == username, out var account);
                 if ( !isValid ) {
                     this.ModelState.AddModelError("", "username or password is invalid");
                     return this.Page();
                 }
-
+                
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
                     ClaimTypes.Role);
                 identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, this.loginData.Username));
                 identity.AddClaim(new Claim(ClaimTypes.Name, this.loginData.Username));
+                identity.AddClaim(new Claim(ClaimTypes.Email, account.Email));
                 
                 var principal = new ClaimsPrincipal(identity);
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
