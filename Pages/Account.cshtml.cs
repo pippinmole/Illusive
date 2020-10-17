@@ -19,7 +19,7 @@ namespace Illusive.Pages {
         }
         
         public IActionResult OnGet() {
-            this._logger.LogWarning($"OnGet /Account IsAuth{this.}");
+            this._logger.LogWarning($"OnGet /Account IsAuth{this.User.Identity.IsAuthenticated}");
             if ( !this.User.Identity.IsAuthenticated )
                 return this.RedirectToPage("/Index");
             
