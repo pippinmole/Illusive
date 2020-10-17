@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -16,10 +17,6 @@ namespace Illusive.Illusive.Database.Models {
         public AccountService(ILogger<AccountService> logger, IDatabaseContext ctx) {
             this._logger = logger;
             this._accounts = ctx.GetDatabase("IllusiveDatabase").GetCollection<AccountData>("user_info");
-            Console.WriteLine($"Accounts: {this._accounts.CollectionNamespace}");
-
-            var json = this._accounts.FindSync(x => x.Email == "email@email.com");
-            logger.LogWarning(json.ToJson());
         }
 
         public AccountData AddRecord(AccountData account) {
@@ -36,6 +33,11 @@ namespace Illusive.Illusive.Database.Models {
 
         public bool AccountExists(string email, out AccountData account) {
             account = this._accounts.Find(x => x.Email == email).FirstOrDefault();
+            return account != null;
+        }
+
+        public bool AccountExists(Expression<Func<AccountData, bool>> predicate, out AccountData account) {
+            account = this._accounts.Find(predicate).FirstOrDefault();
             return account != null;
         }
     }

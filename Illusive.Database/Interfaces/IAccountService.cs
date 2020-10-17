@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Models;
 
@@ -8,5 +10,6 @@ namespace Illusive.Illusive.Database.Interfaces {
         AccountData AddRecord(AccountData account);
         AccountData GetAccount(string email);
         bool AccountExists(string email, out AccountData account);
+        bool AccountExists(Expression<Func<AccountData, bool>> predicate, out AccountData account);
     }
 }

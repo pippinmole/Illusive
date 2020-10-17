@@ -31,12 +31,13 @@ namespace Illusive.Pages {
                 var email = this.SignupData.Email;
                 var password = this.SignupData.Password;
 
-                var accountExists = this.accountService.AccountExists(email, out _);
+                var accountExists = this.accountService.AccountExists(
+                    account => account.AccountName == username || account.Email == email, out _);
                 if ( accountExists ) {
-                    this.ModelState.AddModelError("", "Account with that email already exists!");
+                    this.ModelState.AddModelError("", "An account with that username or email already exists!");
                     return this.Page();
                 }
-                
+
                 Console.WriteLine("Logged in with credentials: \n" +
                                   $"username: {username} \n" +
                                   $"email: {email} \n" +
@@ -46,14 +47,12 @@ namespace Illusive.Pages {
                     ClaimTypes.Role);
                 identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
                 identity.AddClaim(new Claim(ClaimTypes.Name, username));
+                identity.AddClaim(new Claim(ClaimTypes.Email, email));
                 
                 var principal = new ClaimsPrincipal(identity);
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
                     new AuthenticationProperties {IsPersistent = true});
-
-                if ( this.accountService.AccountExists(email, out _) ) {
-                    
-                }
+                
                 this.accountService.AddRecord(new AccountData(
                     Guid.NewGuid().ToString().Substring(0, 10), // TODO: Implement user id
                     username,
