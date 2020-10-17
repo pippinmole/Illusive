@@ -1,4 +1,6 @@
-﻿using Illusive.Illusive.Database.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Illusive.Illusive.Database.Models;
 
 namespace Illusive.Illusive.Database.Interfaces {
     public interface IAccountService {

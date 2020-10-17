@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DnsClient.Internal;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace Illusive.Pages {
                        $"Account Email: {account.Email} \n" +
                        $"Account Age: {account.Age}";
             }
-
+            
             return "";
         }
     }

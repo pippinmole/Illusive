@@ -51,8 +51,11 @@ namespace Illusive.Pages {
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
                     new AuthenticationProperties {IsPersistent = true});
 
+                if ( this.accountService.AccountExists(email, out _) ) {
+                    
+                }
                 this.accountService.AddRecord(new AccountData(
-                    this.HttpContext.User.Identity.Name, // TODO: Implement user id
+                    Guid.NewGuid().ToString().Substring(0, 10), // TODO: Implement user id
                     username,
                     email,
                     17

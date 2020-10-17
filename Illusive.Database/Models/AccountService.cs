@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using ILogger = DnsClient.Internal.ILogger;
 
@@ -15,6 +17,9 @@ namespace Illusive.Illusive.Database.Models {
             this._logger = logger;
             this._accounts = ctx.GetDatabase("IllusiveDatabase").GetCollection<AccountData>("user_info");
             Console.WriteLine($"Accounts: {this._accounts.CollectionNamespace}");
+
+            var json = this._accounts.FindSync(x => x.Email == "email@email.com");
+            logger.LogWarning(json.ToJson());
         }
 
         public AccountData AddRecord(AccountData account) {
@@ -24,8 +29,8 @@ namespace Illusive.Illusive.Database.Models {
 
         public AccountData GetAccount(string email) {
             Console.WriteLine($"Trying to get account from email: {email}");
+            
             var accounts = this._accounts.Find(x => x.Email == email);
-            this._logger.LogWarning($"Found {accounts.CountDocuments()} accounts with email {email}");
             return accounts.FirstOrDefault();
         }
 

@@ -35,9 +35,10 @@ namespace Illusive {
                 // options.Conventions.AllowAnonymousToPage("/Index");
             });
 
-            services.AddScoped<IDatabaseContext, DatabaseContext>();
-            services.AddScoped<IAccountService, AccountService>();
-            
+            services.AddSingleton<IDatabaseContext, DatabaseContext>();
+            services.AddSingleton<IAccountService, AccountService>();
+
+            services.AddControllers();
             services.AddRazorPages();
         }
 
