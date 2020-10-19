@@ -11,13 +11,14 @@ using Microsoft.Extensions.Hosting;
 namespace Illusive {
     public class Startup {
         public Startup(IConfiguration configuration) {
-            this.Configuration = configuration;
+            this._configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.AddDataProtection();
             services.AddAuthentication(options => {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

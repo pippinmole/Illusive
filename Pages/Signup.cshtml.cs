@@ -57,7 +57,8 @@ namespace Illusive.Pages {
                     Guid.NewGuid().ToString().Substring(0, 10), // TODO: Implement user id
                     username,
                     email,
-                    17
+                    17,
+                    BCrypt.Net.BCrypt.HashPassword(password)
                 ));
                 
                 Console.WriteLine($"Redirecting to /Account");

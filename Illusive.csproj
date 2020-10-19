@@ -10,6 +10,7 @@
     <_ContentIncludedByDefault Remove="Pages\obj\project.packagespec.json" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
     <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="4.0.0" />
     <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.11.2" />
