@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using DnsClient.Internal;
 using Illusive.Illusive.Database.Interfaces;
+using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,7 @@ namespace Illusive.Pages {
             return this.Page();
         }
 
-        public string GetData() {
+        public AccountData GetData() {
             var email = this.User.FindFirst(ClaimTypes.Email)?.Value;
 
             this._logger.LogWarning($"Email is {email}");
@@ -37,15 +38,15 @@ namespace Illusive.Pages {
             if ( email != default ) {
                 this._logger.LogWarning($"Getting account details for {email}");
 
-                var account = this._accountService.GetAccount(email);
-                if ( account != null ) {
-                    return $"Account ID: {account.Id} \n" +
-                           $"Account Email: {account.Email} \n" +
-                           $"Account Age: {account.Age}";
-                }
+                return this._accountService.GetAccount(email);
+                // if ( account != null ) {
+                //     return $"Account ID: {account.Id} \n" +
+                //            $"Account Email: {account.Email} \n" +
+                //            $"Account Age: {account.Age}";
+                // }
             }
 
-            return "";
+            return null;
         }
     }
 }

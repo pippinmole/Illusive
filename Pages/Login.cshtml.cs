@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
@@ -81,7 +82,6 @@ namespace Illusive.Pages {
 
             [Required, DataType(DataType.Password)]
             public string Password { get; set; }
-            
             public bool RememberMe { get; set; }
         }
     }

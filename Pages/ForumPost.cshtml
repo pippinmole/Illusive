@@ -1,0 +1,40 @@
+﻿@page
+@model ForumPost
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@this.Model.ForumPostData.Title</title>
+    
+    <style type="text/css">
+        
+        #commentField {
+         width: 390px; 
+         border: 1px solid #999999; 
+         padding: 5px;
+        }
+        
+    </style>
+    
+</head>
+<body>
+<div>
+    <p>@this.Model.ForumPostData.Content</p>
+    
+    @{
+        var replies = this.Model.ForumPostData.Replies;
+        foreach (var reply in replies ) {
+            <div>@reply.Content</div>
+        }
+    }
+    
+    <h3>Comments</h3>
+    
+    <form method="post">
+         Reply: <input id="commentField" asp-route-id="@this.Model.ForumPostData.Id" asp-for="ForumReply.Content" value="" /><br/>
+        <button type="submit">Comment on this</button>
+    </form>
+</div>
+</body>
+</html>

@@ -29,6 +29,7 @@ namespace Illusive {
             });
             
             services.AddMvc().AddRazorPagesOptions(options => {
+                options.Conventions.AddPageRoute("/Forum", "ForumPage/{text?}");
                 // options.Conventions.AuthorizeFolder("/");
                 // options.Conventions.AllowAnonymousToPage("/Login");
                 // options.Conventions.AllowAnonymousToPage("/Logout");
@@ -38,6 +39,7 @@ namespace Illusive {
 
             services.AddSingleton<IDatabaseContext, DatabaseContext>();
             services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IForumService, ForumService>();
 
             services.AddControllers();
             services.AddRazorPages();

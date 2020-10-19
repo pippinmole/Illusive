@@ -1,0 +1,43 @@
+﻿@page "{text?}"
+@model ForumModel
+
+@{
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        .message {
+            margin-bottom: 15px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #d9d9d9;
+            border-radius: 5px; 
+        }
+        .image {float:left; margin-right: 10px; }
+        .user {float:left; font-weight:bold; color:#009; margin-bottom: 5px; }
+        .content { margin-left: 30px;font-style:italic; }
+    </style>
+</head>
+<body>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <button type="submit">Click to create a forum post</button>
+</form>
+
+<div>
+    @foreach ( var forum in await this.Model.GetForums() ) {
+        <div class="message">
+            <div class="image">
+                <img src="http://www.gravatar.com/avatar/df125f7b89730a39163bb17c1c18c1d9?s=18&d=identicon&r=PG" alt=""/></div>
+            <div class="user"><a asp-page="/ForumPost" asp-route-id="@forum.Id">@forum.Title </a></div>
+            <div style="clear:both;"></div>
+            <div class="content">@forum.Content</div>
+        </div>
+    }
+</div>
+</body>
+</html>
