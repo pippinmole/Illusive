@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,7 @@ namespace Illusive.Pages {
             this._logger = logger;
         }
 
-        public void OnGet() {
+        public async void OnGetAsync() {
             this._logger.LogWarning($"OnGet /Index");
         }
     }

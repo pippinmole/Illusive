@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
@@ -36,7 +37,7 @@ namespace Illusive.Illusive.Database.Models {
             return account != null;
         }
 
-        public bool AccountExists(Expression<Func<AccountData, bool>> predicate, out AccountData account) {
+        public bool AccountExists(Expression<Func<AccountData, bool>> predicate, [NotNull] out AccountData account) {
             account = this._accounts.Find(predicate).FirstOrDefault();
             return account != null;
         }

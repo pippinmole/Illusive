@@ -23,8 +23,5 @@ namespace Illusive.Illusive.Database.Models {
             this.Age = age;
             this.HashedPassword = hashedPassword;
         }
-
-        public bool VerifyPasswordHashEquals(string plainTextPassword) =>
-            BCrypt.Net.BCrypt.Verify(plainTextPassword, this.HashedPassword);
     }
 }

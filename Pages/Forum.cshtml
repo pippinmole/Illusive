@@ -1,7 +1,7 @@
 ﻿@page "{text?}"
 @model ForumModel
-
 @{
+    ViewData["Title"] = "Forum";
 }
 
 <!DOCTYPE html>
@@ -15,27 +15,98 @@
             padding: 10px;
             background-color: #d9d9d9;
             border-radius: 5px; 
+            box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
         }
         .image {float:left; margin-right: 10px; }
         .user {float:left; font-weight:bold; color:#009; margin-bottom: 5px; }
         .content { margin-left: 30px;font-style:italic; }
+        
+        .collapsible {
+          background-color: #777;
+          color: white;
+          cursor: pointer;
+          padding: 18px;
+          width: 100%;
+          height: 50px;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+          border-top-left-radius: 7px;
+          border-top-right-radius: 7px;
+        }
+        
+        .collapsible:after {
+          content: '\02795'; /* Unicode character for "plus" sign (+) */
+          font-size: 13px;
+          color: white;
+          float: right;
+          margin-left: 5px;
+        }
+        
+        .active:after {
+          content: "\2796"; /* Unicode character for "minus" sign (-) */
+        }
+        
+        .active, .collapsible:hover {
+          background-color: #555;
+        }
+        
+        .collapsible-content {
+          display: none;
+          overflow: hidden;
+          background-color: #f1f1f1;
+          border-bottom-left-radius: 7px;
+          border-bottom-right-radius: 7px;
+          padding: 0 18px 15px;
+          box-shadow: 0 1rem 1rem rgba(0, 0, 0, .1);
+        }
     </style>
+    
+    <script type="text/javascript">
+        window.addEventListener("load", function(event) {
+            const coll = document.getElementsByClassName("collapsible");           
+            for (let i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    const content = this.nextElementSibling;
+                    if (content.style.display === "block") {
+                       content.style.display = "none";
+                    } else {
+                       content.style.display = "block";
+                    }
+                });
+            }     
+        });
+    </script>
 </head>
 <body>
 
-<form method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <button type="submit">Click to create a forum post</button>
-</form>
+@{
+    if ( this.User.Identity.IsAuthenticated ) {
+        <button type="button" class="collapsible">Create a post</button>
+        <div class="collapsible-content">
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                Forum Title: <input class="input-field" asp-for="ForumData.Title" value=""/><br/>
+                Content: <br><textarea class="input-field-forum-content" rows="4" cols="50" asp-for="ForumData.Content" value=""></textarea><br/>
+                <input type="submit" value="Create Post" />
+            </form>
+        </div>
+    }
+}
+
+<h2 style="padding-top: 25px" align="center">Forum Posts</h2>
 
 <div>
     @foreach ( var forum in await this.Model.GetForums() ) {
         <div class="message">
             <div class="image">
                 <img src="http://www.gravatar.com/avatar/df125f7b89730a39163bb17c1c18c1d9?s=18&d=identicon&r=PG" alt=""/></div>
-            <div class="user"><a asp-page="/ForumPost" asp-route-id="@forum.Id">@forum.Title </a></div>
+            <div class="user"><a asp-page="/ForumPost" asp-route-id="@forum.Id">@forum.OwnerId / @forum.Title </a></div>
             <div style="clear:both;"></div>
             <div class="content">@forum.Content</div>
+            <div>Replies: @forum.Replies.Count</div>
         </div>
     }
 </div>

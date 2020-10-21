@@ -1,5 +1,8 @@
 ﻿@page
 @model ForumPost
+@{
+    ViewData["Title"] = this.Model.ForumPostData.Title;
+}
 
 <!DOCTYPE html>
 
@@ -29,12 +32,16 @@
         }
     }
     
-    <h3>Comments</h3>
-    
-    <form method="post">
-         Reply: <input id="commentField" asp-route-id="@this.Model.ForumPostData.Id" asp-for="ForumReply.Content" value="" /><br/>
-        <button type="submit">Comment on this</button>
-    </form>
+    @{
+        if ( this.User.Identity.IsAuthenticated ) {
+            <h3>Comments</h3>
+
+            <form method="post">
+                Reply: <input id="commentField" asp-route-id="@this.Model.ForumPostData.Id" asp-for="ForumReply.Content" value=""/><br/>
+                <button type="submit">Comment on this</button>
+            </form>
+        }
+    }
 </div>
 </body>
 </html>

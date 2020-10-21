@@ -1,9 +1,11 @@
+using System;
 using Illusive.Illusive.Database.Behaviour;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,17 +26,27 @@ namespace Illusive {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             }).AddCookie(options => {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                
                 options.LoginPath = "/Login";
                 options.LogoutPath = "/Logout";
+                options.AccessDeniedPath = "/Index";
+                options.SlidingExpiration = true;
             });
             
             services.AddMvc().AddRazorPagesOptions(options => {
-                options.Conventions.AddPageRoute("/Forum", "ForumPage/{text?}");
+                // options.Conventions.AddPageRoute("/Forum", "ForumPage/{text?}");
                 // options.Conventions.AuthorizeFolder("/");
                 // options.Conventions.AllowAnonymousToPage("/Login");
                 // options.Conventions.AllowAnonymousToPage("/Logout");
                 // options.Conventions.AllowAnonymousToPage("/Signup");
                 // options.Conventions.AllowAnonymousToPage("/Index");
+            });
+
+            services.Configure<IdentityOptions>(options => {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredLength = 5;
             });
 
             services.AddSingleton<IDatabaseContext, DatabaseContext>();

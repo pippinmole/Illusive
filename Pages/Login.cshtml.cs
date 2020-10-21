@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
+using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -36,44 +36,45 @@ namespace Illusive.Pages {
             return this.Page();
         }
 
-        public async Task<IActionResult> OnPostAsync() {
+        public async Task<IActionResult> OnPostAsync(string returnUrl) {
             if ( this.ModelState.IsValid ) {
                 
-                Console.WriteLine($"Login request from {this.loginData.Username}");
-
                 var username = this.loginData.Username;
                 var password = this.loginData.Password;
-
-                this._logger.LogWarning($"Hashed '{password}' to {BCrypt.Net.BCrypt.HashPassword(password)}");
+                var rememberMe = this.loginData.RememberMe;
 
                 var isValid = this._accountService.AccountExists(x => x.AccountName == username, out var account);
                 var passwordMatches = account?.VerifyPasswordHashEquals(password) == true;
                 
-                this._logger.LogWarning($"Password matches: {passwordMatches}");
-                
-                isValid &= passwordMatches;
-                if ( !isValid ) {
+                if ( !isValid || passwordMatches) {
                     this.ModelState.AddModelError("", "username or password is invalid");
                     return this.Page();
                 }
                 
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
                     ClaimTypes.Role);
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, this.loginData.Username));
-                identity.AddClaim(new Claim(ClaimTypes.Name, this.loginData.Username));
-                identity.AddClaim(new Claim(ClaimTypes.Email, account.Email));
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
+                identity.AddClaim(new Claim(ClaimTypes.Name, password));
+                identity.AddClaim(new Claim(ClaimTypes.Email, account?.Email));
+                identity.AddClaim(new Claim(ClaimTypes.PrimarySid, account?.Id));
 
                 var principal = new ClaimsPrincipal(identity);
                 await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
-                    new AuthenticationProperties {IsPersistent = this.loginData.RememberMe});
+                    new AuthenticationProperties {
+                        IsPersistent = rememberMe
+                    });
 
-                Console.WriteLine($"Redirecting to /Index");
-                
+                this._logger.LogDebug($"Redirecting logged-in user {account?.AccountName} to /Index");
+
+                if ( !string.IsNullOrEmpty(returnUrl) ) {
+                    return this.LocalRedirect(returnUrl);
+                }
+
                 return this.RedirectToPage("/Index");
-            } else {
-                this.ModelState.AddModelError("", "username or password is blank");
-                return this.Page();
             }
+
+            this.ModelState.AddModelError("", "username or password is blank");
+            return this.Page();
         }
 
         public class LoginPost {

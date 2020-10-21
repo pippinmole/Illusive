@@ -1,11 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using global::Illusive.Illusive.Authentication.Utility
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Illusive</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body>
     <header>
@@ -35,8 +36,6 @@
                             <div float="right">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log Out</a>
                             </div>
-                            
-                            <p><em>Signed in</em></p>
                         } else {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
@@ -44,10 +43,15 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Signup">Sign-Up</a>
                             </li>
-                            <p align="center" text-align="center"><em>Signed out</em></p>
                         }
                     </ul>
                 </div>
+                
+                @if ( this.User.Identity.IsAuthenticated ) {
+                    <div class="account-status-text">Signed in: @this.User.Identity.Name/@this.User.GetUniqueId()</div>
+                } else {
+                    <div class="account-status-text">Signed out</div>
+                }
             </div>
         </nav>
     </header>

@@ -42,13 +42,6 @@ namespace Illusive.Illusive.Database.Behaviour {
 
             var update = Builders<ForumData>.Update.Set(x => x.Replies, newReplies);
             this._forumData.UpdateOne(x => x.Id == forum.Id, update);
-
-            // var newReplies = forum.Replies.ToList();
-            // newReplies.Add(forumReply);
-            //
-            // var filter = new BsonDocument("Id", forum.Id);
-            // var update = Builders<BsonDocument>.Update.Set("Replies", newReplies);
-            // this._forumData.FindOneAndUpdate(filter, update);
         }
     }
 }

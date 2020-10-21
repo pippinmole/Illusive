@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -14,23 +16,35 @@ namespace Illusive.Pages {
         private readonly ILogger<ForumModel> _logger;
         private readonly IForumService _forumService;
 
+        [BindProperty] public ForumData ForumData { get; set; } = new ForumData();
+        
         public ForumModel(ILogger<ForumModel> logger, IConfiguration configuration, IForumService forumService) {
             this._logger = logger;
             this._forumService = forumService;
         }
 
-        public void OnGet() { }
+        public async void OnGetAsync() {
+            var user = this.HttpContext.User;
+            if ( !user.Identity.IsAuthenticated ) {
+                await this.HttpContext.ChallengeAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                this._logger.LogWarning("Challenge done");
+            }
+        }
 
         public async Task<IActionResult> OnPostAsync() {
-            this._logger.LogWarning("Creating a forum post");
+            var user = this.HttpContext.User;
+            if ( !user.Identity.IsAuthenticated ) {
+                this._logger.LogWarning("Redirecting unauthenticated user to /Index");
+                return this.RedirectToPage("/Index");
+            }
 
-            var post = new ForumData(Guid.NewGuid().ToString().Substring(0, 10), "Test Forum post!",
-                "A test content body for a forum post!");
-            await this._forumService.AddForumPost(post);
+            var forumPost = this.ForumData.AssignOwner(user);
             
-            this._logger.LogWarning($"Created a forum post titled: {post.Title}");
+            await this._forumService.AddForumPost(forumPost);
+            
+            this._logger.LogWarning($"Created a forum post titled: {this.ForumData.Title}");
 
-            return this.Page();
+            return this.Redirect("/Forum");
         }
 
         public async Task<List<ForumData>> GetForums() {
