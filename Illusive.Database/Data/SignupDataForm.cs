@@ -3,7 +3,7 @@
 namespace Illusive.Illusive.Database.Models {
     public class SignupDataForm {
             
-        [Required]
+        [Required, MaxLength(15)]
         public string Username { get; set; }
             
         [Required, DataType(DataType.EmailAddress)]
