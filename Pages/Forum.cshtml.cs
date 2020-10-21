@@ -23,13 +23,13 @@ namespace Illusive.Pages {
             this._forumService = forumService;
         }
 
-        public async void OnGetAsync() {
-            var user = this.HttpContext.User;
-            if ( !user.Identity.IsAuthenticated ) {
-                await this.HttpContext.ChallengeAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                this._logger.LogWarning("Challenge done");
-            }
-        }
+        // public async void OnGetAsync() {
+        //     var user = this.HttpContext.User;
+        //     if ( !user.Identity.IsAuthenticated ) {
+        //         await this.HttpContext.ChallengeAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //         this._logger.LogWarning("Challenge done");
+        //     }
+        // }
 
         public async Task<IActionResult> OnPostAsync() {
             var user = this.HttpContext.User;
