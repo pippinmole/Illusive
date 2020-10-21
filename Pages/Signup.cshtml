@@ -23,9 +23,9 @@
 
     <form method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
-        Username: <input class="input-field" asp-for="SignupData.Username" placeholder="username"/><br/>
-        Email: <input class="input-field" asp-for="SignupData.Email" placeholder="email@email.com"/><br/>
-        Password: <input class="input-field" asp-for="SignupData.Password" type="password" placeholder="password"/><br/>
+        Username: <input class="input-field" style="width: 50%" asp-for="SignupData.Username" placeholder="username"/><br/>
+        Email: <input class="input-field" style="width: 50%" asp-for="SignupData.Email" placeholder="email@email.com"/><br/>
+        Password: <input class="input-field" style="width: 50%" asp-for="SignupData.Password" type="password" placeholder="password"/><br/>
         <input type="submit" value="Login"/>
         @Html.AntiForgeryToken()
     </form>
