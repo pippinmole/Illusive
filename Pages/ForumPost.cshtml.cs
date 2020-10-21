@@ -29,10 +29,10 @@ namespace Illusive.Pages {
 
             var forum = this._forumService.GetForumById(id);
             var reply = this.ForumReply;
-            
+
             this._forumService.AddReplyToForum(forum, reply);
 
-            return this.Redirect($"/ForumPost?id={id}");
+            return this.Redirect($"/Forum?id={id}");
         }
     }
 }
