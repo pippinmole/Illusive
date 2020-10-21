@@ -11,8 +11,8 @@
         
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
-            Username: <input asp-for="loginData.Username" value="username" /><br/>
-            Password: <input asp-for="loginData.Password" value="password" /><br />
+            Username: <input class="input-field" asp-for="loginData.Username" placeholder="username" /><br/>
+            Password: <input class="input-field" asp-for="loginData.Password" placeholder="password" /><br />
             Remember me: <input asp-for="loginData.RememberMe" type="checkbox" /><br />
             <input type="submit" value="Login" />
             @Html.AntiForgeryToken()

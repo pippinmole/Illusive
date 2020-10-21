@@ -69,3 +69,29 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.input-field {
+  width: 100%;
+  max-width: 100%;
+  height: 35px;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: #e9e9e9;
+  display: -webkit-flex;
+}
+
+.input-field-forum-content {
+  width: 100%;
+  resize: both;
+  display: -webkit-flex;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: #e9e9e9;
+}
+
+.account-status-text {
+  font-style: italic;
+  float: right;
+}

@@ -9,15 +9,24 @@
 
 <html>
 <head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700" rel="stylesheet" type="text/css">
+    <style type="text/css">
+       
+        
+        
+    </style>
+    
 </head>
 <body>
-<div align="center">
+<div align="center" class="container-post">
+    <h1 class="display-4">Sign up</h1>
+
     <form method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
-        Username: <input asp-for="SignupData.Username" value="username" /><br/>
-        Email: <input asp-for="SignupData.Email" value="email@email.com" /><br />
-        Password: <input asp-for="SignupData.Password" value="password" /><br />
-        <input type="submit" value="Login" />
+        Username: <input class="input-field" asp-for="SignupData.Username" placeholder="username"/><br/>
+        Email: <input class="input-field" asp-for="SignupData.Email" placeholder="email@email.com"/><br/>
+        Password: <input class="input-field" asp-for="SignupData.Password" type="password" placeholder="password"/><br/>
+        <input type="submit" value="Login"/>
         @Html.AntiForgeryToken()
     </form>
 </div>
