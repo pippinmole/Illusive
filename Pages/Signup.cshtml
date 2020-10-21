@@ -27,6 +27,7 @@
         Email: <input class="input-field" style="width: 50%" asp-for="SignupData.Email" placeholder="email@email.com"/><br/>
         Password: <input class="input-field" style="width: 50%" asp-for="SignupData.Password" type="password" placeholder="password"/><br/>
         <input type="submit" value="Sign Up"/>
+        <p>Already have an account? <a href="/Login">Sign in!</a></p>
         @Html.AntiForgeryToken()
     </form>
 </div>

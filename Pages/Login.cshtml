@@ -5,20 +5,21 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Login</h1>
     
+    <h1 class="display-4">Login</h1>
+
     <div align="center">
-        
+
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
-            Username: <input class="input-field" style="width: 50%" asp-for="loginData.Username" placeholder="username" /><br/>
-            Password: <input class="input-field" style="width: 50%" asp-for="loginData.Password" placeholder="password" /><br />
-            Remember me: <input asp-for="loginData.RememberMe" type="checkbox" /><br />
+            Username: <input class="input-field" style="width: 50%" asp-for="loginData.Username" placeholder="username"/><br/>
+            Password: <input class="input-field" style="width: 50%" asp-for="loginData.Password" placeholder="password"/><br/>
+            Remember me: <input asp-for="loginData.RememberMe" type="checkbox"/><br/>
+            <input type="submit" value="Login"/>
             <p>Don't have an account? <a href="/Signup">Sign up!</a></p>
-            <input type="submit" value="Login" />
             @Html.AntiForgeryToken()
         </form>
 
     </div>
-    
+
 </div>
