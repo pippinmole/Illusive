@@ -14,10 +14,11 @@
             Username: <input class="input-field" style="width: 50%" asp-for="loginData.Username" placeholder="username" /><br/>
             Password: <input class="input-field" style="width: 50%" asp-for="loginData.Password" placeholder="password" /><br />
             Remember me: <input asp-for="loginData.RememberMe" type="checkbox" /><br />
+            <p>Don't have an account? <a href="/Signup">Sign up!</a></p>
             <input type="submit" value="Login" />
             @Html.AntiForgeryToken()
         </form>
-        
+
     </div>
     
 </div>
