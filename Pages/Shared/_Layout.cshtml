@@ -9,68 +9,74 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Illusive</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Forum">Forum</a>
-                        </li>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Illusive</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Forum">Forum</a>
+                    </li>
                         
-                        @if ( this.User.Identity.IsAuthenticated ) {
-                            <div float="right">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Account">Account</a>
-                            </div>
-                            <div float="right">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log Out</a>
-                            </div>
-                        } else {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Signup">Sign-Up</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+                    @if ( this.User.Identity.IsAuthenticated ) {
+                        <div float="right">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account">Account</a>
+                        </div>
+                        <div float="right">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log Out</a>
+                        </div>
+                    } else {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Signup">Sign-Up</a>
+                        </li>
+                    }
+                </ul>
+            </div>
                 
+            <div class="account-dropdown">
                 @if ( this.User.Identity.IsAuthenticated ) {
                     <div class="account-status-text">Signed in: @this.User.Identity.Name/@this.User.GetUniqueId()</div>
                 } else {
                     <div class="account-status-text">Signed out</div>
                 }
+                <br />
+                <div class="account-dropdown-content">
+                    <p>Test</p>
+                </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Illusive - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
-    </footer>
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2020 - Illusive - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    </div>
+</footer>
 
-    @RenderSection("Scripts", required: false)
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+@RenderSection("Scripts", required: false)
 </body>
 </html>

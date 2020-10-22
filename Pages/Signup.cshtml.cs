@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
+using Illusive.Illusive.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,11 @@ namespace Illusive.Pages {
                 var email = this.SignupData.Email;
                 var password = this.SignupData.Password;
 
+                if ( !username.IsEmail() ) {
+                    this.ModelState.AddModelError("", "The email you entered is not valid!");
+                    return this.Page();
+                }
+                
                 var accountExists = this._accountService.AccountExists(
                     account => account.AccountName == username || account.Email == email, out _);
                 if ( accountExists ) {
