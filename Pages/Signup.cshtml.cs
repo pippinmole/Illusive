@@ -31,7 +31,7 @@ namespace Illusive.Pages {
                 var email = this.SignupData.Email;
                 var password = this.SignupData.Password;
 
-                if ( !username.IsEmail() ) {
+                if ( !email.IsEmail() ) {
                     this.ModelState.AddModelError("", "The email you entered is not valid!");
                     return this.Page();
                 }
