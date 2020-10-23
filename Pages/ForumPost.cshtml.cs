@@ -34,7 +34,7 @@ namespace Illusive.Pages {
 
             this._forumService.AddReplyToForum(forum, reply);
 
-            return this.Redirect($"/Forum?id={id}");
+            return this.Redirect($"/ForumPost?id={id}");
         }
     }
 }

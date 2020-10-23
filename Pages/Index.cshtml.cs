@@ -15,14 +15,6 @@ namespace Illusive.Pages {
         }
 
         public async void OnGetAsync() {
-
-            var pHash = BCrypt.Net.BCrypt.HashPassword("passw@rd");
-            var isValid1 = BCrypt.Net.BCrypt.Verify("passw@rd", pHash);
-            var isValid2 = BCrypt.Net.BCrypt.Verify("passw%25rd", pHash);
-            
-            this._logger.LogWarning($"Hash is valid 1: {isValid1}");
-            this._logger.LogWarning($"Hash is valid 1: {isValid2}");
-            
             this._logger.LogWarning($"OnGet /Index");
         }
     }
