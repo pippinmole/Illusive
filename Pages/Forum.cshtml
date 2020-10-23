@@ -19,8 +19,12 @@
             box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
         }
         .image {float:left; margin-right: 10px; }
-        .user {float:left; font-weight:bold; color:#009; margin-bottom: 5px; }
-        .content { margin-left: 30px;font-style:italic; }
+        .user {float:left; font-weight:bold; color:#009; margin-bottom: 3px; }
+        .additionalInfo { 
+            margin-left: 30px; 
+            font-style:italic; 
+            font-size: 10px;
+        }
         
         .collapsible {
           background-color: #777;
@@ -141,8 +145,9 @@
                 <img src="http://www.gravatar.com/avatar/df125f7b89730a39163bb17c1c18c1d9?s=18&d=identicon&r=PG" alt=""/></div>
             <div class="user"><a asp-page="/ForumPost" asp-route-id="@forum.Id">@forum.OwnerId / @forum.Title </a></div>
             <div style="clear:both;"></div>
-            <div class="content">@forum.Content</div>
+            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy")</div>
             <div>Replies: @forum.Replies.Count</div>
+            <div>Views: @forum.Views</div>
         </div>
     }
 </div>

@@ -20,10 +20,13 @@ namespace Illusive.Illusive.Database.Models {
 
         public List<ForumReply> Replies { get; set; }
         public bool IsMarkdown { get; set; }
+        public uint Views { get; set; }
 
         public ForumData() {
             this.Id = Guid.NewGuid().ToString();
             this.Replies = new List<ForumReply>();
+            this.TimeCreated = DateTime.Now;
+            this.Views = 0;
         }
 
         public ForumData(string id, string ownerId, string title, string content, bool isMarkdown) {
@@ -34,6 +37,7 @@ namespace Illusive.Illusive.Database.Models {
             this.Replies = new List<ForumReply>();
             this.TimeCreated = DateTime.Now;
             this.IsMarkdown = isMarkdown;
+            this.Views = 0;
         }
     }
 }

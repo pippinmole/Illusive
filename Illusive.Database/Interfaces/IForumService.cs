@@ -9,5 +9,6 @@ namespace Illusive.Illusive.Database.Interfaces {
         Task<List<ForumData>> GetForumData();
         ForumData GetForumById(string id);
         void AddReplyToForum(ForumData forum, ForumReply forumReply);
+        void AddViewToForum(ForumData forum);
     }
 }

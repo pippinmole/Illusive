@@ -21,6 +21,8 @@ namespace Illusive.Pages {
         
         public void OnGet(string id) {
             this.ForumPostData = this._forumService.GetForumById(id);
+            this._forumService.AddViewToForum(this.ForumPostData);
+            
             this._logger.LogWarning($"Found forum at id {id}: {this.ForumPostData.Title}");
         }
 
