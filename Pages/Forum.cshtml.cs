@@ -39,7 +39,6 @@ namespace Illusive.Pages {
             }
 
             var forumPost = this.ForumData.AssignOwner(user);
-            
             await this._forumService.AddForumPost(forumPost);
             
             this._logger.LogWarning($"Created a forum post titled: {this.ForumData.Title}");

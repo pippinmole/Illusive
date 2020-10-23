@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
-using Illusive.Illusive.Authentication.Utility;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Illusive.Database.Models {
@@ -26,17 +24,6 @@ namespace Illusive.Illusive.Database.Models {
             this.Id = Guid.NewGuid().ToString();
             this.Replies = new List<ForumReply>();
             this.TimeCreated = DateTime.Now;
-            this.Views = 0;
-        }
-
-        public ForumData(string id, string ownerId, string title, string content, bool isMarkdown) {
-            this.Id = id;
-            this.OwnerId = ownerId;
-            this.Title = title;
-            this.Content = content;
-            this.Replies = new List<ForumReply>();
-            this.TimeCreated = DateTime.Now;
-            this.IsMarkdown = isMarkdown;
             this.Views = 0;
         }
     }
