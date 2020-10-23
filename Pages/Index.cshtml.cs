@@ -1,4 +1,5 @@
 ﻿using System;
+using Illusive.Illusive.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,9 @@ namespace Illusive.Pages {
         }
 
         public async void OnGetAsync() {
+            
+            var isEmail = "nick@ruffles.dev".IsEmail();
+            this._logger.LogWarning($"IsEmail: {isEmail}");
             this._logger.LogWarning($"OnGet /Index");
         }
     }

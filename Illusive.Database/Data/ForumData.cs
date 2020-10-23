@@ -19,19 +19,21 @@ namespace Illusive.Illusive.Database.Models {
         public DateTime TimeCreated { get; set;  }
 
         public List<ForumReply> Replies { get; set; }
+        public bool IsMarkdown { get; set; }
 
         public ForumData() {
             this.Id = Guid.NewGuid().ToString();
             this.Replies = new List<ForumReply>();
         }
 
-        public ForumData(string id, string ownerId, string title, string content) {
+        public ForumData(string id, string ownerId, string title, string content, bool isMarkdown) {
             this.Id = id;
             this.OwnerId = ownerId;
             this.Title = title;
             this.Content = content;
             this.Replies = new List<ForumReply>();
             this.TimeCreated = DateTime.Now;
+            this.IsMarkdown = isMarkdown;
         }
     }
 }

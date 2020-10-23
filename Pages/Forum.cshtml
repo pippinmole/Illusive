@@ -8,6 +8,7 @@
 
 <html>
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         .message {
             margin-bottom: 15px;
@@ -52,7 +53,7 @@
           background-color: #555;
         }
         
-        .collapsible-content {
+        .forumContent {
           display: none;
           overflow: hidden;
           background-color: #f1f1f1;
@@ -61,10 +62,24 @@
           padding: 0 18px 15px;
           box-shadow: 0 1rem 1rem rgba(0, 0, 0, .1);
         }
+        
+        .preview-content-button {
+            
+        }
+        
+        .preview-content-content {
+          width: 100%;
+          display: -webkit-flex;
+          padding: 15px;
+          border: none;
+          border-radius: 6px;
+          margin-top: 10px;
+          background: #dddddd;
+        }
     </style>
-    
+
     <script type="text/javascript">
-        window.addEventListener("load", function(event) {
+        window.addEventListener("load", (event) => {
             const coll = document.getElementsByClassName("collapsible");           
             for (let i = 0; i < coll.length; i++) {
                 coll[i].addEventListener("click", function () {
@@ -79,6 +94,21 @@
             }     
         });
     </script>
+
+    <script type="text/javascript">
+        window.addEventListener("load", (event) => {
+            let previewButton = $(".preview-content-button");
+            $(".preview-content-content").toggle(false);
+            
+            previewButton.click(() => {
+                let previewContent = $(".preview-content-content");
+                let previewText = $(".input-field-forum-content").val();
+                
+                previewContent.toggle();
+                previewContent.html(previewText);
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -86,12 +116,18 @@
     if ( this.User.Identity.IsAuthenticated ) {
         <button type="button" class="collapsible">Create a post</button>
         <div class="collapsible-content">
+            <button class="preview-content-button">Preview</button>
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
-                Forum Title: <input class="input-field" asp-for="ForumData.Title" value=""/><br/>
-                Content: <br><textarea class="input-field-forum-content" rows="4" cols="50" asp-for="ForumData.Content" value=""></textarea><br/>
+                Forum Title: <input class="input-field" asp-for="ForumData.Title" placeholder="Forum Title"/><br/>
+                Content: <br><textarea type="text" class="input-field-forum-content" rows="4" cols="50" asp-for="ForumData.Content" placeholder="Enter your blog content here"></textarea><br/>
+                Is Markdown: <input type="checkbox" asp-for="ForumData.IsMarkdown" /><br/>
                 <input type="submit" value="Create Post" />
             </form>
+            
+            <div class="preview-content-content">
+                @*Leave empty for preview code to be filled here*@
+            </div>
         </div>
     }
 }

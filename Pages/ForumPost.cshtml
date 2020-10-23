@@ -1,4 +1,5 @@
 ﻿@page
+@using Westwind.AspNetCore.Markdown
 @model ForumPost
 @{
     ViewData["Title"] = this.Model.ForumPostData.Title;
@@ -18,20 +19,48 @@
          padding: 5px;
         }
         
+        .forumTitle {
+            margin-top: 25px;
+        }
+        
+        .forumContent {
+            background-color: #f1f1f1;
+            border-bottom-left-radius: 7px;
+            border-bottom-right-radius: 7px;
+            padding: 15px;
+            box-shadow: 0 1rem 1rem rgba(0, 0, 0, .1);
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
     </style>
-    
+
 </head>
 <body>
 <div>
-    <p>@this.Model.ForumPostData.Content</p>
-    
+    <h3 class="forumTitle">@this.Model.ForumPostData.Title</h3>
+    <div class="forumContent">
+        @{
+            var isMarkup = this.Model.ForumPostData.IsMarkdown;
+            if ( isMarkup ) {
+                <p>
+                    @Markdown.ParseHtmlString(this.Model.ForumPostData.Content)
+                </p>
+            } else {
+                <p>
+                    @this.Model.ForumPostData.Content
+                </p>
+            }
+        }
+    </div>
+
     @{
         var replies = this.Model.ForumPostData.Replies;
-        foreach (var reply in replies ) {
+        foreach ( var reply in replies ) {
             <div>@reply.Content</div>
         }
     }
-    
+
     @{
         if ( this.User.Identity.IsAuthenticated ) {
             <h3>Comments</h3>

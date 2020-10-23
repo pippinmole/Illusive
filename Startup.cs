@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Westwind.AspNetCore.Markdown;
 
 namespace Illusive {
     public class Startup {
@@ -33,7 +34,7 @@ namespace Illusive {
                 options.AccessDeniedPath = "/Index";
                 options.SlidingExpiration = true;
             });
-            
+
             services.AddMvc().AddRazorPagesOptions(options => {
                 // options.Conventions.AddPageRoute("/Forum", "ForumPage/{text?}");
                 // options.Conventions.AuthorizeFolder("/");
@@ -41,7 +42,7 @@ namespace Illusive {
                 // options.Conventions.AllowAnonymousToPage("/Logout");
                 // options.Conventions.AllowAnonymousToPage("/Signup");
                 // options.Conventions.AllowAnonymousToPage("/Index");
-            });
+            }).AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
 
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = false;
@@ -53,6 +54,8 @@ namespace Illusive {
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IForumService, ForumService>();
 
+            services.AddMarkdown();
+            
             services.AddControllers();
             services.AddRazorPages();
         }
@@ -72,6 +75,7 @@ namespace Illusive {
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseMarkdown();
             app.UseRouting();
 
             app.UseAuthorization();
