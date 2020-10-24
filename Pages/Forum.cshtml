@@ -127,6 +127,7 @@
                 Content: <br><textarea type="text" class="input-field-forum-content" rows="4" cols="50" asp-for="ForumData.Content" placeholder="Enter your blog content here"></textarea><br/>
                 Is Markdown: <input type="checkbox" asp-for="ForumData.IsMarkdown" /><br/>
                 <input type="submit" value="Create Post" />
+                @Html.AntiForgeryToken()
             </form>
             
             <div class="preview-content-content">
