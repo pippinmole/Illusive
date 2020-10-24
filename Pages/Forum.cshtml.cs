@@ -39,6 +39,16 @@ namespace Illusive.Pages {
             }
 
             var forumPost = this.ForumData.AssignOwner(user);
+
+            if ( forumPost.Title.Length > 100 ) {
+                this.ModelState.AddModelError("", "The forum title has to be under 100 characters.");
+                return this.Page();
+            } 
+            if ( forumPost.Content.Length > 10000 ) {
+                this.ModelState.AddModelError("", "The forum contents has to be under 10,000 characters.");
+                return this.Page();
+            }
+            
             await this._forumService.AddForumPost(forumPost);
             
             this._logger.LogWarning($"Created a forum post titled: {this.ForumData.Title}");
