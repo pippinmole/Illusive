@@ -19,7 +19,13 @@
             box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
         }
         .image {float:left; margin-right: 10px; }
-        .user {float:left; font-weight:bold; color:#009; margin-bottom: 3px; }
+        .user {
+            float:left; 
+            font-weight:bold; 
+            color:#009; 
+            margin-bottom: 3px; 
+            word-wrap: anywhere;
+        }
         .additionalInfo { 
             margin-left: 30px; 
             font-style:italic; 
@@ -113,6 +119,31 @@
             });
         });
     </script>
+    
+    <script type="text/javascript">
+        window.addEventListener("load", (event) => {
+            let forumTitleInput = $("#forum-title-input")[0];
+            let forumTitleHeading = $("#forum-title-heading")[0];
+            if (forumTitleInput != null) {
+                forumTitleInput.oninput = () => {
+                    let length = forumTitleInput.value.length;
+                    let maxLength = forumTitleInput.maxLength;
+                    forumTitleHeading.innerHTML = "Forum Title: " + ((maxLength - length) + "/" + maxLength + " characters remaining.");
+                };
+            }
+            
+            let forumContentInput = $("#forum-content-input")[0];
+            let forumContentHeading = $("#forum-content-heading")[0];
+            if (forumContentInput != null) {
+                forumContentInput.oninput = () => {
+                    let length = forumContentInput.value.length;
+                    let maxLength = forumContentInput.maxLength;
+                    forumContentHeading.innerHTML = "Content: " + ((maxLength - length) + "/" + maxLength + " characters remaining.");
+                };
+            }
+        });
+    </script>
+    
 </head>
 <body>
 
@@ -123,8 +154,8 @@
             <button class="preview-content-button">Preview</button>
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
-                Forum Title: <input class="input-field" asp-for="ForumData.Title" placeholder="Forum Title"/><br/>
-                Content: <br><textarea type="text" class="input-field-forum-content" rows="4" cols="50" asp-for="ForumData.Content" placeholder="Enter your blog content here"></textarea><br/>
+                <div id="forum-title-heading"> Forum Title: </div><input class="input-field" id="forum-title-input" asp-for="ForumData.Title" placeholder="Forum Title"/><br/>
+                <div id="forum-content-heading"> Content: </div><textarea type="text" class="input-field-forum-content" id="forum-content-input" rows="4" cols="50" asp-for="ForumData.Content" placeholder="Enter your blog content here"></textarea><br/>
                 Is Markdown: <input type="checkbox" asp-for="ForumData.IsMarkdown" /><br/>
                 <input type="submit" value="Create Post" />
                 @Html.AntiForgeryToken()
@@ -152,5 +183,8 @@
         </div>
     }
 </div>
+
+<br><br>
+
 </body>
 </html>

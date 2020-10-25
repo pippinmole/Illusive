@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
@@ -32,6 +33,10 @@ namespace Illusive.Pages {
         // }
 
         public async Task<IActionResult> OnPostAsync() {
+            
+            if ( !this.ModelState.IsValid )
+                return this.Page();
+
             var user = this.HttpContext.User;
             if ( !user.Identity.IsAuthenticated ) {
                 this._logger.LogWarning("Redirecting unauthenticated user to /Index");

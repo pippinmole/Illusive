@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Markdig.Extensions.Abbreviations;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Illusive.Database.Models {
@@ -8,9 +9,9 @@ namespace Illusive.Illusive.Database.Models {
 
         [BsonId] public string Id { get; set; }
 
-        [Required] public string Title { get; set; }
+        [Required] [StringLength(80)] public string Title { get; set; }
 
-        [Required] public string Content { get; set; }
+        [Required, MaxLength(10000)] public string Content { get; set; }
         
         public string OwnerId { get; set; }
 
