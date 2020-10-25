@@ -37,42 +37,39 @@ namespace Illusive.Pages {
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl) {
-            if ( this.ModelState.IsValid ) {
+            if ( !this.ModelState.IsValid )
+                return this.Page();
+
+            var username = this.loginData.Username;
+            var password = this.loginData.Password;
+            var rememberMe = this.loginData.RememberMe;
+
+            var accountExists = this._accountService.AccountExists(x => x.AccountName == username, out var account);
+            if ( !accountExists || !account.VerifyPasswordHashEquals(password)) {
+                this.ModelState.AddModelError("", "username or password is invalid");
+                return this.Page();
+            }
                 
-                var username = this.loginData.Username;
-                var password = this.loginData.Password;
-                var rememberMe = this.loginData.RememberMe;
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
+                ClaimTypes.Role);
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
+            identity.AddClaim(new Claim(ClaimTypes.Name, password));
+            identity.AddClaim(new Claim(ClaimTypes.Email, account?.Email));
+            identity.AddClaim(new Claim(ClaimTypes.PrimarySid, account?.Id));
 
-                var accountExists = this._accountService.AccountExists(x => x.AccountName == username, out var account);
-                if ( !accountExists || !account.VerifyPasswordHashEquals(password)) {
-                    this.ModelState.AddModelError("", "username or password is invalid");
-                    return this.Page();
-                }
-                
-                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
-                    ClaimTypes.Role);
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
-                identity.AddClaim(new Claim(ClaimTypes.Name, password));
-                identity.AddClaim(new Claim(ClaimTypes.Email, account?.Email));
-                identity.AddClaim(new Claim(ClaimTypes.PrimarySid, account?.Id));
+            var principal = new ClaimsPrincipal(identity);
+            await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                new AuthenticationProperties {
+                    IsPersistent = rememberMe
+                });
 
-                var principal = new ClaimsPrincipal(identity);
-                await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
-                    new AuthenticationProperties {
-                        IsPersistent = rememberMe
-                    });
+            this._logger.LogDebug($"Redirecting logged-in user {account?.AccountName} to /Index");
 
-                this._logger.LogDebug($"Redirecting logged-in user {account?.AccountName} to /Index");
-
-                if ( !string.IsNullOrEmpty(returnUrl) ) {
-                    return this.LocalRedirect(returnUrl);
-                }
-
-                return this.RedirectToPage("/Index");
+            if ( !string.IsNullOrEmpty(returnUrl) ) {
+                return this.LocalRedirect(returnUrl);
             }
 
-            this.ModelState.AddModelError("", "username or password is blank");
-            return this.Page();
+            return this.RedirectToPage("/Index");
         }
 
         public class LoginPost {
@@ -81,6 +78,7 @@ namespace Illusive.Pages {
 
             [Required, DataType(DataType.Password)]
             public string Password { get; set; }
+
             public bool RememberMe { get; set; }
         }
     }
