@@ -25,6 +25,7 @@
             font-weight: bold; 
             color:#009; 
             margin-bottom: 3px;
+            word-wrap: anywhere;
         }
         .additionalInfo { 
             margin-left: 30px; 
@@ -44,6 +45,23 @@
         }
         .forumTag:hover {
             cursor: pointer;
+        }
+        
+        .forum-stats {
+            float: right;
+            display: flex;
+        }
+        
+        .forum-stat-elem {
+            background-color: #c4c4c4;
+            border-radius: 3px;
+            padding: 5px;
+            margin: 1px;
+            height: 35px;
+            width: 60px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
         }
         
         .collapsible {
@@ -193,6 +211,18 @@
 <div>
     @foreach ( var forum in await this.Model.GetForums() ) {
         <div class="message">
+            <span class="forum-stats">
+                <div class="forum-stat-elem">
+                    <img height="10px" src="img/forum-views.png" alt="Views"/> 
+                    <span style="margin: 3px">@forum.Views</span>
+                </div>
+                
+                <div class="forum-stat-elem">
+                    <img height="10px" src="img/forum-replies.png" alt="Replies"/> 
+                    <span style="margin: 3px">@forum.Replies.Count</span>
+                </div>
+            </span>
+            
             <div class="image"><img src="http://www.gravatar.com/avatar/df125f7b89730a39163bb17c1c18c1d9?s=18&d=identicon&r=PG" alt=""/></div>
             <div class="user">
                 <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@forum.OwnerId / @forum.Title </a>
@@ -202,8 +232,6 @@
             </div>
             <div style="clear:both;"></div>
             <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@DateTime.Now.Subtract(forum.TimeCreated.Date).Humanize())</div>
-            <div>Replies: @forum.Replies.Count</div>
-            <div>Views: @forum.Views</div>
         </div>
     }
 </div>
