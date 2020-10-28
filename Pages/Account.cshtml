@@ -26,9 +26,15 @@
 </head>
 <body>
 
-<div class="yeet">
-    <p>@this.Model.GetData()?.ToJson()</p>
-</div>
 
+@{
+    var data = this.Model.GetData();
+        
+    <h2>@data.AccountName</h2>
+        
+        
+    <div class="yeet">You are @data.Age years old.</div>
+}
+    
 </body>
 </html>

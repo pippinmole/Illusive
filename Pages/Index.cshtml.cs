@@ -13,9 +13,5 @@ namespace Illusive.Pages {
         public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration) {
             this._logger = logger;
         }
-
-        public async void OnGetAsync() {
-            this._logger.LogWarning($"OnGet /Index");
-        }
     }
 }

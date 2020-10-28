@@ -23,7 +23,6 @@ namespace Illusive.Pages {
         }
         
         public IActionResult OnGet() {
-            this._logger.LogWarning($"OnGet /Account IsAuth{this.User.Identity.IsAuthenticated}");
             if ( !this.User.Identity.IsAuthenticated )
                 return this.RedirectToPage("/Index");
             
@@ -32,21 +31,7 @@ namespace Illusive.Pages {
 
         public AccountData GetData() {
             var email = this.User.FindFirst(ClaimTypes.Email)?.Value;
-
-            this._logger.LogWarning($"Email is {email}");
-            
-            if ( email != default ) {
-                this._logger.LogWarning($"Getting account details for {email}");
-
-                return this._accountService.GetAccount(email);
-                // if ( account != null ) {
-                //     return $"Account ID: {account.Id} \n" +
-                //            $"Account Email: {account.Email} \n" +
-                //            $"Account Age: {account.Age}";
-                // }
-            }
-
-            return null;
+            return this._accountService.GetAccount(email);
         }
     }
 }

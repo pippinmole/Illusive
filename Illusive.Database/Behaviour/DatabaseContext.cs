@@ -12,8 +12,6 @@ namespace Illusive.Illusive.Database.Behaviour {
         public DatabaseContext(IConfiguration configuration) {
             this.ConnectionString = configuration.GetConnectionString("AppConfig");
             this.Client = new MongoClient(this.ConnectionString);
-            
-            Console.WriteLine($"Creating database context: ConnString: {this.ConnectionString}");
         }
         
         public IMongoDatabase GetDatabase(string name) => this.Client.GetDatabase(name);

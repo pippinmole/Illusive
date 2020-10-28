@@ -24,7 +24,6 @@ namespace Illusive.Pages {
         }
         
         public IActionResult OnGet() {
-            Console.WriteLine("OnLoginPageGet");
             try {
                 if ( this.User.Identity.IsAuthenticated ) {
                     return this.RedirectToPage("/Index");
