@@ -1,4 +1,5 @@
 ﻿@page "{text?}"
+@using Humanizer
 @model ForumModel
 @{
     ViewData["Title"] = "Forum";
@@ -15,21 +16,34 @@
             margin-top: 15px;
             padding: 10px;
             background-color: #d9d9d9;
-            border-radius: 5px; 
+            border-radius: 3px; 
             box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
         }
         .image {float:left; margin-right: 10px; }
         .user {
             float:left; 
-            font-weight:bold; 
+            font-weight: bold; 
             color:#009; 
-            margin-bottom: 3px; 
-            word-wrap: anywhere;
+            margin-bottom: 3px;
         }
         .additionalInfo { 
             margin-left: 30px; 
-            font-style:italic; 
+            font-style: italic;
             font-size: 10px;
+        }
+        .forumTag {
+            background-color: #c4c4c4;
+            color: #323232;
+            border-radius: 15px;
+            text-align: center;
+            display: inline-block;
+            padding: 1px 6px;
+            margin: 0 2px;
+            font-size: 12px;
+            box-shadow: 0 .2rem .25rem rgba(0, 0, 0, .1);
+        }
+        .forumTag:hover {
+            cursor: pointer;
         }
         
         .collapsible {
@@ -147,6 +161,14 @@
 </head>
 <body>
 
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    
+    @if ( !this.User.Identity.IsAuthenticated ) {
+        <div class=""><a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to create a post!</div>
+    }
+</div>
+
 @{
     if ( this.User.Identity.IsAuthenticated ) {
         <button type="button" class="collapsible">Create a post</button>
@@ -155,12 +177,12 @@
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div id="forum-title-heading"> Forum Title: </div><input class="input-field" id="forum-title-input" asp-for="ForumData.Title" placeholder="Forum Title"/><br/>
-                <div id="forum-content-heading"> Content: </div><textarea type="text" class="input-field-forum-content" id="forum-content-input" rows="4" cols="50" asp-for="ForumData.Content" placeholder="Enter your blog content here"></textarea><br/>
-                Is Markdown: <input type="checkbox" asp-for="ForumData.IsMarkdown" /><br/>
+                <div id="forum-content-heading"> Content: </div><div style="float:right">(Is Markdown): <input type="checkbox" asp-for="ForumData.IsMarkdown" /></div><br /><textarea type="text" class="input-field-forum-content" id="forum-content-input" rows="4" cols="50" asp-for="ForumData.Content" placeholder="Enter your blog content here"></textarea>
+                <div id="forum-content-heading"> Tags (separate by comma): <input class="input-field" type="text" asp-for="ForumData.Tags" /></div><br />
                 <input type="submit" value="Create Post" />
                 @Html.AntiForgeryToken()
             </form>
-            
+                
             <div class="preview-content-content">
                 @*Leave empty for preview code to be filled here*@
             </div>
@@ -168,16 +190,18 @@
     }
 }
 
-<h2 style="padding-top: 25px" align="center">Forum Posts</h2>
-
 <div>
     @foreach ( var forum in await this.Model.GetForums() ) {
         <div class="message">
-            <div class="image">
-                <img src="http://www.gravatar.com/avatar/df125f7b89730a39163bb17c1c18c1d9?s=18&d=identicon&r=PG" alt=""/></div>
-            <div class="user"><a asp-page="/ForumPost" asp-route-id="@forum.Id">@forum.OwnerId / @forum.Title </a></div>
+            <div class="image"><img src="http://www.gravatar.com/avatar/df125f7b89730a39163bb17c1c18c1d9?s=18&d=identicon&r=PG" alt=""/></div>
+            <div class="user">
+                <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@forum.OwnerId / @forum.Title </a>
+                @foreach ( var tag in forum.Tags.Split(',') ) {
+                    <div class="forumTag">@tag</div>
+                }
+            </div>
             <div style="clear:both;"></div>
-            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy")</div>
+            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@DateTime.Now.Subtract(forum.TimeCreated.Date).Humanize())</div>
             <div>Replies: @forum.Replies.Count</div>
             <div>Views: @forum.Views</div>
         </div>

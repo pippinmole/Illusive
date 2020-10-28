@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +31,6 @@ namespace Illusive.Pages {
         // }
 
         public async Task<IActionResult> OnPostAsync() {
-            
             if ( !this.ModelState.IsValid )
                 return this.Page();
 
@@ -44,6 +41,7 @@ namespace Illusive.Pages {
             }
 
             var forumPost = this.ForumData.AssignOwner(user);
+            forumPost.Tags = forumPost.Tags.ToLower();
 
             if ( forumPost.Title.Length > 100 ) {
                 this.ModelState.AddModelError("", "The forum title has to be under 100 characters.");
@@ -54,9 +52,19 @@ namespace Illusive.Pages {
                 return this.Page();
             }
             
+            // Sanitise tags
+            var tags = forumPost.Tags.Trim().Split(',');
+            if ( tags.Any(string.IsNullOrEmpty) ) {
+                this.ModelState.AddModelError("", "The forum tag format is invalid.");
+                return this.Page();
+            }
+
+            if ( tags.Distinct().Count() != tags.Length ) {
+                this.ModelState.AddModelError("", "The forum has duplicate tags.");
+                return this.Page();
+            }
+
             await this._forumService.AddForumPost(forumPost);
-            
-            this._logger.LogWarning($"Created a forum post titled: {this.ForumData.Title}");
 
             return this.Redirect("/Forum");
         }
