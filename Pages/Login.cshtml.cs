@@ -52,8 +52,7 @@ namespace Illusive.Pages {
                 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
                 ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
-            identity.AddClaim(new Claim(ClaimTypes.Name, password));
+            identity.AddClaim(new Claim(ClaimTypes.Name, username));
             identity.AddClaim(new Claim(ClaimTypes.Email, account?.Email));
             identity.AddClaim(new Claim(ClaimTypes.PrimarySid, account?.Id));
 
