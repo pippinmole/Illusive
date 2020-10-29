@@ -43,7 +43,11 @@ html {
   border-bottom: 1px solid #e5e5e5;
 }
 
-.box-shadow {
+.box-shadow-bottom {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.box-shadow-top {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
@@ -63,6 +67,7 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
   /*position: relative;*/
+  background-color: rgba(232, 242, 255, 0.4) !important;
 }
 .footer {
   position: absolute;

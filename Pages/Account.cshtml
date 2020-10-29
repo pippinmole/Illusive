@@ -9,20 +9,6 @@
 
 <html>
 <head>
-    <style type="text/css">
-        
-        .yeet {
-          padding: 10px;
-          border: 5px;
-          background-color: #22a2d2;
-          border-radius: 10px;
-        }
-        
-        .yeet p { 
-            font-size: large;
-        }
-        
-    </style>
 </head>
 <body>
 
@@ -30,10 +16,7 @@
 @{
     var data = this.Model.GetData();
         
-    <h2>@data.AccountName</h2>
-        
-        
-    <div class="yeet">You are @data.Age years old.</div>
+    <h4 style="border-bottom: 1px solid grey; padding: 16px">@data.AccountName</h4>
 }
     
 </body>
