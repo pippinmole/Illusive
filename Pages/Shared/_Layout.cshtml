@@ -28,31 +28,30 @@
                         <div float="right">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Account">Account</a>
                         </div>
-                        <div float="right">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log Out</a>
-                        </div>
                     } else {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Signup">Sign-Up</a>
-                        </li>
+                        // Logged-out specific headings here
                     }
                 </ul>
             </div>
-                
-            <div class="account-dropdown">
-                @if ( this.User.Identity.IsAuthenticated ) {
-                    <div class="account-status-text">Signed in: @this.User.Identity.Name/@this.User.GetUniqueId()</div>
-                } else {
-                    <div class="account-status-text">Signed out</div>
-                }
-                <br />
-                <div class="account-dropdown-content">
-                    <p>Test</p>
-                </div>
-            </div>
+            
+            @if ( this.User.Identity.IsAuthenticated ) {
+                <details class="account-dropdown-button details-animated noselect">
+                    <summary>@this.User.Identity.Name</summary>
+                    <details-menu class="account-dropdown-details">
+                        <a href="/Account"><button class="account-dropdown-elem" style="width: 100%;">My Profile</button></a>
+                        <a href="/Logout"><button class="account-dropdown-elem" style="width: 100%;">Sign out</button></a>
+                    </details-menu>
+                </details>
+            } else {
+                <details class="account-dropdown-button details-animated noselect">
+                    <summary>Signed out</summary>
+                    <details-menu class="account-dropdown-details">
+                        <a href="/Login"><button class="account-dropdown-elem" style="width: 100%;">Sign in</button></a>
+                        <a href="/Signup"><button class="account-dropdown-elem" style="width: 100%;">Sign up</button></a>
+                    </details-menu>
+                </details>
+            }
+            <br />
         </div>
     </nav>
 </header>
@@ -65,6 +64,7 @@
 <footer class="border-top footer text-muted">
     <div class="container">
         &copy; 2020 - pippin_mole - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        <div style="float: right">This website is <a href="https://github.com/pippinmole/Illusive" target="_blank">open source</a>!</div>
     </div>
 </footer>
 
@@ -72,6 +72,6 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 
-@RenderSection("Scripts", required: false)
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

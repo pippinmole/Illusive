@@ -1,5 +1,6 @@
 ﻿@page
 @using Westwind.AspNetCore.Markdown
+@using Humanizer
 @model ForumPost
 @{
     ViewData["Title"] = this.Model.ForumPostData.Title;
@@ -39,6 +40,7 @@
 <body>
 <div>
     <h3 class="forumTitle">@this.Model.ForumPostData.Title</h3>
+    <span style="font-style: italic; font-size: 0.6rem; display: flex">Created @this.Model.ForumPostData.TimeCreated.Date.ToString("MMMM dd, yyyy") (@DateTime.Now.Subtract(this.Model.ForumPostData.TimeCreated.Date).Humanize() ago)</span>
     <div class="forumContent">
         @{
             var isMarkup = this.Model.ForumPostData.IsMarkdown;
@@ -54,6 +56,12 @@
         }
     </div>
 
+    <h4>Comments</h4>
+    
+    @if ( !this.User.Identity.IsAuthenticated ) {
+        <div class=""><a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to comment on a post!</div>
+    }
+    
     @{
         var replies = this.Model.ForumPostData.Replies;
         foreach ( var reply in replies ) {

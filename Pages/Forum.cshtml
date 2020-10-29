@@ -227,7 +227,7 @@
             <div class="user">
                 <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@forum.OwnerId / @forum.Title </a>
                 @foreach ( var tag in forum.Tags.Split(',') ) {
-                    <div class="forumTag">@tag</div>
+                    <div class="forumTag noselect">@tag</div>
                 }
             </div>
             <div style="clear:both;"></div>
