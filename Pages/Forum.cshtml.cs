@@ -64,13 +64,13 @@ namespace Illusive.Pages {
                 return this.Page();
             }
 
-            await this._forumService.AddForumPost(forumPost);
+            await this._forumService.AddForumPostAsync(forumPost);
 
             return this.Redirect("/Forum");
         }
 
         public async Task<List<ForumData>> GetForums() {
-            return await this._forumService.GetForumData();
+            return await this._forumService.GetForumDataAsync();
         }
     }
 }

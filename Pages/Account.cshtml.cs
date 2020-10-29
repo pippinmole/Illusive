@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DnsClient.Internal;
+using Illusive.Illusive.Database.Extension_Methods;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Mvc;

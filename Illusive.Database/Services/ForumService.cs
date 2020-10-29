@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using DnsClient.Internal;
@@ -20,11 +22,11 @@ namespace Illusive.Illusive.Database.Behaviour {
             this._forumData = ctx.GetDatabase("IllusiveDatabase").GetCollection<ForumData>("forum_posts");
         }
 
-        public async Task AddForumPost(ForumData forumPost) {
+        public async Task AddForumPostAsync(ForumData forumPost) {
             await this._forumData.InsertOneAsync(forumPost);
         }
 
-        public async Task<List<ForumData>> GetForumData() {
+        public async Task<List<ForumData>> GetForumDataAsync() {
             var val = await this._forumData.FindAsync(x => true);
 
             return await val.ToListAsync();
@@ -33,6 +35,10 @@ namespace Illusive.Illusive.Database.Behaviour {
         public ForumData GetForumById(string id) {
             var result = this._forumData.Find(x => x.Id == id);
             return result.FirstOrDefault();
+        }
+        
+        public ForumData GetForumWhere(Expression<Func<ForumData, bool>> expression) {
+            return this._forumData.Find(expression).FirstOrDefault();
         }
 
         public void AddReplyToForum(ForumData forum, ForumReply forumReply) {

@@ -9,8 +9,6 @@ namespace Illusive.Illusive.Database.Interfaces {
     public interface IAccountService {
 
         AccountData AddRecord(AccountData account);
-        AccountData GetAccount(string email);
-        bool AccountExists(string email, out AccountData account);
-        bool AccountExists(Expression<Func<AccountData, bool>> predicate, [NotNull] out AccountData account);
+        AccountData GetAccountWhere(Expression<Func<AccountData, bool>> expression);
     }
 }

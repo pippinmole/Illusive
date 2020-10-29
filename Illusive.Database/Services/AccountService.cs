@@ -26,20 +26,12 @@ namespace Illusive.Illusive.Database.Models {
         }
 
         public AccountData GetAccount(string email) {
-            Console.WriteLine($"Trying to get account from email: {email}");
-            
             var accounts = this._accounts.Find(x => x.Email == email);
             return accounts.FirstOrDefault();
         }
 
-        public bool AccountExists(string email, out AccountData account) {
-            account = this._accounts.Find(x => x.Email == email).FirstOrDefault();
-            return account != null;
-        }
-
-        public bool AccountExists(Expression<Func<AccountData, bool>> predicate, [NotNull] out AccountData account) {
-            account = this._accounts.Find(predicate).FirstOrDefault();
-            return account != null;
+        public AccountData GetAccountWhere(Expression<Func<AccountData, bool>> expression) {
+            return this._accounts.Find(expression).FirstOrDefault();
         }
     }
 }
