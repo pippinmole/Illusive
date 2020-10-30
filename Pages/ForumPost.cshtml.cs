@@ -1,4 +1,5 @@
-﻿using Illusive.Illusive.Database.Extension_Methods;
+﻿using Illusive.Illusive.Authentication.Utility;
+using Illusive.Illusive.Database.Extension_Methods;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ namespace Illusive.Pages {
 
             var forum = this._forumService.GetForumById(id);
             var reply = this.ForumReply;
+            reply.AuthorId = this.User.GetUniqueId();
 
             this._forumService.AddReplyToForum(forum, reply);
 
