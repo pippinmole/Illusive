@@ -41,19 +41,8 @@ namespace Illusive.Illusive.Database.Behaviour {
             return this._forumData.Find(expression).FirstOrDefault();
         }
 
-        public void AddReplyToForum(ForumData forum, ForumReply forumReply) {
-            var newReplies = forum.Replies.ToList();
-            newReplies.Add(forumReply);
-
-            var update = Builders<ForumData>.Update.Set(x => x.Replies, newReplies);
-            this._forumData.UpdateOne(x => x.Id == forum.Id, update);
-        }
-
-        public void AddViewToForum(ForumData forum) {
-            var newViews = forum.Views + 1;
-            
-            var update = Builders<ForumData>.Update.Set(x => x.Views, newViews);
-            this._forumData.UpdateOne(x => x.Id == forum.Id, update);
+        public void UpdateForum(ForumData forumData, UpdateDefinition<ForumData> update) {
+            this._forumData.UpdateOne(x => x.Id == forumData.Id, update);
         }
     }
 }

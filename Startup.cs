@@ -1,4 +1,6 @@
 using System;
+using Illusive.Illusive.Cdn.Behaviour;
+using Illusive.Illusive.Cdn.Interfaces;
 using Illusive.Illusive.Database.Behaviour;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
@@ -53,6 +55,7 @@ namespace Illusive {
             services.AddSingleton<IDatabaseContext, DatabaseContext>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IForumService, ForumService>();
+            services.AddSingleton<IContentService, ContentService>();
 
             services.AddMarkdown();
             

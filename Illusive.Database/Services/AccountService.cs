@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using ILogger = DnsClient.Internal.ILogger;
 
 namespace Illusive.Illusive.Database.Models {
     public class AccountService : IAccountService {
@@ -32,6 +27,10 @@ namespace Illusive.Illusive.Database.Models {
 
         public AccountData GetAccountWhere(Expression<Func<AccountData, bool>> expression) {
             return this._accounts.Find(expression).FirstOrDefault();
+        }
+
+        public void UpdateAccount(string accountId, UpdateDefinition<AccountData> update) {
+            this._accounts.UpdateOne(x => x.Id == accountId, update);
         }
     }
 }

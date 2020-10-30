@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Illusive.Illusive.Authentication.Utility;
 using Illusive.Illusive.Database.Extension_Methods;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
@@ -38,7 +39,7 @@ namespace Illusive.Pages {
                 return this.Page();
             }
 
-            var accountExists = this._accountService.AccountExists(
+            var accountExists = this._accountService.AccountExistsWhere(
                 account => account.AccountName == username || account.Email == email, out _);
             if ( accountExists ) {
                 this.ModelState.AddModelError("", "An account with that username or email already exists!");

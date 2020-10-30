@@ -1,5 +1,7 @@
 ﻿@page
-@using MongoDB.Bson
+@inject IAccountService AccountService
+@using global::Illusive.Illusive.Authentication.Utility
+@using global::Illusive.Illusive.Database.Interfaces
 @model AccountModel
 @{
     ViewData["Title"] = "Account";
@@ -9,15 +11,52 @@
 
 <html>
 <head>
+    
+    <style type="text/css">
+        
+        .profile-container {
+            border-radius: 15px;
+            background-color: #e9f4ff;
+            width: 100%;
+            padding: 20px;
+            margin: 5px;
+        }
+        
+        .profile-picture-uploadbtn {
+            border-radius: 5px;
+            border: 1px solid dimgrey;
+            padding: 5px;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15)
+        }
+        
+    </style>
+    
 </head>
 <body>
 
-
-@{
-    var data = this.Model.GetData();
-        
-    <h4 style="border-bottom: 1px solid grey; padding: 16px">@data.AccountName</h4>
+@{ 
+    var user = AccountService.GetAccountWhere(x => x.Id == this.User.GetUniqueId());
 }
-    
+
+
+<h4 style="border-bottom: 1px solid grey; padding: 16px">@user.AccountName</h4>
+
+<div class="profile-container">
+    <img src="@user.ProfilePicture" style="width: 100px" alt=""/>
+
+    <form enctype="multipart/form-data" method="post">
+        <dl>
+            <dt>
+                <label asp-for="FileUpload">Change your profile picture</label>
+            </dt>
+            <dd>
+                <input asp-for="FileUpload" type="file">
+                <span asp-validation-for="FileUpload"></span>
+            </dd>
+        </dl>
+        <input asp-page-handler="Upload" class="profile-picture-uploadbtn" type="submit" value="Update"/>
+    </form>
+</div>
+
 </body>
 </html>

@@ -44,7 +44,7 @@ namespace Illusive.Pages {
             var password = this.loginData.Password;
             var rememberMe = this.loginData.RememberMe;
 
-            var accountExists = this._accountService.AccountExists(x => x.AccountName == username, out var account);
+            var accountExists = this._accountService.AccountExistsWhere(x => x.AccountName == username, out var account);
             if ( !accountExists || !account.VerifyPasswordHashEquals(password)) {
                 this.ModelState.AddModelError("", "username or password is invalid");
                 return this.Page();

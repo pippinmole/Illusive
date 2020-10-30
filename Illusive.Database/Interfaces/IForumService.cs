@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Models;
+using MongoDB.Driver;
 
 namespace Illusive.Illusive.Database.Interfaces {
     public interface IForumService {
@@ -11,7 +12,7 @@ namespace Illusive.Illusive.Database.Interfaces {
         Task<List<ForumData>> GetForumDataAsync();
         
         ForumData GetForumWhere(Expression<Func<ForumData, bool>> expression);
-        void AddReplyToForum(ForumData forum, ForumReply forumReply);
-        void AddViewToForum(ForumData forum);
+
+        void UpdateForum(ForumData forumData, UpdateDefinition<ForumData> update);
     }
 }
