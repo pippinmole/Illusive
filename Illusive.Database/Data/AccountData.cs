@@ -17,6 +17,8 @@ namespace Illusive.Illusive.Database.Models {
         
         public string ProfilePicture { get; set; }
         
+        public string Bio { get; set; }
+        
         public AccountData(string id, string accountName, string email, uint age, string hashedPassword) {
             this.Id = id;
             this.AccountName = accountName;
@@ -24,6 +26,7 @@ namespace Illusive.Illusive.Database.Models {
             this.Age = age;
             this.HashedPassword = hashedPassword;
             this.ProfilePicture = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ft4.ftcdn.net%2Fjpg%2F00%2F64%2F67%2F63%2F240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg&f=1&nofb=1";
+            this.Bio = "I'm new here!";
         }
     }
 }

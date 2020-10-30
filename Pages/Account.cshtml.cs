@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Illusive.Cdn.Interfaces;
@@ -18,6 +20,9 @@ namespace Illusive.Pages {
         private readonly ILogger<AccountModel> _logger;
         private readonly IAccountService _accountService;
         private readonly IContentService _contentService;
+        
+        private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
+        private static readonly long MaxFileSizeBytes = 5 * 1000 * 1000;
         
         public IFormFile FileUpload { get; set; }
 
@@ -39,6 +44,17 @@ namespace Illusive.Pages {
             
             var file = this.FileUpload;
             if ( file != null && file.Length > 0 ) {
+                if ( !ImageExtensions.Contains(Path.GetExtension(file.FileName)?.ToUpperInvariant()) ) {
+                    this.ModelState.AddModelError("",
+                        $"Wrong file-type provided! Please use the file types {ImageExtensions.Aggregate((a, b) => $"{a}, {b}")}");
+                    return this.Page();
+                }
+                if ( file.Length > MaxFileSizeBytes ) {
+                    this.ModelState.AddModelError("",
+                        $"The file provided exceeds the maximum size of {MaxFileSizeBytes / 1000 / 1000}MB!");
+                    return this.Page();
+                }
+                
                 var filePath = Path.GetTempFileName();
 
                 await using var stream = System.IO.File.Create(filePath, (int) file.Length);

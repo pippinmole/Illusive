@@ -39,22 +39,31 @@
 }
 
 
-<h4 style="border-bottom: 1px solid grey; padding: 16px">@user.AccountName</h4>
+<h4 style="padding-left: 16px">@user.AccountName</h4>
+<p style="padding-left: 16px; padding-bottom: 10px; font-style: italic; border-bottom: 1px solid grey;">
+    @user.Bio
+</p>
+
+<div class="profile-container">
+    <input class="input-field" style="margin-bottom: 10px" type="text" placeholder="What's on your mind?">
+    <input asp-page-handler="UpdateBio" class="profile-picture-uploadbtn" type="submit" value="Update Bio"/>
+</div>
 
 <div class="profile-container">
     <img src="@user.ProfilePicture" style="width: 100px" alt=""/>
 
     <form enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
         <dl>
             <dt>
                 <label asp-for="FileUpload">Change your profile picture</label>
             </dt>
             <dd>
-                <input asp-for="FileUpload" type="file">
+                <input asp-for="FileUpload" type="file" accept="image/*">
                 <span asp-validation-for="FileUpload"></span>
             </dd>
         </dl>
-        <input asp-page-handler="Upload" class="profile-picture-uploadbtn" type="submit" value="Update"/>
+        <input asp-page-handler="Upload" class="profile-picture-uploadbtn" type="submit" value="Update profile picture"/>
     </form>
 </div>
 
