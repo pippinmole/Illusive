@@ -114,8 +114,10 @@
             <div class="image"><img src="@user.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></div>
             <div class="user">
                 <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@AccountService.GetAccountWhere(x => x.Id == forum.OwnerId).AccountName / @forum.Title </a>
-                @foreach ( var tag in forum.Tags.Split(',') ) {
-                    <div class="forumTag noselect">@tag</div>
+                @if ( forum.Tags != null ) {
+                    foreach ( var tag in forum.Tags.Split(',') ) {
+                        <div class="forumTag noselect">@tag</div>
+                    }
                 }
             </div>
             <div style="clear:both;"></div>

@@ -55,8 +55,10 @@
 <div>
     <span style="display: block ruby; padding-bottom: 8px; border-bottom: 1px solid black">
         <h3 class="forumTitle">@this.Model.ForumPostData.Title</h3>
-        @foreach ( var tag in this.Model.ForumPostData.Tags.Split(',') ) {
-            <div class="forumTag noselect">@tag</div>
+        @if ( this.Model.ForumPostData.Tags != null ) {
+            foreach ( var tag in this.Model.ForumPostData.Tags.Split(',') ) {
+                <div class="forumTag noselect">@tag</div>
+            }
         }
     </span>
 
@@ -84,23 +86,48 @@
         </div>
     </div>
 
-    <h4 style="padding-bottom: 8px; border-bottom: 1px solid black; display: inline-flex">Comments
-        @if ( !this.User.Identity.IsAuthenticated ) {
-            <div style="font-size: 0.7rem; height: 100%; margin: auto auto auto 5px;">(<a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to comment on a post!)</div>
-        }
-    </h4>
-
+    <div style="width: 100%; border-bottom: 1px solid black;">
+        <h4 style="display: inline-flex">Comments
+            @if ( !this.User.Identity.IsAuthenticated ) {
+                <div style="font-size: 0.7rem; height: 100%; margin: auto auto auto 5px;">(<a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to comment on a post!)</div>
+            }
+        </h4>
+    </div>
+        
     @{
         var replies = this.Model.ForumPostData.Replies;
         foreach ( var reply in replies ) {
-            <div style="display: flex">
-                @{
-                    var replyOwner = AccountService.GetAccountWhere(x => x.Id == reply.AuthorId);
-                }
-                <img src="@replyOwner?.ProfilePicture" alt="" style="height: 15px; width:15px; align-self: center; margin-right: 5px"/>
-                @replyOwner?.AccountName: @reply.Content
-                <span style="margin-left: 10px; font-style: italic; font-size: 0.6rem; align-self: center">(@reply.TimeCreated.Humanize())</span>
+            var replyOwner = AccountService.GetAccountWhere(x => x.Id == reply.AuthorId);
+
+            <div class="forumBody">
+                <div style="width: 100px; height: 100px; background-color: #ddd; display: grid; text-align: center; border-radius: 4px;">
+                    <img style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@replyOwner.ProfilePicture" alt="">
+                    <p style="font-size: 0.6rem; margin-bottom: 0"> @replyOwner.AccountName </p>
+                    <p style="font-size: 0.5rem; font-style: italic">Joined @replyOwner.AccountCreated.ToShortDateString()</p>
+                </div>
+
+                <div class="forumContent">
+                    <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Commented @reply.TimeCreated.ToString("MMMM dd, yyyy") (@DateTime.Now.Subtract(this.Model.ForumPostData.TimeCreated.Date).Humanize() ago)</span>
+
+                    <p>
+                        @reply.Content
+                    </p>
+
+                </div>
             </div>
+            
+            
+            
+            
+            
+            
+@*              *@
+@*              *@
+@*             <div style="display: flex; margin-top: 8px;"> *@
+@*                 <img src="@replyOwner?.ProfilePicture" alt="" style="height: 15px; width:15px; align-self: center; margin-right: 5px"/> *@
+@*                 @replyOwner?.AccountName: @reply.Content *@
+@*                 <span style="margin-left: 10px; font-style: italic; font-size: 0.6rem; align-self: center">(@reply.TimeCreated.Humanize())</span> *@
+@*             </div> *@
         }
     }
 
