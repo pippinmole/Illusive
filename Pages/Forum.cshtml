@@ -184,7 +184,7 @@
                 }
             </div>
             <div style="clear:both;"></div>
-            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@DateTime.Now.Subtract(forum.TimeCreated.Date).Humanize())</div>
+            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@((DateTime.Now - forum.TimeCreated).Humanize()))</div>
         </div>
     }
 </div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
 using Microsoft.AspNetCore.Mvc;

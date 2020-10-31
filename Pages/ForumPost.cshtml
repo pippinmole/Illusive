@@ -70,8 +70,8 @@
         </div>
 
         <div class="forumContent">
-            <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Created @this.Model.ForumPostData.TimeCreated.Date.ToString("MMMM dd, yyyy") (@DateTime.Now.Subtract(this.Model.ForumPostData.TimeCreated.Date).Humanize() ago)</span>
-            @{
+            <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Created @this.Model.ForumPostData.TimeCreated.Date.ToString("MMMM dd, yyyy") (@((DateTime.Now - this.Model.ForumPostData.TimeCreated).Humanize()) ago)</span>
+            @{    
                 var isMarkup = this.Model.ForumPostData.IsMarkdown;
                 if ( isMarkup ) {
                     <p>
@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="forumContent">
-                    <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Commented @reply.TimeCreated.ToString("MMMM dd, yyyy") (@DateTime.Now.Subtract(this.Model.ForumPostData.TimeCreated.Date).Humanize() ago)</span>
+                    <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Commented @reply.TimeCreated.ToString("MMMM dd, yyyy") (@((DateTime.Now - reply.TimeCreated).Humanize()) ago)</span>
 
                     <p>
                         @reply.Content
@@ -115,19 +115,6 @@
 
                 </div>
             </div>
-            
-            
-            
-            
-            
-            
-@*              *@
-@*              *@
-@*             <div style="display: flex; margin-top: 8px;"> *@
-@*                 <img src="@replyOwner?.ProfilePicture" alt="" style="height: 15px; width:15px; align-self: center; margin-right: 5px"/> *@
-@*                 @replyOwner?.AccountName: @reply.Content *@
-@*                 <span style="margin-left: 10px; font-style: italic; font-size: 0.6rem; align-self: center">(@reply.TimeCreated.Humanize())</span> *@
-@*             </div> *@
         }
     }
 
