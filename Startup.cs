@@ -29,7 +29,7 @@ namespace Illusive {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             }).AddCookie(options => {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                // options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 
                 options.LoginPath = "/Login";
                 options.LogoutPath = "/Logout";
