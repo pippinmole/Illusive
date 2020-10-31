@@ -212,6 +212,8 @@
 
 <div>
     @foreach ( var forum in await this.Model.GetForums() ) {
+        var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
+        
         <div class="message">
             <span class="forum-stats">
                 <div class="forum-stat-elem">
@@ -225,7 +227,7 @@
                 </div>
             </span>
             
-            <div class="image"><img src="http://www.gravatar.com/avatar/df125f7b89730a39163bb17c1c18c1d9?s=18&d=identicon&r=PG" alt=""/></div>
+            <div class="image"><img src="@forumOwner.ProfilePicture" style="height: 25px" alt=""/></div>
             <div class="user">
                 <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@AccountService.GetAccountWhere(x=>x.Id == forum.OwnerId).AccountName / @forum.Title </a>
                 @foreach ( var tag in forum.Tags.Split(',') ) {

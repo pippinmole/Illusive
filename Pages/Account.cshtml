@@ -15,21 +15,42 @@
     <style type="text/css">
         
         .profile-container {
-            border-radius: 15px;
-            background-color: #e9f4ff;
-            width: 100%;
-            padding: 20px;
-            margin: 5px;
         }
         
         .profile-picture-uploadbtn {
             border-radius: 5px;
             border: 1px solid dimgrey;
             padding: 5px;
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15)
+            margin: 5px 0;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+        }
+        
+        .change-profile-button {
+            cursor: default;
+        }
+        .change-profile-button:hover {
+            cursor: pointer;
+        }
+        
+        .change-profile-div {
+            position: absolute;
+            border-radius: 15px;
+            background-color: #e9f4ff;
+            width: 500px;
+            padding: 20px;
+            margin: 5px;
+            font-style: inherit;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+            display: none; /*Disable by default*/
         }
         
     </style>
+    
+    <script type="text/javascript">    
+        function changeProfileToggle() {
+            $(".change-profile-div").fadeToggle();
+        }
+    </script>
     
 </head>
 <body>
@@ -38,34 +59,26 @@
     var user = AccountService.GetAccountWhere(x => x.Id == this.User.GetUniqueId());
 }
 
+<span style="display: inline-flex">
+    <img src="@user.ProfilePicture" style="width: 50px" alt=""/>
+    <h4 style="padding-left: 16px">
+        @user.AccountName <span style="font-size: 15px"> - @user.Id</span>
+    </h4>
+    <img class="change-profile-button" onclick="changeProfileToggle()" src="https://cdn.onlinewebfonts.com/svg/img_95202.png" style="height: 15px; width: 15px; margin-left: 20px; align-self: center;" alt=""/>
+</span>
 
-<h4 style="padding-left: 16px">@user.AccountName</h4>
-<p style="padding-left: 16px; padding-bottom: 10px; font-style: italic; border-bottom: 1px solid grey;">
-    @user.Bio
-</p>
-
-<div class="profile-container">
-    <input class="input-field" style="margin-bottom: 10px" type="text" placeholder="What's on your mind?">
-    <input asp-page-handler="UpdateBio" class="profile-picture-uploadbtn" type="submit" value="Update Bio"/>
-</div>
-
-<div class="profile-container">
-    <img src="@user.ProfilePicture" style="width: 100px" alt=""/>
-
+<div class="change-profile-div">
+    <h4 class="text-center">Change profile settings</h4>
     <form enctype="multipart/form-data" method="post">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <dl>
-            <dt>
-                <label asp-for="FileUpload">Change your profile picture</label>
-            </dt>
-            <dd>
-                <input asp-for="FileUpload" type="file" accept="image/*">
-                <span asp-validation-for="FileUpload"></span>
-            </dd>
-        </dl>
-        <input asp-page-handler="Upload" class="profile-picture-uploadbtn" type="submit" value="Update profile picture"/>
+        <input asp-for="AccountUpdate.Bio" class="input-field" style="margin-bottom: 10px" type="text" placeholder="What's on your mind?">
+        Change your profile picture <input asp-for="AccountUpdate.ProfilePicture" type="file" accept="image/*"> <br/>
+
+        <input asp-page-handler="Upload" class="profile-picture-uploadbtn" type="submit" value="Update"/>
     </form>
 </div>
-
+<p style="padding-left: 16px; padding-bottom: 10px; font-style: italic; border-bottom: 1px solid grey;">
+    Bio: @user.Bio
+    <div asp-validation-summary="All" class="text-danger"></div>
+</p>
 </body>
 </html>
