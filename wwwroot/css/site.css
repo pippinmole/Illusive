@@ -1,166 +1,242 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.darktheme {
+    --navbar-background-color: #2d383c;
+    --navbar-border-bottom: 2px solid #192428;
+    
+    --border-top-dim: 1px solid #192428;
+
+    --body-background-color: #414c50;
+}
+.lighttheme {
+    --navbar-background-color: #fff;
+    --navbar-border-bottom: none;
+    
+    --border-top-dim: 1px solid #e5e5e5;
+    --border-bottom-dim: 1px solid #192428;
+
+    --body-background-color: rgba(232, 242, 255, 0.4);
+}
+
+.navbar-color {
+    background-color: var(--navbar-background-color);
+    border-bottom: var(--navbar-border-bottom);
+}
+
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
-  overflow-x: hidden;
+    font-size: 14px;
+    overflow-x: hidden;
 }
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: var(--border-top-dim);
 }
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: var(--border-bottom-dim);
 }
 
 .box-shadow-bottom {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 .box-shadow-top {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  /*position: relative;*/
-  background-color: rgba(232, 242, 255, 0.4) !important;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    /*position: relative;*/
+    background-color: var(--body-background-color) !important;
 }
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 60px; /* Vertically center the text there */
 }
 
 .input-field {
-  width: 100%;
-  max-width: 100%;
-  height: 35px;
-  padding: 15px;
-  border: none;
-  border-radius: 6px;
-  background: #d2d2d2;
-  display: -webkit-flex;
+    width: 100%;
+    max-width: 100%;
+    height: 35px;
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    background: #d2d2d2;
+    display: -webkit-flex;
 }
 
 .input-field-forum-content {
-  width: 100%;
-  resize: both;
-  display: -webkit-flex;
-  padding: 15px;
-  border: none;
-  border-radius: 6px;
-  background: #dddddd;
+    width: 100%;
+    resize: both;
+    display: -webkit-flex;
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    background: #dddddd;
 }
 
 .account-status-text {
-  font-style: italic;
-  float: right;
+    font-style: italic;
+    float: right;
 }
 
 .account-dropdown-button {
-  position: relative;
-  display: inline-block;
-  padding: 5px;
-  box-shadow: none;
-  transition: box-shadow 0.3s ease-in-out;
+    position: relative;
+    display: inline-block;
+    padding: 5px;
+    box-shadow: none;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .account-dropdown-button:hover {
-  box-shadow: 0 0 2pt 1pt #bebebe;
-  transition: box-shadow 0.3s ease-in-out;
+    box-shadow: 0 0 2pt 1pt #bebebe;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .account-dropdown-details {
-  z-index: 99;
-  position: absolute; 
-  margin-top: 10px;
-  background-color: #dddfe1;
-  border-radius: 3px;
-  box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
-  width: 250px;
-  font-size: 16px;
+    z-index: 99;
+    position: absolute;
+    margin-top: 10px;
+    background-color: #dddfe1;
+    border-radius: 3px;
+    box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
+    width: 250px;
+    font-size: 16px;
 }
 
 .account-dropdown-elem {
-  border: none;
-  margin: 3px 0;
-  padding: 2px 0;
-  width: auto;
-  height: 35px;
-  background-color: #b4bdc1;
-  transition: background-color 0.3s ease-in-out;
+    border: none;
+    margin: 3px 0;
+    padding: 2px 0;
+    width: auto;
+    height: 35px;
+    background-color: #b4bdc1;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .account-dropdown-elem:hover {
-  background-color: #2fa0d2;
-  transition: background-color 0.3s ease-in-out;
+    background-color: #2fa0d2;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
 DETAILS[open] SUMMARY ~ * {
-  animation: sweep 0.3s ease-in-out;
+    animation: sweep 0.3s ease-in-out;
 }
 
 @keyframes sweep {
-  0% {
-    opacity: 0;
-    margin-left: -10px
-  }
-  100% {
-    opacity: 1;
-    margin-left: 0
-  }
+    0% {
+        opacity: 0;
+        margin-left: -10px
+    }
+    100% {
+        opacity: 1;
+        margin-left: 0
+    }
+}
+
+.message {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #d9d9d9;
+    border-radius: 3px;
+    box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
+}
+.image {float:left; margin-right: 10px; }
+.user {
+    float:left;
+    font-weight: bold;
+    color:#009;
+    margin-bottom: 3px;
+    word-wrap: anywhere;
+}
+.additionalInfo {
+    margin-left: 30px;
+    font-style: italic;
+    font-size: 10px;
+}
+.forumTag {
+    background-color: #c4c4c4;
+    color: #323232;
+    border-radius: 15px;
+    text-align: center;
+    display: inline-block;
+    padding: 1px 6px;
+    margin: 0 2px;
+    font-size: 12px;
+    box-shadow: 0 .2rem .25rem rgba(0, 0, 0, .1);
+}
+.forumTag:hover {
+    cursor: pointer;
+}
+
+.forum-stats {
+    float: right;
+    display: flex;
+}
+
+.forum-stat-elem {
+    background-color: #c4c4c4;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 1px;
+    height: 35px;
+    width: 60px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }

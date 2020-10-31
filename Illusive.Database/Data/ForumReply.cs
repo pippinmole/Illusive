@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Illusive.Database.Models {
     public class ForumReply {
@@ -7,5 +8,11 @@ namespace Illusive.Illusive.Database.Models {
         
         public string AuthorId { get; set; }
         public string Content { get; set; }
+        
+        public DateTime TimeCreated { get; set; }
+
+        public ForumReply() {
+            this.TimeCreated = DateTime.Now;
+        }
     }
 }

@@ -41,6 +41,10 @@ namespace Illusive.Illusive.Database.Behaviour {
             return this._forumData.Find(expression).FirstOrDefault();
         }
 
+        public IReadOnlyList<ForumData> GetForumsWhere(Expression<Func<ForumData, bool>> expression) {
+            return this._forumData.Find(expression).ToList();
+        }
+
         public void UpdateForum(ForumData forumData, UpdateDefinition<ForumData> update) {
             this._forumData.UpdateOne(x => x.Id == forumData.Id, update);
         }

@@ -12,6 +12,7 @@ namespace Illusive.Illusive.Database.Interfaces {
         Task<List<ForumData>> GetForumDataAsync();
         
         ForumData GetForumWhere(Expression<Func<ForumData, bool>> expression);
+        IReadOnlyList<ForumData> GetForumsWhere(Expression<Func<ForumData, bool>> expression);
 
         void UpdateForum(ForumData forumData, UpdateDefinition<ForumData> update);
     }

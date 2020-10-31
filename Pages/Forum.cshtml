@@ -12,60 +12,7 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <style>
-        .message {
-            margin-bottom: 15px;
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #d9d9d9;
-            border-radius: 3px; 
-            box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
-        }
-        .image {float:left; margin-right: 10px; }
-        .user {
-            float:left; 
-            font-weight: bold; 
-            color:#009; 
-            margin-bottom: 3px;
-            word-wrap: anywhere;
-        }
-        .additionalInfo { 
-            margin-left: 30px; 
-            font-style: italic;
-            font-size: 10px;
-        }
-        .forumTag {
-            background-color: #c4c4c4;
-            color: #323232;
-            border-radius: 15px;
-            text-align: center;
-            display: inline-block;
-            padding: 1px 6px;
-            margin: 0 2px;
-            font-size: 12px;
-            box-shadow: 0 .2rem .25rem rgba(0, 0, 0, .1);
-        }
-        .forumTag:hover {
-            cursor: pointer;
-        }
-        
-        .forum-stats {
-            float: right;
-            display: flex;
-        }
-        
-        .forum-stat-elem {
-            background-color: #c4c4c4;
-            border-radius: 3px;
-            padding: 5px;
-            margin: 1px;
-            height: 35px;
-            width: 60px;
-            align-items: center;
-            justify-content: center;
-            display: flex;
-        }
-        
+    <style>        
         .collapsible {
             background-color: #777;
             color: white;
@@ -227,7 +174,7 @@
                 </div>
             </span>
             
-            <div class="image"><img src="@forumOwner.ProfilePicture" style="height: 25px" alt=""/></div>
+            <div class="image"><img src="@forumOwner.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></div>
             <div class="user">
                 <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@AccountService.GetAccountWhere(x=>x.Id == forum.OwnerId).AccountName / @forum.Title </a>
                 @foreach ( var tag in forum.Tags.Split(',') ) {

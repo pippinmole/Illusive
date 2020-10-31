@@ -1,7 +1,9 @@
 ﻿@page
 @inject IAccountService AccountService
+@inject IForumService ForumService
 @using global::Illusive.Illusive.Authentication.Utility
 @using global::Illusive.Illusive.Database.Interfaces
+@using Humanizer
 @model AccountModel
 @{
     ViewData["Title"] = "Account";
@@ -44,6 +46,12 @@
             display: none; /*Disable by default*/
         }
         
+        .profile-posts-container {
+            margin: 10px 0;
+            background-color: #deebff;
+            padding: 5px 20px;
+        }
+        
     </style>
     
     <script type="text/javascript">    
@@ -67,6 +75,7 @@
     <img class="change-profile-button" onclick="changeProfileToggle()" src="https://cdn.onlinewebfonts.com/svg/img_95202.png" style="height: 15px; width: 15px; margin-left: 20px; align-self: center;" alt=""/>
 </span>
 
+@* Profile changing settings *@
 <div class="change-profile-div">
     <h4 class="text-center">Change profile settings</h4>
     <form enctype="multipart/form-data" method="post">
@@ -76,9 +85,44 @@
         <input asp-page-handler="Upload" class="profile-picture-uploadbtn" type="submit" value="Update"/>
     </form>
 </div>
+
+@* Profile Biography *@
 <p style="padding-left: 16px; padding-bottom: 10px; font-style: italic; border-bottom: 1px solid grey;">
     Bio: @user.Bio
     <div asp-validation-summary="All" class="text-danger"></div>
 </p>
+
+@* Profile post history *@
+<div class="profile-posts-container">
+    
+    <h4 style="border-bottom: 1px solid #c6ddff; text-align: center; padding-bottom: 10px">Your posts</h4>
+    
+    @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
+        <div class="message">
+            <span class="forum-stats">
+                <div class="forum-stat-elem">
+                    <img height="10px" src="img/forum-views.png" alt="Views"/>
+                    <span style="margin: 3px">@forum.Views</span>
+                </div>
+
+                <div class="forum-stat-elem">
+                    <img height="10px" src="img/forum-replies.png" alt="Replies"/>
+                    <span style="margin: 3px">@forum.Replies.Count</span>
+                </div>
+            </span>
+
+            <div class="image"><img src="@user.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></div>
+            <div class="user">
+                <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@AccountService.GetAccountWhere(x => x.Id == forum.OwnerId).AccountName / @forum.Title </a>
+                @foreach ( var tag in forum.Tags.Split(',') ) {
+                    <div class="forumTag noselect">@tag</div>
+                }
+            </div>
+            <div style="clear:both;"></div>
+            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@DateTime.Now.Subtract(forum.TimeCreated.Date).Humanize())</div>
+        </div>
+    }
+</div>
+
 </body>
 </html>
