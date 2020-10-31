@@ -34,6 +34,7 @@
             padding: 15px;
             box-shadow: 0 1rem 1rem rgba(0, 0, 0, .1);
             word-wrap: break-word;
+            width: 100%;
         }
         
         .forumBody {
@@ -83,11 +84,11 @@
         </div>
     </div>
 
-    <h4 style="padding-bottom: 8px; border-bottom: 1px solid black">Comments</h4>
-
-    @if ( !this.User.Identity.IsAuthenticated ) {
-        <div class=""><a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to comment on a post!</div>
-    }
+    <h4 style="padding-bottom: 8px; border-bottom: 1px solid black; display: inline-flex">Comments
+        @if ( !this.User.Identity.IsAuthenticated ) {
+            <div style="font-size: 0.7rem; height: 100%; margin: auto auto auto 5px;">(<a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to comment on a post!)</div>
+        }
+    </h4>
 
     @{
         var replies = this.Model.ForumPostData.Replies;

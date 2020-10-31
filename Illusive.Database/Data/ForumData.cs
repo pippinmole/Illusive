@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Markdig.Extensions.Abbreviations;
@@ -13,7 +14,7 @@ namespace Illusive.Illusive.Database.Models {
 
         [Required, MaxLength(10000)] public string Content { get; set; }
 
-        [MaxLength(100)] public string Tags { get; set; } = "";
+        [MaxLength(100)] public string? Tags { get; set; } = "";
         
         public string OwnerId { get; set; }
 

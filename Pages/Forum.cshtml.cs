@@ -41,27 +41,30 @@ namespace Illusive.Pages {
             }
 
             var forumPost = this.ForumData.AssignOwner(user);
-            forumPost.Tags = forumPost.Tags.ToLower();
+            if ( forumPost.Tags != null ) {
+                forumPost.Tags = forumPost.Tags.ToLower();
 
-            if ( forumPost.Title.Length > 100 ) {
-                this.ModelState.AddModelError("", "The forum title has to be under 100 characters.");
-                return this.Page();
-            } 
-            if ( forumPost.Content.Length > 10000 ) {
-                this.ModelState.AddModelError("", "The forum contents has to be under 10,000 characters.");
-                return this.Page();
-            }
-            
-            // Sanitise tags
-            var tags = forumPost.Tags.Trim().Split(',');
-            if ( tags.Any(string.IsNullOrEmpty) ) {
-                this.ModelState.AddModelError("", "The forum tag format is invalid.");
-                return this.Page();
-            }
+                if ( forumPost.Title.Length > 100 ) {
+                    this.ModelState.AddModelError("", "The forum title has to be under 100 characters.");
+                    return this.Page();
+                }
 
-            if ( tags.Distinct().Count() != tags.Length ) {
-                this.ModelState.AddModelError("", "The forum has duplicate tags.");
-                return this.Page();
+                if ( forumPost.Content.Length > 10000 ) {
+                    this.ModelState.AddModelError("", "The forum contents has to be under 10,000 characters.");
+                    return this.Page();
+                }
+
+                // Sanitise tags
+                var tags = forumPost.Tags.Trim().Split(',');
+                if ( tags.Any(string.IsNullOrEmpty) ) {
+                    this.ModelState.AddModelError("", "The forum tag format is invalid.");
+                    return this.Page();
+                }
+
+                if ( tags.Distinct().Count() != tags.Length ) {
+                    this.ModelState.AddModelError("", "The forum has duplicate tags.");
+                    return this.Page();
+                }
             }
 
             await this._forumService.AddForumPostAsync(forumPost);
