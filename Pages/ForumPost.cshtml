@@ -2,6 +2,8 @@
 @using Westwind.AspNetCore.Markdown
 @using Humanizer
 @using global::Illusive.Illusive.Database.Interfaces
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Html
 @inject IAccountService AccountService
 @model ForumPost
 @{
@@ -65,14 +67,15 @@
 <body>
 
 @{
-    var forumOwner = AccountService.GetAccountWhere(x => x.Id == this.Model.ForumPostData.OwnerId);
+    var forum = this.Model.ForumPostData;
+    var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
 }
 
 <div>
     <span style="display: block ruby; padding-bottom: 8px; border-bottom: 1px solid black">
-        <h3 class="forumTitle">@this.Model.ForumPostData.Title</h3>
-        @if ( this.Model.ForumPostData.Tags != null ) {
-            foreach ( var tag in this.Model.ForumPostData.Tags.Split(',') ) {
+        <h3 class="forumTitle">@forum.Title</h3>
+        @if ( forum.Tags != null ) {
+            foreach ( var tag in forum.Tags.Split(',') ) {
                 <div class="forumTag noselect">@tag</div>
             }
         }
@@ -86,16 +89,15 @@
         </div>
 
         <div class="forumContent">
-            <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Created @this.Model.ForumPostData.TimeCreated.Date.ToString("MMMM dd, yyyy") (@((DateTime.Now - this.Model.ForumPostData.TimeCreated).Humanize()) ago)</span>
-            @{    
-                var isMarkup = this.Model.ForumPostData.IsMarkdown;
-                if ( isMarkup ) {
+            <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@((DateTime.Now - forum.TimeCreated).Humanize()) ago)</span>
+            @{
+                if ( forum.IsMarkdown ) {
                     <p>
-                        @Markdown.ParseHtmlString(this.Model.ForumPostData.Content)
+                        @Markdown.ParseHtmlString(forum.Content)
                     </p>
                 } else {
                     <p>
-                        @this.Model.ForumPostData.Content
+                        @Html.Raw(forum.Content.Replace("\r\n", "<br>"))
                     </p>
                 }
             }
@@ -111,7 +113,7 @@
     </div>
         
     @{
-        var replies = this.Model.ForumPostData.Replies;
+        var replies = forum.Replies;
         foreach ( var reply in replies ) {
             var replyOwner = AccountService.GetAccountWhere(x => x.Id == reply.AuthorId);
 
@@ -137,7 +139,7 @@
     @{
         if ( this.User.Identity.IsAuthenticated ) {
             <form method="post">
-                Reply: <input class="commentField" asp-route-id="@this.Model.ForumPostData.Id" asp-for="ForumReply.Content" value=""/><br/>
+                Reply: <input class="commentField" asp-route-id="@forum.Id" asp-for="ForumReply.Content" value=""/><br/>
                 <button type="submit">Comment on this</button>
             </form>
         }
