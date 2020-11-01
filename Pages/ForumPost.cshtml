@@ -2,8 +2,6 @@
 @using Westwind.AspNetCore.Markdown
 @using Humanizer
 @using global::Illusive.Illusive.Database.Interfaces
-@using System.Text.RegularExpressions
-@using Microsoft.AspNetCore.Html
 @inject IAccountService AccountService
 @model ForumPost
 @{
@@ -90,17 +88,11 @@
 
         <div class="forumContent">
             <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@((DateTime.Now - forum.TimeCreated).Humanize()) ago)</span>
-            @{
-                if ( forum.IsMarkdown ) {
-                    <p>
-                        @Markdown.ParseHtmlString(forum.Content)
-                    </p>
-                } else {
-                    <p>
-                        @Html.Raw(forum.Content.Replace("\r\n", "<br>"))
-                    </p>
-                }
-            }
+
+            <p>
+                @Markdown.ParseHtmlString(forum.Content)
+            </p>
+
         </div>
     </div>
 

@@ -19,7 +19,6 @@ namespace Illusive.Illusive.Database.Models {
         public string? OwnerId { get; set; } // Will be null in the user-request, but not when stored in the database.
         public DateTime TimeCreated { get; set;  }
         public List<ForumReply> Replies { get; set; }
-        public bool IsMarkdown { get; set; }
         public uint Views { get; set; }
 
         public ForumData() {

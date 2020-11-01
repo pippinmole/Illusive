@@ -159,7 +159,7 @@
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div id="forum-title-heading"> Forum Title: </div><input class="input-field" id="forum-title-input" asp-for="ForumData.Title" placeholder="Forum Title"/><br/>
-                <div id="forum-content-heading"> Content: </div><div style="float:right">(Is Markdown): <input type="checkbox" asp-for="ForumData.IsMarkdown" /></div><br />
+                <div id="forum-content-heading"> Content: </div><br />
                 <textarea type="text" class="input-field-forum-content" id="forum-content-input" rows="4" cols="50" asp-for="ForumData.Content" placeholder="Enter your blog content here"></textarea>
                 <div id="forum-content-heading"> Tags (separate by comma): <input class="input-field" type="text" asp-for="ForumData.Tags" /></div><br />
                 <input type="submit" value="Create Post" />
