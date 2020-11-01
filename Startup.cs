@@ -80,11 +80,13 @@ namespace Illusive {
 
             app.UseMarkdown();
             app.UseRouting();
-
+            
             app.UseAuthorization();
             app.UseAuthentication();
 
-            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
+            app.UseEndpoints(endpoints => {
+                endpoints.MapRazorPages();
+            });
         }
     }
 }
