@@ -156,6 +156,10 @@ body {
     }
 }
 
+textarea:focus, input:focus {
+    outline: none;
+}
+
 .account-dropdown-elem {
     border: none;
     margin: 3px 0;
