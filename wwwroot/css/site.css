@@ -10,7 +10,7 @@ for details on configuring this project to bundle and minify static web assets. 
     --body-background-color: #414c50;
 }
 .lighttheme {
-    --navbar-background-color: #fff;
+    --navbar-background-color: #ffffff;
     --navbar-border-bottom: none;
     
     --border-top-dim: 1px solid #e5e5e5;
@@ -148,6 +148,12 @@ body {
     box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
     width: 250px;
     font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .account-dropdown-details {
+        width: auto;
+    }
 }
 
 .account-dropdown-elem {
