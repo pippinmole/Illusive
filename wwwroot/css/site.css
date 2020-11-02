@@ -151,6 +151,10 @@ body {
 }
 
 @media only screen and (max-device-width : 1024px) {
+    html {
+        overflow-y: scroll;
+    }
+    
     .account-dropdown-details {
         width: auto;
     }
@@ -213,7 +217,9 @@ DETAILS[open] SUMMARY ~ * {
     font-weight: bold;
     color:#009;
     margin-bottom: 3px;
-    word-wrap: anywhere;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
 }
 .additionalInfo {
     margin-left: 30px;
