@@ -77,6 +77,7 @@ namespace Illusive {
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStatusCodePagesWithRedirects("/NotFound");
 
             app.UseMarkdown();
             app.UseRouting();
