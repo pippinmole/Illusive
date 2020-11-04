@@ -3,6 +3,7 @@
 @inject IForumService ForumService
 @using global::Illusive.Illusive.Authentication.Utility
 @using global::Illusive.Illusive.Database.Interfaces
+@using global::Illusive.Illusive.Utilities
 @using Humanizer
 @model AccountModel
 @{
@@ -121,7 +122,7 @@
                 }
             </div>
             <div style="clear:both;"></div>
-            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@((DateTime.Now - forum.TimeCreated).Humanize()))</div>
+            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@(forum.TimeCreated.TimeSince().Humanize()) ago)</div>
         </div>
     }
 </div>
