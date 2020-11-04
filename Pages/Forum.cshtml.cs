@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Humanizer;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
+using Illusive.Illusive.Utilities.Forum_Filters;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +17,8 @@ namespace Illusive.Pages {
 
         private readonly ILogger<ForumModel> _logger;
         private readonly IForumService _forumService;
-
-        [BindProperty] public ForumData ForumData { get; set; } = new ForumData();
+        
+        [BindProperty] public ForumData NewForumData { get; set; } = new ForumData();
         
         public ForumModel(ILogger<ForumModel> logger, IConfiguration configuration, IForumService forumService) {
             this._logger = logger;
@@ -33,7 +35,7 @@ namespace Illusive.Pages {
                 return this.RedirectToPage("/Index");
             }
 
-            var forumPost = this.ForumData.AssignOwner(user);
+            var forumPost = this.NewForumData.AssignOwner(user);
             if ( forumPost.Tags != null ) {
                 forumPost.Tags = forumPost.Tags.ToLower();
 
@@ -66,7 +68,9 @@ namespace Illusive.Pages {
         }
 
         public async Task<List<ForumData>> GetForums() {
-            return await this._forumService.GetForumDataAsync();
+            var posts = await this._forumService.GetForumDataAsync();
+            var orderByParam = this.HttpContext.Request.Query["OrderBy"];
+            return posts.FilterBy(orderByParam);
         }
     }
 }

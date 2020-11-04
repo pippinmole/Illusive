@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Markdig.Extensions.Abbreviations;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Illusive.Database.Models {

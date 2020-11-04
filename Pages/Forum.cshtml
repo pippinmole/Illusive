@@ -1,6 +1,7 @@
-﻿@page "{text?}"
+﻿@page
 @using Humanizer
 @using global::Illusive.Illusive.Database.Interfaces
+@using global::Illusive.Illusive.Utilities
 @inject IAccountService AccountService
 @model ForumModel
 @{
@@ -158,10 +159,10 @@
             <button class="preview-content-button">Preview</button>
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
-                <div id="forum-title-heading"> Forum Title: </div><input class="input-field" id="forum-title-input" asp-for="ForumData.Title" placeholder="Forum Title"/><br/>
+                <div id="forum-title-heading"> Forum Title: </div><input class="input-field" id="forum-title-input" asp-for="NewForumData.Title" placeholder="Forum Title"/><br/>
                 <div id="forum-content-heading"> Content: </div><br />
-                <textarea type="text" class="input-field-forum-content" id="forum-content-input" rows="4" cols="50" asp-for="ForumData.Content" placeholder="Enter your blog content here"></textarea>
-                <div id="forum-content-heading"> Tags (separate by comma): <input class="input-field" type="text" asp-for="ForumData.Tags" /></div><br />
+                <textarea type="text" class="input-field-forum-content" id="forum-content-input" rows="4" cols="50" asp-for="NewForumData.Content" placeholder="Enter your blog content here"></textarea>
+                <div id="forum-content-heading"> Tags (separate by comma): <input class="input-field" type="text" asp-for="NewForumData.Tags" /></div><br />
                 <input type="submit" value="Create Post" />
                 @Html.AntiForgeryToken()
             </form>
@@ -172,6 +173,11 @@
         </div>
     }
 }
+
+<select onChange="window.location.href=this.value">
+    <option value="./Forum?orderby=views">Order by views</option>
+    <option value="www.aol.com">B</option>
+</select>
 
 <div>
     @foreach ( var forum in await this.Model.GetForums() ) {
@@ -192,7 +198,7 @@
             
             <div class="image"><img src="@forumOwner.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></div>
             <div class="user">
-                <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@AccountService.GetAccountWhere(x=>x.Id == forum.OwnerId).AccountName / @forum.Title </a>
+                <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@forumOwner.AccountName / @forum.Title </a>
                 @if ( forum.Tags != null ) {
                     foreach ( var tag in forum.Tags.Split(',') ) {
                         <div class="forumTag noselect">@tag</div>
@@ -200,7 +206,7 @@
                 }
             </div>
             <div style="clear:both;"></div>
-            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@((DateTime.Now - forum.TimeCreated).Humanize()))</div>
+            <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize()) ago)</div>
         </div>
     }
 </div>
