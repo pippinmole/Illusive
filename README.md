@@ -11,3 +11,4 @@ A forum website made on the ASP.NET Core framework.
 [BCrypt.Net-Next](https://www.nuget.org/packages/BCrypt.Net-Next/)  
 [Humanizer.Core](https://www.nuget.org/packages/Humanizer.Core)  
 [Azure.Storage.Blobs](https://www.nuget.org/packages/Azure.Storage.Blobs)
+[jQuery.AJAX](https://api.jquery.com/Jquery.ajax/)
