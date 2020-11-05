@@ -9,5 +9,9 @@ namespace Illusive.Illusive.Database.Models {
             return forumData;
         }
         
+        public static bool HasLikeFrom(this ForumData forumData, ClaimsPrincipal claimsPrincipal) {
+            var userId = claimsPrincipal.GetUniqueId();
+            return forumData.Likes.Contains(userId);
+        }
     }
 }

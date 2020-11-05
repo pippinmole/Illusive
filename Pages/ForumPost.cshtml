@@ -2,6 +2,8 @@
 @using Westwind.AspNetCore.Markdown
 @using Humanizer
 @using global::Illusive.Illusive.Database.Interfaces
+@using global::Illusive.Illusive.Utilities
+@using global::Illusive.Illusive.Database.Models
 @inject IAccountService AccountService
 @model ForumPost
 @{
@@ -11,16 +13,19 @@
 <!DOCTYPE html>
 
 <html>
+@Html.AntiForgeryToken()
 <head>
     <title>@this.Model.ForumPostData.Title</title>
     
     <style type="text/css">
         
         .commentField {
-            width: 390px; 
-            border: 1px solid #999999; 
-            padding: 5px;
+            width: 100%; 
+            padding: 10px;
             margin: 10px 0;
+            border: none;
+            background-color: #EAEAEA;
+            border-radius: 5px;
         }
         
         .forumTitle {
@@ -66,7 +71,84 @@
             word-wrap: break-word;
             width: 100%;
         }
+        
+        .forum-actions-container {
+            background-color: #dde8f9;
+            float: right;
+            padding: 3px;
+            display: flex;
+            border-radius: 5px;
+        }
+        
+        .forum-action {
+            display: initial;
+            width: initial;
+            max-width: 35px;
+            margin: 2px;
+            height: 25px;
+            cursor: pointer;
+        }
     </style>
+    
+    @section scripts {
+        <script>
+        
+        // Received a boolean state (True = liked, False = unliked)
+        function UpdateLikeButton(state) {
+            const likeImage = $(".like-post-action");
+            
+            if (state === true) {
+                console.log("Set button to liked");
+                likeImage.attr("src","https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png");
+            } else {
+                console.log("Set button to unliked");
+                likeImage.attr("src","https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png");
+            }
+        }
+        
+        // Updates the amount of likes
+        function UpdateLikeCounter(likes) {
+            const likeText = $("p.like-post-text");   
+            likeText.text(likes + (likes === 1 ? " like" : " likes"));
+        }
+        
+        $(function () {
+            // Initialise starting state
+            @{
+                var initialLiked = this.Model.ForumPostData.HasLikeFrom(this.User);
+                var likeCount = this.Model.ForumPostData.Likes.Count;
+            }
+            
+            UpdateLikeButton(@Json.Serialize(initialLiked));
+            UpdateLikeCounter(@Json.Serialize(likeCount));
+            
+            // Like button request
+            $(".like-post-action").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/ForumPost?handler=LikePost",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "forumId" : "@this.Model.ForumPostData.Id"
+                    }),
+                    success: function (response) {
+                        // console.log(JSON.stringify(response))
+                        UpdateLikeButton(response.result === "liked");
+                        UpdateLikeCounter(response.likeCount);
+                    },
+                    failure: function (response) {
+                        alert(response);
+                    }
+                });
+            });
+        });
+        </script>
+    }
 </head>
 <body>
 
@@ -86,19 +168,23 @@
     </span>
 
     <div class="forumBody">
-        <div style="width: 100px; height: 100px; background-color: #dfedee; display: grid; text-align: center; border-radius: 4px;">
-            <img style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner.ProfilePicture" alt="">
+        <div class="forum-author-container" style="background-color: #dfedee;">
+            <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner.ProfilePicture" alt="">
             <p style="font-size: 0.6rem; margin-bottom: 0"> @forumOwner.AccountName </p>
             <p style="font-size: 0.5rem; font-style: italic">Joined @forumOwner.AccountCreated.ToShortDateString()</p>
         </div>
 
         <div class="forumContent">
-            <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@((DateTime.Now - forum.TimeCreated).Humanize()) ago)</span>
+            @if ( this.User.Identity.IsAuthenticated ) {
+                <div class="forum-actions-container">
+                    <img class="forum-action like-post-action" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png" alt="">
+                    <p style="margin: auto 5px;" class="like-post-text"></p>
+                </div>
+            }
 
-            <p>
-                @Markdown.ParseHtmlString(forum.Content)
-            </p>
+            <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@(forum.TimeCreated.TimeSince().Humanize()) ago)</span>
 
+            <p>@Markdown.ParseHtmlString(forum.Content)</p>
         </div>
     </div>
 
@@ -123,12 +209,9 @@
                 </div>
 
                 <div class="replyContent">
-                    <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Commented @reply.TimeCreated.ToString("MMMM dd, yyyy") (@((DateTime.Now - reply.TimeCreated).Humanize()) ago)</span>
+                    <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Commented @reply.TimeCreated.ToString("MMMM dd, yyyy") (@(reply.TimeCreated.TimeSince().Humanize()) ago)</span>
 
-                    <p>
-                        @reply.Content
-                    </p>
-
+                    <p>@reply.Content</p>
                 </div>
             </div>
         }
@@ -137,7 +220,7 @@
     @{
         if ( this.User.Identity.IsAuthenticated ) {
             <form method="post">
-                Reply: <input class="commentField" asp-route-id="@forum.Id" asp-for="ForumReply.Content" value=""/><br/>
+                <textarea class="commentField" asp-route-id="@forum.Id" asp-for="ForumReply.Content" placeholder="Reply to this post" multiple></textarea><br/>
                 <button type="submit">Comment on this</button>
             </form>
         }

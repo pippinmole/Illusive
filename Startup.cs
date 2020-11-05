@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using Westwind.AspNetCore.Markdown;
 
 namespace Illusive {
@@ -44,8 +46,12 @@ namespace Illusive {
                 // options.Conventions.AllowAnonymousToPage("/Logout");
                 // options.Conventions.AllowAnonymousToPage("/Signup");
                 // options.Conventions.AllowAnonymousToPage("/Index");
-            }).AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
+            }).SetCompatibilityVersion(CompatibilityVersion.Latest).AddNewtonsoftJson();
 
+            services.AddAntiforgery(options => {
+                options.HeaderName = "XSRF-TOKEN";
+            });
+            
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -58,7 +64,7 @@ namespace Illusive {
             services.AddSingleton<IContentService, ContentService>();
 
             services.AddMarkdown();
-            
+
             services.AddControllers();
             services.AddRazorPages();
         }
@@ -69,7 +75,7 @@ namespace Illusive {
                 app.UseDeveloperExceptionPage();
             } else {
                 app.UseDeveloperExceptionPage();
-                //app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/NotFound");
 
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -77,7 +83,6 @@ namespace Illusive {
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseStatusCodePagesWithRedirects("/NotFound");
 
             app.UseMarkdown();
             app.UseRouting();

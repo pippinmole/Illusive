@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Models;
 using MongoDB.Driver;
