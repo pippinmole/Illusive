@@ -25,9 +25,15 @@ namespace Illusive.Pages {
             this._accountService = accountService;
         }
 
-        public void OnGet(string id) {
+        public IActionResult OnGet(string id) {
             this.ForumPostData = this._forumService.GetForumById(id);
+
+            if ( this.ForumPostData == null ) {
+                return this.LocalRedirect("/Index");
+            }
             this._forumService.AddViewToForum(this.ForumPostData);
+
+            return this.Page();
         }
 
         public IActionResult OnPost(string id) {
