@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Illusive.Database.Models {
@@ -7,7 +8,7 @@ namespace Illusive.Illusive.Database.Models {
         public string Id { get; set; }
         
         public string AuthorId { get; set; }
-        public string Content { get; set; }
+        [Required] [MaxLength(5000)] public string Content { get; set; }
         
         public DateTime TimeCreated { get; set; }
 
