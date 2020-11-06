@@ -16,7 +16,7 @@ namespace Illusive.Pages {
         private readonly IForumService _forumService;
         private readonly IAccountService _accountService;
 
-        [BindProperty] public ForumData ForumPostData { get; set; }
+        public ForumData ForumData { get; set; }
         [BindProperty] public ForumReply ForumReply { get; set; }
 
         public ForumPost(ILogger<ForumPost> logger, IForumService forumService, IAccountService accountService) {
@@ -26,17 +26,21 @@ namespace Illusive.Pages {
         }
 
         public IActionResult OnGet(string id) {
-            this.ForumPostData = this._forumService.GetForumById(id);
-
-            if ( this.ForumPostData == null ) {
+            this.ForumData = this._forumService.GetForumById(id);
+            
+            if ( this.ForumData == null )
                 return this.LocalRedirect("/Index");
-            }
-            this._forumService.AddViewToForum(this.ForumPostData);
+
+            this._forumService.AddViewToForum(this.ForumData);
 
             return this.Page();
         }
 
         public IActionResult OnPost(string id) {
+            if ( !this.ModelState.IsValid ) {
+                return this.Redirect($"/ForumPost?id={id}");
+            }
+
             var forum = this._forumService.GetForumById(id);
             var reply = this.ForumReply;
             reply.AuthorId = this.User.GetUniqueId();
@@ -52,7 +56,7 @@ namespace Illusive.Pages {
 
         // POST: LikePost?handler={json}
         public ActionResult OnPostLikePost([FromBody] ForumLike body) {
-            if ( !this.User.Identity.IsAuthenticated )
+            if ( !this.User.IsLoggedIn() )
                 throw new Exception("User attempting to like a forum without being authenticated!");
             
             var forum = this._forumService.GetForumById(body.forumId);

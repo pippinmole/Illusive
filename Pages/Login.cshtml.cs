@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Illusive.Illusive.Authentication.Utility;
 using Illusive.Illusive.Database.Extension_Methods;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
@@ -26,7 +27,7 @@ namespace Illusive.Pages {
         
         public IActionResult OnGet() {
             try {
-                if ( this.User.Identity.IsAuthenticated ) {
+                if ( this.User.IsLoggedIn() ) {
                     return this.RedirectToPage("/Index");
                 }
             } catch ( Exception ex ) {

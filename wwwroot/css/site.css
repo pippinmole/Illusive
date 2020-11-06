@@ -113,7 +113,7 @@ body {
 
 .input-field-forum-content {
     width: 100%;
-    resize: both;
+    resize: vertical;
     display: -webkit-flex;
     padding: 15px;
     border: none;

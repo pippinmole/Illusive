@@ -4,10 +4,11 @@
 @using global::Illusive.Illusive.Database.Interfaces
 @using global::Illusive.Illusive.Utilities
 @using global::Illusive.Illusive.Database.Models
+@using global::Illusive.Illusive.Authentication.Utility
 @inject IAccountService AccountService
 @model ForumPost
 @{
-    ViewData["Title"] = this.Model.ForumPostData.Title;
+    ViewData["Title"] = this.Model.ForumData.Title;
 }
 
 <!DOCTYPE html>
@@ -15,7 +16,7 @@
 <html>
 @Html.AntiForgeryToken()
 <head>
-    <title>@this.Model.ForumPostData.Title</title>
+    <title>@this.Model.ForumData.Title</title>
     
     <style type="text/css">
         
@@ -115,8 +116,8 @@
         $(function () {
             // Initialise starting state
             @{
-                var initialLiked = this.Model.ForumPostData.HasLikeFrom(this.User);
-                var likeCount = this.Model.ForumPostData.Likes.Count;
+                var initialLiked = this.Model.ForumData.HasLikeFrom(this.User);
+                var likeCount = this.Model.ForumData.Likes.Count;
             }
             
             UpdateLikeButton(@Json.Serialize(initialLiked));
@@ -134,7 +135,7 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: JSON.stringify({
-                        "forumId" : "@this.Model.ForumPostData.Id"
+                        "forumId" : "@this.Model.ForumData.Id"
                     }),
                     success: function (response) {
                         // console.log(JSON.stringify(response))
@@ -153,7 +154,7 @@
 <body>
 
 @{
-    var forum = this.Model.ForumPostData;
+    var forum = this.Model.ForumData;
     var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
 }
 
@@ -169,13 +170,13 @@
 
     <div class="forumBody">
         <div class="forum-author-container" style="background-color: #dfedee;">
-            <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner.ProfilePicture" alt="">
-            <p style="font-size: 0.6rem; margin-bottom: 0"> @forumOwner.AccountName </p>
-            <p style="font-size: 0.5rem; font-style: italic">Joined @forumOwner.AccountCreated.ToShortDateString()</p>
+            <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner?.ProfilePicture" alt="">
+            <p style="font-size: 0.6rem; margin-bottom: 0"> @forumOwner?.AccountName </p>
+            <p style="font-size: 0.5rem; font-style: italic">Joined @forumOwner?.AccountCreated.ToShortDateString()</p>
         </div>
 
         <div class="forumContent">
-            @if ( this.User.Identity.IsAuthenticated ) {
+            @if ( this.User.IsLoggedIn() ) {
                 <div class="forum-actions-container">
                     <img class="forum-action like-post-action" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png" alt="">
                     <p style="margin: auto 5px;" class="like-post-text"></p>
@@ -190,7 +191,7 @@
 
     <div style="width: 100%; border-bottom: 1px solid black;">
         <h4 style="display: inline-flex">Comments
-            @if ( !this.User.Identity.IsAuthenticated ) {
+            @if ( !this.User.IsLoggedIn() ) {
                 <div style="font-size: 0.7rem; height: 100%; margin: auto auto auto 5px;">(<a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to comment on a post!)</div>
             }
         </h4>
@@ -218,7 +219,7 @@
     }
 
     @{
-        if ( this.User.Identity.IsAuthenticated ) {
+        if ( this.User.IsLoggedIn() ) {
             <form method="post">
                 <textarea class="commentField" asp-route-id="@forum.Id" asp-for="ForumReply.Content" placeholder="Reply to this post" multiple></textarea><br/>
                 <button type="submit">Comment on this</button>

@@ -129,7 +129,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-page="/Forum">Forum</a>
                     </li>
 
-                    @if ( this.User.Identity.IsAuthenticated ) {
+                    @if ( this.User.IsLoggedIn() ) {
                         <div float="right">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Account">Account</a>
                         </div>
@@ -139,7 +139,7 @@
                 </ul>
             </div>
 
-            @if ( this.User.Identity.IsAuthenticated ) {
+            @if ( this.User.IsLoggedIn() ) {
                 <details class="account-dropdown-button details-animated noselect">
                     <summary>
                         <span><img style="height: 25px; width: 25px; border-radius: 50px;" src="@user.ProfilePicture" alt=""/></span>

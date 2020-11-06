@@ -1,0 +1,43 @@
+﻿@page
+@using global::Illusive.Illusive.Authentication.Utility
+@model CreatePostModel
+
+@{
+    ViewData["Title"] = "Create Post";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+    <script>
+        window.addEventListener("load", (event) => {
+            const simplemde = new SimpleMDE({ element: document.getElementById("forum-content-input") });
+            simplemde.value();
+        });
+    </script>
+</head>
+<body>
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+
+    @{
+        if ( this.User.IsLoggedIn() ) {
+            <div class="collapsible-content">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div id="forum-title-heading"> Forum Title: </div><input class="input-field" id="forum-title-input" asp-for="NewForumData.Title" placeholder="Forum Title"/><br/>
+                    <div id="forum-content-heading"> Content: </div><br />
+                    <textarea type="text" class="input-field-forum-content" id="forum-content-input" rows="4" cols="50" asp-for="NewForumData.Content" placeholder="Enter your blog content here"></textarea>
+                    <div id="forum-content-heading"> Tags (separate by comma): <input class="input-field" type="text" asp-for="NewForumData.Tags" /></div><br />
+                    <input type="submit" value="Create Post" />
+                    @Html.AntiForgeryToken()
+                </form>
+            </div>
+        }
+    }
+</div>
+</body>
+</html>

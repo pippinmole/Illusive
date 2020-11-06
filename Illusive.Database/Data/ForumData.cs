@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Illusive.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Illusive.Database.Models {
@@ -9,11 +10,11 @@ namespace Illusive.Illusive.Database.Models {
 
         [BsonId] public string Id { get; set; }
 
-        [Required, StringLength(80)] public string Title { get; set; }
+        [Required, StringLength(80, MinimumLength = 15)] public string Title { get; set; }
 
-        [Required, MaxLength(10000)] public string Content { get; set; }
+        [Required, StringLength(10000, MinimumLength = 25)] public string Content { get; set; }
 
-        [MaxLength(100)] public string? Tags { get; set; } = "";
+        [StringLength(100)] public string? Tags { get; set; } = "";
         
         public string? OwnerId { get; set; } // Will be null in the user-request, but not when stored in the database.
         public DateTime TimeCreated { get; set;  }
