@@ -1,5 +1,6 @@
 ﻿@page
 @using global::Illusive.Illusive.Authentication.Utility
+@using global::Illusive.Settings
 @model CreatePostModel
 
 @{
@@ -20,24 +21,29 @@
     </script>
 </head>
 <body>
-<div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
+<h1 class="text-center display-4">@ViewData["Title"]</h1>
 
-    @{
-        if ( this.User.IsLoggedIn() ) {
-            <div class="collapsible-content">
-                <form method="post">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div id="forum-title-heading"> Forum Title: </div><input class="input-field" id="forum-title-input" asp-for="NewForumData.Title" placeholder="Forum Title"/><br/>
-                    <div id="forum-content-heading"> Content: </div><br />
-                    <textarea type="text" class="input-field-forum-content" id="forum-content-input" rows="4" cols="50" asp-for="NewForumData.Content" placeholder="Enter your blog content here"></textarea>
-                    <div id="forum-content-heading"> Tags (separate by comma): <input class="input-field" type="text" asp-for="NewForumData.Tags" /></div><br />
-                    <input type="submit" value="Create Post" />
-                    @Html.AntiForgeryToken()
-                </form>
-            </div>
-        }
-    }
+<div>
+    Your post must adhere to some rules:
+    <ol>
+        <li>Your title must be within @ForumSettings.MinTitleLength and @ForumSettings.MaxTitleLength characters.</li>
+        <li>Your content must be within @ForumSettings.MinContentLength and @ForumSettings.MaxContentLength characters.</li>
+        <li>All of your tags must be under @ForumSettings.MaxTagLength characters.</li>
+    </ol>
+    
 </div>
+
+@{
+    if ( this.User.IsLoggedIn() ) {
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input class="input-field" id="forum-title-input" asp-for="NewForumData.Title" placeholder="Forum Title"/><br/>
+            <textarea type="text" class="forum-content" id="forum-content-input" rows="4" cols="50" asp-for="NewForumData.Content" placeholder="Enter your content here"></textarea>
+            <input class="input-field mb-5" type="text" asp-for="NewForumData.Tags" placeholder="Tags (separate by comma): " />
+            <input class="btn w-100" style="background-color: #fff; box-shadow: 0 1rem 1rem rgba(0,0,0,.08) !important;" type="submit" value="Create Post" />
+            @Html.AntiForgeryToken()
+        </form>
+    }
+}
 </body>
 </html>

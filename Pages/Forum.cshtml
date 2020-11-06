@@ -14,50 +14,6 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
-    <style>                        
-        .active:after {
-          content: "\2796"; /* Unicode character for "minus" sign (-) */
-        }
-        
-        .active, .collapsible:hover {
-          background-color: #555;
-        }
-        
-        .forumContent {
-          display: none;
-          overflow: hidden;
-          background-color: #f1f1f1;
-          border-bottom-left-radius: 7px;
-          border-bottom-right-radius: 7px;
-          padding: 0 18px 15px;
-          box-shadow: 0 1rem 1rem rgba(0, 0, 0, .1);
-        }
-    </style>
-
-    <script type="text/javascript">
-        window.addEventListener("load", (event) => {
-            let forumTitleInput = $("#forum-title-input")[0];
-            let forumTitleHeading = $("#forum-title-heading")[0];
-            if (forumTitleInput != null) {
-                forumTitleInput.oninput = () => {
-                    let length = forumTitleInput.value.length;
-                    let maxLength = forumTitleInput.maxLength;
-                    forumTitleHeading.innerHTML = "Forum Title: " + ((maxLength - length) + "/" + maxLength + " characters remaining.");
-                };
-            }
-            
-            let forumContentInput = $("#forum-content-input")[0];
-            let forumContentHeading = $("#forum-content-heading")[0];
-            if (forumContentInput != null) {
-                forumContentInput.oninput = () => {
-                    let length = forumContentInput.value.length;
-                    let maxLength = forumContentInput.maxLength;
-                    forumContentHeading.innerHTML = "Content: " + ((maxLength - length) + "/" + maxLength + " characters remaining.");
-                };
-            }
-        });
-    </script>
 </head>
 <body>
 

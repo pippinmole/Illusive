@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Illusive.Attributes;
+using Illusive.Settings;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Illusive.Database.Models {
@@ -10,14 +10,19 @@ namespace Illusive.Illusive.Database.Models {
 
         [BsonId] public string Id { get; set; }
 
-        [Required, StringLength(80, MinimumLength = 15)] public string Title { get; set; }
+        [Required]
+        [StringLength(ForumSettings.MaxTitleLength, MinimumLength = ForumSettings.MinTitleLength)]
+        public string Title { get; set; }
 
-        [Required, StringLength(10000, MinimumLength = 25)] public string Content { get; set; }
+        [Required]
+        [StringLength(ForumSettings.MaxContentLength, MinimumLength = ForumSettings.MinContentLength)]
+        public string Content { get; set; }
 
-        [StringLength(100)] public string? Tags { get; set; } = "";
-        
+        [StringLength(ForumSettings.MaxTagLength)]
+        public string? Tags { get; set; } = "";
+
         public string? OwnerId { get; set; } // Will be null in the user-request, but not when stored in the database.
-        public DateTime TimeCreated { get; set;  }
+        public DateTime TimeCreated { get; set; }
         public List<ForumReply> Replies { get; set; }
         public uint Views { get; set; }
         public List<string> Likes { get; set; }
