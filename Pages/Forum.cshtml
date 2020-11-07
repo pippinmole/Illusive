@@ -49,19 +49,19 @@
         <div class="message">
             <span class="forum-stats">
                 <div class="forum-stat-elem">
-                    <img height="10px" src="img/forum-views.png" alt="Views"/>
+                    <img height="10px" src="~/img/forum-views.png" alt="Views"/>
                     <span style="margin: 3px">@forum.Views</span>
                 </div>
 
                 <div class="forum-stat-elem">
-                    <img height="10px" src="img/forum-replies.png" alt="Replies"/>
+                    <img height="10px" src="~/img/forum-replies.png" alt="Replies"/>
                     <span style="margin: 3px">@forum.Replies.Count</span>
                 </div>
             </span>
 
-            <div class="image"><img src="@forumOwner.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></div>
+            <div class="image"><a href="/Account/@forumOwner.Id"><img src="@forumOwner.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
             <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
-            <a class="user" asp-page="/ForumPost" asp-route-id="@forum.Id">[@forumOwner.AccountName] @forum.Title </a>
+            <div class="user"><a href="/Account/@forumOwner.Id">[@forumOwner.AccountName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
             @if ( forum.Tags != null ) {
                 foreach ( var tag in forum.Tags.Split(',') ) {
                     <div class="forumTag noselect">@tag</div>

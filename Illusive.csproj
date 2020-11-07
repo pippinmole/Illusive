@@ -8,6 +8,8 @@
     <_ContentIncludedByDefault Remove="Pages\obj\Illusive.csproj.nuget.dgspec.json" />
     <_ContentIncludedByDefault Remove="Pages\obj\project.assets.json" />
     <_ContentIncludedByDefault Remove="Pages\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Pages\Test\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Test\SubTest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0-preview.1" />

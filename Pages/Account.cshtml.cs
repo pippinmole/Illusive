@@ -10,6 +10,7 @@ using Illusive.Illusive.Cdn.Interfaces;
 using Illusive.Illusive.Data;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -30,22 +31,18 @@ namespace Illusive.Pages {
             this._contentService = contentService;
         }
 
-        public IActionResult OnGet(string? accountId) {
-            this._logger.LogWarning($"Was Account ID supplied? {accountId != null}");
+        public IActionResult OnGet() {
+            var accountId = (string)this.HttpContext.Request.RouteValues["id"];
 
-            var accountSupplied = accountId != null;
-            if ( accountSupplied ) {
-                var account = this._accountService.GetAccountWhere(x => x.Id == accountId);
-                if ( account == null )
-                    return this.NotFound();
-            }
-            
-            if ( !this.User.IsLoggedIn() )
-                return this.RedirectToPage("/Index");
+            if ( string.IsNullOrEmpty(accountId) )
+                return this.Redirect($"/Account/{this.User.GetUniqueId()}");
+
+            var account = this._accountService.GetAccountWhere(x => x.Id == accountId);
+            if ( account == null ) return this.Redirect("/");
 
             return this.Page();
         }
-        
+
         public async Task<IActionResult> OnPostUploadAsync() {
             if ( !this.ModelState.IsValid )
                 return this.Page();
