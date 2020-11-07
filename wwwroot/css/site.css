@@ -2,26 +2,74 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 .darktheme {
+    
+    --container-colour-primary: #414c50;
+    --container-colour-secondary: #5c6a6f;
+    --container-colour-third: #79989f;
+    
+    --button-colour-primary: #769eae;
+    
     --navbar-background-color: #2d383c;
-    --navbar-border-bottom: 2px solid #192428;
     
     --border-top-dim: 1px solid #192428;
+    --border-bottom-dim: 1px solid #192428;
 
-    --body-background-color: #414c50;
+    --text-color: #e1e1e1;
+    
+    --profile-posts-underline-background-color: #414c50;
+    
+    --link-color: #c6d4d9;
+    
+    --forum-stat-element-color: #414c50;
+    
+    --box-shadow-p25r: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 .lighttheme {
+
+    --container-colour-primary: rgba(232, 242, 255, 0.4);
+    --container-colour-secondary: #deebff;
+    --container-colour-third: #dfedee;
+
+    --button-colour-primary: #fff;
+    
     --navbar-background-color: #ffffff;
-    --navbar-border-bottom: none;
     
     --border-top-dim: 1px solid #e5e5e5;
     --border-bottom-dim: 1px solid #192428;
 
-    --body-background-color: rgba(232, 242, 255, 0.4);
+    --text-color: #212529;
+
+    --profile-posts-underline-background-color: #c6ddff;
+
+    --link-color: #007bff;
+
+    --forum-stat-element-color: #c4c4c4;
+    
+    --box-shadow-p25r: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 .navbar-color {
     background-color: var(--navbar-background-color);
-    border-bottom: var(--navbar-border-bottom);
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+}
+
+.navbar-title {
+    display: inline-block;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+    color: var(--text-color) !important;
+}
+
+.navbar-title:hover {
+    color: inherit;
+    text-decoration: none;
 }
 
 a.navbar-brand {
@@ -67,11 +115,11 @@ html {
 }
 
 .box-shadow-bottom {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: var(--box-shadow-p25r);
 }
 
 .box-shadow-top {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: var(--box-shadow-p25r);
 }
 
 button.accept-policy {
@@ -88,9 +136,10 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 120px !important;
     /*position: relative;*/
-    background-color: var(--body-background-color) !important;
+    background-color: var(--container-colour-primary) !important;
+    color: var(--text-color) !important;
 }
 .footer {
     position: absolute;
@@ -107,8 +156,9 @@ body {
     padding: 15px;
     border: none;
     border-radius: 6px;
-    background: #e6e8ea;
+    background: var(--container-colour-secondary);
     display: -webkit-flex;
+    color: inherit;
 }
 
 .input-field-forum-content {
@@ -139,11 +189,21 @@ body {
     transition: box-shadow 0.3s ease-in-out;
 }
 
+.button {
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    margin: 5px 0;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.29);
+    background-color: var(--button-colour-primary) !important;
+    color: inherit;
+}
+
 .account-dropdown-details {
     z-index: 99;
     position: absolute;
     margin-top: 10px;
-    background-color: #dddfe1;
+    background-color: var(--container-colour-secondary);
     border-radius: 3px;
     box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
     width: 250px;
@@ -207,22 +267,26 @@ DETAILS[open] SUMMARY ~ * {
     margin-bottom: 15px;
     margin-top: 15px;
     padding: 10px;
-    background-color: #d9d9d9;
-    border-radius: 3px;
+    border-radius: 5px;
     box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
+
+    background-color: var(--container-colour-secondary);
 }
+
+a {
+    color: var(--link-color) !important;
+}
+
 .image {float:left; margin-right: 10px; }
 .user {
-    float:left;
     font-weight: bold;
     color:#009;
     margin-bottom: 3px;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 100%;
+    display: block ruby;
 }
 .additionalInfo {
-    margin-left: 30px;
     font-style: italic;
     font-size: 10px;
 }
@@ -248,6 +312,7 @@ DETAILS[open] SUMMARY ~ * {
     text-align: center;
     border-radius: 4px;
     min-width: 100px;
+    background-color: var(--container-colour-third);
 }
 
 .forum-stats {
@@ -256,7 +321,7 @@ DETAILS[open] SUMMARY ~ * {
 }
 
 .forum-stat-elem {
-    background-color: #c4c4c4;
+    background-color: var(--forum-stat-element-color);
     border-radius: 3px;
     padding: 5px;
     margin: 1px;
@@ -265,4 +330,65 @@ DETAILS[open] SUMMARY ~ * {
     align-items: center;
     justify-content: center;
     display: flex;
+}
+
+/*Slider*/
+.switch {
+    position: relative;
+    display: table-cell;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }

@@ -14,20 +14,9 @@
 
 <html>
 <head>
-    
-    <style type="text/css">
-        
-        .profile-container {
-        }
-        
-        .profile-picture-uploadbtn {
-            border-radius: 5px;
-            border: 1px solid dimgrey;
-            padding: 5px;
-            margin: 5px 0;
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
-        }
-        
+    <script type="text/javascript" src="lib/bootstrap-filestyle.min.js"> </script>
+
+    <style type="text/css"> 
         .change-profile-button {
             cursor: default;
         }
@@ -35,10 +24,10 @@
             cursor: pointer;
         }
         
-        .change-profile-div {
+        .change-profile-container {
             position: absolute;
             border-radius: 15px;
-            background-color: #e9f4ff;
+            background-color: var(--container-colour-third);
             width: 500px;
             padding: 20px;
             margin: 5px;
@@ -49,18 +38,17 @@
         
         .profile-posts-container {
             margin: 10px 0;
-            background-color: #deebff;
             padding: 5px 20px;
         }
         
     </style>
-    
+
     <script type="text/javascript">    
         function changeProfileToggle() {
-            $(".change-profile-div").fadeToggle();
+            $(".change-profile-container").fadeToggle();
         }
     </script>
-    
+
 </head>
 <body>
 
@@ -68,35 +56,39 @@
     var user = AccountService.GetAccountWhere(x => x.Id == this.User.GetUniqueId());
 }
 
-<span style="display: inline-flex">
-    <img src="@user.ProfilePicture" style="width: 50px" alt=""/>
-    <h4 style="padding-left: 16px">
-        @user.AccountName <span style="font-size: 15px"> - @user.Id</span>
-    </h4>
-    <img class="change-profile-button" onclick="changeProfileToggle()" src="https://cdn.onlinewebfonts.com/svg/img_95202.png" style="height: 15px; width: 15px; margin-left: 20px; align-self: center;" alt=""/>
-</span>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<div style="display: inline-flex; width: 100%; border-bottom: 1px solid grey;">
+    <img src="@user.ProfilePicture" style="width: 50px; height: max-content" alt=""/>
+    <div>
+        <h4 style="padding-left: 16px; margin: auto">
+            @user.AccountName 
+            <span style="font-size: 15px"> - @user.Id</span>
+            <img class="change-profile-button" onclick="changeProfileToggle()" src="https://illusivecdn.blob.core.windows.net/container-1/icon_settings.png" style="height: 15px; width: 15px; margin-left: 20px; align-self: center;" alt=""/>
+        </h4>
+        
+        @* Profile Biography *@
+        <p style="padding-left: 16px; padding-bottom: 10px; font-style: italic; font-size: 11px">
+            @user.Bio
+        </p>
+    </div>
+</div>
 
 @* Profile changing settings *@
-<div class="change-profile-div">
+<div class="change-profile-container">
     <h4 class="text-center">Change profile settings</h4>
     <form enctype="multipart/form-data" method="post">
         <input asp-for="AccountUpdate.Bio" class="input-field" style="margin-bottom: 10px" type="text" placeholder="What's on your mind?">
-        Change your profile picture <input asp-for="AccountUpdate.ProfilePicture" type="file" accept="image/*"> <br/>
+        Change your profile picture <input asp-for="AccountUpdate.ProfilePicture" class="filestyle" type="file" accept="image/*"> <br/>
 
-        <input asp-page-handler="Upload" class="profile-picture-uploadbtn" type="submit" value="Update"/>
+        <input asp-page-handler="Upload" class="button" type="submit" value="Update"/>
     </form>
 </div>
-
-@* Profile Biography *@
-<p style="padding-left: 16px; padding-bottom: 10px; font-style: italic; border-bottom: 1px solid grey;">
-    Bio: @user.Bio
-    <div asp-validation-summary="All" class="text-danger"></div>
-</p>
 
 @* Profile post history *@
 <div class="profile-posts-container">
     
-    <h4 style="border-bottom: 1px solid #c6ddff; text-align: center; padding-bottom: 10px">Your posts</h4>
+    <h4 style="border-bottom: 1px solid var(--profile-posts-underline-background-color); text-align: center; padding-bottom: 10px">Your posts</h4>
     
     @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
         <div class="message">
@@ -113,16 +105,13 @@
             </span>
 
             <div class="image"><img src="@user.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></div>
-            <div class="user">
-                <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@AccountService.GetAccountWhere(x => x.Id == forum.OwnerId).AccountName / @forum.Title </a>
-                @if ( forum.Tags != null ) {
-                    foreach ( var tag in forum.Tags.Split(',') ) {
-                        <div class="forumTag noselect">@tag</div>
-                    }
+            <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
+            <a class="user" asp-page="/ForumPost" asp-route-id="@forum.Id">[@user.AccountName] @forum.Title </a>
+            @if ( forum.Tags != null ) {
+                foreach ( var tag in forum.Tags.Split(',') ) {
+                    <div class="forumTag noselect">@tag</div>
                 }
-            </div>
-            <div style="clear:both;"></div>
-            <div class="additionalInfo">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@(forum.TimeCreated.TimeSince().Humanize()) ago)</div>
+            }
         </div>
     }
 </div>

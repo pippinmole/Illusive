@@ -27,39 +27,36 @@
     }
 </div>
 
-<select onChange="window.location.href=this.value">
+<select onChange="window.location.href=this.value" style="margin: auto; background-color: var(--container-colour-secondary); padding: 5px; border: none; border-radius: 5px; color: inherit">
     <option value="./Forum?orderby=views">Order by views</option>
-    <option value="www.aol.com">B</option>
+     <option value="./Forum?orderby=date">Order by date created</option>
 </select>
 
 <div>
     @foreach ( var forum in await this.Model.GetForums() ) {
         var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
-        
+
         <div class="message">
             <span class="forum-stats">
                 <div class="forum-stat-elem">
-                    <img height="10px" src="img/forum-views.png" alt="Views"/> 
+                    <img height="10px" src="img/forum-views.png" alt="Views"/>
                     <span style="margin: 3px">@forum.Views</span>
                 </div>
-                
+
                 <div class="forum-stat-elem">
-                    <img height="10px" src="img/forum-replies.png" alt="Replies"/> 
+                    <img height="10px" src="img/forum-replies.png" alt="Replies"/>
                     <span style="margin: 3px">@forum.Replies.Count</span>
                 </div>
             </span>
-            
+
             <div class="image"><img src="@forumOwner.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></div>
-            <div class="user">
-                <a asp-page="/ForumPost" asp-route-id="@forum.Id" style="padding-right:13px">@forumOwner.AccountName / @forum.Title </a>
-                @if ( forum.Tags != null ) {
-                    foreach ( var tag in forum.Tags.Split(',') ) {
-                        <div class="forumTag noselect">@tag</div>
-                    }
+            <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
+            <a class="user" asp-page="/ForumPost" asp-route-id="@forum.Id">[@forumOwner.AccountName] @forum.Title </a>
+            @if ( forum.Tags != null ) {
+                foreach ( var tag in forum.Tags.Split(',') ) {
+                    <div class="forumTag noselect">@tag</div>
                 }
-            </div>
-            <div style="clear:both;"></div>
-            <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize()) ago)</div>
+            }
         </div>
     }
 </div>

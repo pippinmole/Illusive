@@ -8,107 +8,17 @@
     <meta name="viewport" content="user-scalable=0, user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>@ViewData["Title"] - Illusive</title>
-    <link rel="stylesheet" href="~/css/site.css" id="theme-link" />
-    <link rel="stylesheet" href="~/css/tooltips.css" />
+    
+    <link rel="stylesheet" href="~/css/site.css" id="theme-link" as="style" />
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="module" src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
-    <style type="text/css">
-    
-        body {
-            margin-bottom: 120px !important;
-        }
-    
-        .switch {
-          position: relative;
-          display: table-cell;
-          width: 60px;
-          height: 34px;
-        }
-        
-        .switch input { 
-          opacity: 0;
-          width: 0;
-          height: 0;
-        }
-        
-        .slider {
-          position: absolute;
-          cursor: pointer;
-          top: 5px;
-          left: 5px;
-          right: 5px;
-          bottom: 5px;
-          background-color: #ccc;
-          -webkit-transition: .4s;
-          transition: .4s;
-        }
-        
-        .slider:before {
-          position: absolute;
-          content: "";
-          height: 20px;
-          width: 20px;
-          left: 2px;
-          bottom: 2px;
-          background-color: white;
-          -webkit-transition: .4s;
-          transition: .4s;
-        }
-        
-        input:checked + .slider {
-          background-color: #2196F3;
-        }
-        
-        input:focus + .slider {
-          box-shadow: 0 0 1px #2196F3;
-        }
-        
-        input:checked + .slider:before {
-          -webkit-transform: translateX(26px);
-          -ms-transform: translateX(26px);
-          transform: translateX(26px);
-        }
-        
-        /* Rounded sliders */
-        .slider.round {
-          border-radius: 34px;
-        }
-        
-        .slider.round:before {
-          border-radius: 50%;
-        }
-    </style>
-    
     <script type="text/javascript">     
-    
-        function setTheme(themeName) {
-            document.documentElement.className = themeName;
-            Cookies.set("theme", themeName, { secure: true });
-        }
-       
-        function DarkModeToggle() {
-            const toggle = $(".darkmode-toggle");
-            const theme = document.querySelector("#theme-link");
-            
-            if (toggle.is(":checked")) {
-                // enable dark mode
-                setTheme("darktheme")
-            } else {
-                // disable dark mode
-                setTheme("lighttheme")
-            }
-        }
         
-        window.addEventListener("load", (event) => {
-            const theme = Cookies.get("theme");
-            
-            setTheme(theme);
-            
-            const toggle = $(".darkmode-toggle");
-            toggle.prop('checked', theme === 'darktheme');
-        });
     </script>
 </head>
 <body>
@@ -116,9 +26,9 @@
     @{
         var user = AccountService.GetAccountWhere(x => x.Id == this.User.GetUniqueId());
     }
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light navbar-color border-page-bottom box-shadow-bottom mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-color border-page-bottom box-shadow-bottom mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">Illusive</a>
+            <a class="navbar-title" asp-area="" asp-page="/Index">Illusive</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -126,12 +36,12 @@
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Forum">Forum</a>
+                        <a class="nav-link" asp-area="" asp-page="/Forum">Forum</a>
                     </li>
 
                     @if ( this.User.IsLoggedIn() ) {
                         <div float="right">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Account">Account</a>
+                            <a class="nav-link" asp-area="" asp-page="/Account">Account</a>
                         </div>
                     } else {
                         // Logged-out specific headings here
@@ -146,29 +56,29 @@
                         @user.AccountName
                     </summary>
                     <details-menu class="account-dropdown-details">
-                        <a href="/Account"><button class="account-dropdown-elem" style="width: 100%;">My Profile</button></a>
-                        <a href="/Logout"><button class="account-dropdown-elem" style="width: 100%;">Sign out</button></a>
+                        <a href="/Account"><button class="button account-dropdown-elem" style="width: 100%;">My Profile</button></a>
+                        <a href="/Logout"><button class="button account-dropdown-elem" style="width: 100%;">Sign out</button></a>
                     </details-menu>
                 </details>
             } else {
                 <details class="account-dropdown-button details-animated noselect">
                     <summary>Signed out</summary>
                     <details-menu class="account-dropdown-details">
-                        <a href="/Login"><button class="account-dropdown-elem" style="width: 100%;">Sign in</button></a>
-                        <a href="/Signup"><button class="account-dropdown-elem" style="width: 100%;">Sign up</button></a>
+                        <a href="/Login"><button class="button account-dropdown-elem" style="width: 100%;">Sign in</button></a>
+                        <a href="/Signup"><button class="button account-dropdown-elem" style="width: 100%;">Sign up</button></a>
                     </details-menu>
                 </details>
             }
             <br/>
         </div>
         
-        @* <p style="text-align: center; display: contents">Dark Mode:</p> *@
-        @* <div style="float: right;"> *@
-        @*     <label class="switch"> *@
-        @*       <input type="checkbox" class="darkmode-toggle" onclick="DarkModeToggle()" checked> *@
-        @*       <span class="slider round"></span> *@
-        @*     </label> *@
-        @* </div> *@
+        <p style="text-align: center; display: contents">Dark Mode:</p>
+        <div style="float: right;">
+            <label class="switch">
+                <input type="checkbox" class="darkmode-toggle" onclick="DarkModeToggle()" checked>
+                <span class="slider round"></span>
+            </label>
+        </div>
     </nav>
 </header>
 <div class="container">
@@ -182,10 +92,6 @@
         &copy; 2020 - <a href="https://github.com/pippinmole/" target="_blank">pippin_mole</a> - <a asp-area="" asp-page="/Privacy">Privacy</a> - <a href="https://github.com/pippinmole/Illusive" target="_blank">Open Source</a>
     </div>
 </footer>
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
 
 @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -2,3 +2,29 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your Javascript code.
+function DarkModeToggle() {
+    const toggle = $(".darkmode-toggle");
+    const theme = document.querySelector("#theme-link");
+
+    if (toggle.is(":checked")) {
+        // enable dark mode
+        setTheme("darktheme")
+    } else {
+        // disable dark mode
+        setTheme("lighttheme")
+    }
+}
+
+function setTheme(themeName) {
+    document.documentElement.className = themeName;
+    Cookies.set("theme", themeName, { secure: true });
+}
+
+window.addEventListener("load", (event) => {
+    const theme = Cookies.get("theme");
+
+    setTheme(theme);
+
+    const toggle = $(".darkmode-toggle");
+    toggle.prop('checked', theme === 'darktheme');
+});

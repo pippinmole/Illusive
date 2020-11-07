@@ -40,7 +40,7 @@
             <input class="input-field" id="forum-title-input" asp-for="NewForumData.Title" placeholder="Forum Title"/><br/>
             <textarea type="text" class="forum-content" id="forum-content-input" rows="4" cols="50" asp-for="NewForumData.Content" placeholder="Enter your content here"></textarea>
             <input class="input-field mb-5" type="text" asp-for="NewForumData.Tags" placeholder="Tags (separate by comma): " />
-            <input class="btn w-100" style="background-color: #fff; box-shadow: 0 1rem 1rem rgba(0,0,0,.08) !important;" type="submit" value="Create Post" />
+            <input class="btn w-100 button" type="submit" value="Create Post" />
             @Html.AntiForgeryToken()
         </form>
     }
