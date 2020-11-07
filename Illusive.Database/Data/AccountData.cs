@@ -1,4 +1,5 @@
 ﻿using System;
+using Illusive.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Illusive.Database.Models {
@@ -7,7 +8,7 @@ namespace Illusive.Illusive.Database.Models {
         [BsonId]
         public string Id { get; set; }
         
-        [BsonElement("Name")]
+        [BsonElement("Name"), UnicodeOnly]
         public string AccountName { get; set; }
         
         public string Email { get; set; }
