@@ -29,7 +29,7 @@ namespace Illusive.Illusive.Database.Models {
             this.Email = email;
             this.Age = age;
             this.HashedPassword = hashedPassword;
-            this.ProfilePicture = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ft4.ftcdn.net%2Fjpg%2F00%2F64%2F67%2F63%2F240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg&f=1&nofb=1";
+            this.ProfilePicture = "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
             this.Bio = "I'm new here!";
             this.AccountCreated = DateTime.Now;
         }

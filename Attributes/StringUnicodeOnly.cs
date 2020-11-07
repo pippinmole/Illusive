@@ -15,6 +15,5 @@ namespace Illusive.Attributes {
 
             return ValidationResult.Success;
         }
-
     }
 }

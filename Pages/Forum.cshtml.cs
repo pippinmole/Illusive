@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
 using Illusive.Illusive.Utilities.Forum_Filters;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -17,6 +18,15 @@ namespace Illusive.Pages {
         public ForumModel(ILogger<ForumModel> logger, IConfiguration configuration, IForumService forumService) {
             this._logger = logger;
             this._forumService = forumService;
+        }
+
+        public IActionResult OnGet() {
+            var orderByParam = this.HttpContext.Request.Query["OrderBy"];
+            if ( string.IsNullOrEmpty(orderByParam) ) {
+                return this.RedirectToPage("/Forum", new { orderby = "views" });
+            }
+
+            return this.Page();
         }
 
         public async Task<List<ForumData>> GetForums() {
