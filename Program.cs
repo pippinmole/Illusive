@@ -11,14 +11,15 @@ using Serilog.Sinks.Datadog.Logs;
 namespace Illusive {
     public class Program {
         public static void Main(string[] args) {
-            try {
-                CreateHostBuilder(args).Build().Run();
-            } catch ( Exception ex ) {
-                Log.Fatal(ex, "Application start-up failed");
-            }
-            finally {
-                Log.CloseAndFlush();
-            }
+            CreateHostBuilder(args).Build().Run();
+            // try {
+            //     CreateHostBuilder(args).Build().Run();
+            // } catch ( Exception ex ) {
+            //     Log.Fatal(ex, "Application start-up failed");
+            // }
+            // finally {
+            //     Log.CloseAndFlush();
+            // }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) {
@@ -31,7 +32,7 @@ namespace Illusive {
             config.ReadFrom.Configuration(context.Configuration);
             var ddOptions = context.Configuration.GetSection("Serilog")?.GetSection("DataDog")
                 ?.Get<DatadogOptions>();
-            
+
             if ( ddOptions != null ) {
                 config.WriteTo.DatadogLogs(
                     ddOptions.ApiKey,

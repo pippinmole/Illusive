@@ -4,6 +4,7 @@ using Illusive.Illusive.Cdn.Interfaces;
 using Illusive.Illusive.Database.Behaviour;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
+using Illusive.Illusive.Logging.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,19 +13,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using Westwind.AspNetCore.Markdown;
 
 namespace Illusive {
     public class Startup {
+        
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration) {
             this._configuration = configuration;
         }
-
-        private readonly IConfiguration _configuration;
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+
+            var ddOptions = this._configuration.GetSection("Serilog")?.GetSection("DataDog")
+                ?.Get<DatadogOptions>();
+            Console.WriteLine($"Got DataDog config: apiKey: {ddOptions.ApiKey}");
+            
             services.AddDataProtection();
             services.AddAuthentication(options => {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
