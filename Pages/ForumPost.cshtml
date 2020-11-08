@@ -18,6 +18,22 @@
 <head>
     <title>@this.Model.ForumData.Title</title>
     
+    <script src="~/js/party.js"></script>
+    <script type="text/javascript">
+    
+        $(function () {
+            document.querySelector(".like-post-action").addEventListener("mouseup", (e) => {
+                e.preventDefault();
+                party.element(document.querySelector(".like-post-action"), {
+                    count: party.variation(30, 0.5),
+                    color: party.array(['#ffa68d', '#fd3a84'])
+                });
+            });
+        });
+    
+    </script>
+    
+    
     <style type="text/css">
         
         .commentField {
@@ -66,7 +82,7 @@
         }
         
         .replyContent {
-            background-color: #f1f1f1;
+            background-color: var(--container-colour-secondary);
             border-bottom-left-radius: 7px;
             border-bottom-right-radius: 7px;
             padding: 15px;
@@ -204,7 +220,7 @@
             var replyOwner = AccountService.GetAccountWhere(x => x.Id == reply.AuthorId);
 
             <div class="replyBody">
-                <div style="width: 100px; height: 100px; background-color: #ddd; display: grid; text-align: center; border-radius: 4px;">
+                <div style="width: 100px; height: 100px; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">
                     <img style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@replyOwner.ProfilePicture" alt="">
                     <p style="font-size: 0.6rem; margin-bottom: 0"> @replyOwner.AccountName </p>
                     <p style="font-size: 0.5rem; font-style: italic">Joined @replyOwner.AccountCreated.ToShortDateString()</p>

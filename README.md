@@ -10,5 +10,6 @@ A forum website made on the ASP.NET Core framework.
 [Westwind.AspNetCore.Markdown](https://www.nuget.org/packages/Westwind.AspNetCore.Markdown/)  
 [BCrypt.Net-Next](https://www.nuget.org/packages/BCrypt.Net-Next/)  
 [Humanizer.Core](https://www.nuget.org/packages/Humanizer.Core)  
-[Azure.Storage.Blobs](https://www.nuget.org/packages/Azure.Storage.Blobs)
-[jQuery.AJAX](https://api.jquery.com/Jquery.ajax/)
+[Azure.Storage.Blobs](https://www.nuget.org/packages/Azure.Storage.Blobs)  
+[jQuery.AJAX](https://api.jquery.com/Jquery.ajax/)  
+[party.js](https://partyjs.yiliansource.dev/)
