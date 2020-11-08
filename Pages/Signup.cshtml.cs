@@ -10,15 +10,17 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace Illusive.Pages {
     public class SignupModel : PageModel {
-
+        private readonly ILogger<SignupModel> _logger;
         private readonly IAccountService _accountService;
         
         [BindProperty] public SignupDataForm SignupData { get; set; }
 
-        public SignupModel(IAccountService accountService) {
+        public SignupModel(ILogger<SignupModel> logger, IAccountService accountService) {
+            this._logger = logger;
             this._accountService = accountService;
         }
         
@@ -46,10 +48,7 @@ namespace Illusive.Pages {
                 return this.Page();
             }
 
-            Console.WriteLine("Signed up with credentials: \n" +
-                              $"username: {username} \n" +
-                              $"email: {email} \n" +
-                              $"password: {password} \n");
+            this._logger.LogInformation($"{username} has signed up with email {email}");
 
             var newAccount = new AccountData(
                 Guid.NewGuid().ToString().Substring(0, 10), // TODO: Implement user id
@@ -70,9 +69,9 @@ namespace Illusive.Pages {
             await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
                 new AuthenticationProperties {IsPersistent = true});
 
+            this._logger.LogInformation($"{username} has logged in.");
+            
             this._accountService.AddRecord(newAccount);
-
-            Console.WriteLine($"Redirecting to /Account");
 
             return this.RedirectToPage("/Account");
         }

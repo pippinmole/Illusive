@@ -1,6 +1,6 @@
 # Illusive
 
-A forum website made on the ASP.NET Core framework.
+A forum website made on the [ASP.NET Core framework](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.1).
 
 
 ## Dependencies
@@ -12,4 +12,7 @@ A forum website made on the ASP.NET Core framework.
 [Humanizer.Core](https://www.nuget.org/packages/Humanizer.Core)  
 [Azure.Storage.Blobs](https://www.nuget.org/packages/Azure.Storage.Blobs)  
 [jQuery.AJAX](https://api.jquery.com/Jquery.ajax/)  
-[party.js](https://partyjs.yiliansource.dev/)
+[party.js](https://partyjs.yiliansource.dev/)  
+[Serilog.AspNetCore](https://www.nuget.org/packages/Serilog.AspNetCore)  
+[Serilog.Sinks.Async](https://www.nuget.org/packages/Serilog.Sinks.Async/1.4.1-dev-00073)  
+[Serilog.Sinks.Datadog.Logs](https://www.nuget.org/packages/Serilog.Sinks.Datadog.Logs/)  

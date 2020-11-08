@@ -61,6 +61,8 @@ namespace Illusive.Pages {
             }
 
             await this._forumService.AddForumPostAsync(forumPost);
+            
+            this._logger.LogInformation($"User {user.GetUniqueId()} created post titled {forumPost.Title}");
 
             return this.Redirect("/Forum");
         }

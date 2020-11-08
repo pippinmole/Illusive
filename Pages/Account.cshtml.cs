@@ -54,6 +54,8 @@ namespace Illusive.Pages {
             if ( !string.IsNullOrEmpty(profileBio) ) {
                 var update = Builders<AccountData>.Update.Set(x => x.Bio, profileBio);
                 this._accountService.UpdateAccount(accountId, update);
+                
+                this._logger.LogInformation($"User {accountId} changed profile biography to {profileBio}");
             }
             
             var profilePic = accountUpdate.ProfilePicture;
@@ -67,6 +69,8 @@ namespace Illusive.Pages {
 
                 var update = Builders<AccountData>.Update.Set(x => x.ProfilePicture, path);
                 this._accountService.UpdateAccount(accountId, update);
+                
+                this._logger.LogInformation($"User {accountId} changed profile picture to {path}");
             }
 
             return this.Page();

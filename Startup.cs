@@ -32,7 +32,6 @@ namespace Illusive {
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             }).AddCookie(options => {
                 // options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-                
                 options.LoginPath = "/Login";
                 options.LogoutPath = "/Logout";
                 options.AccessDeniedPath = "/Index";

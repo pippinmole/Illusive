@@ -63,8 +63,8 @@ namespace Illusive.Pages {
                     IsPersistent = rememberMe
                 });
 
-            this._logger.LogDebug($"Redirecting logged-in user {account?.AccountName} to /Index");
-
+            this._logger.LogInformation($"{account?.AccountName} has logged in.");
+            
             if ( !string.IsNullOrEmpty(returnUrl) ) {
                 return this.LocalRedirect(returnUrl);
             }

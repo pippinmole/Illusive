@@ -47,6 +47,8 @@ namespace Illusive.Pages {
 
             this._forumService.AddReplyToForum(forum, reply);
 
+            this._logger.LogInformation($"{this.User.GetUniqueId()} has replied to forum post {forum.Id}");
+            
             return this.Redirect($"/ForumPost?id={id}");
         }
 
