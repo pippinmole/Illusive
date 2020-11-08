@@ -29,11 +29,6 @@ namespace Illusive {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-
-            var ddOptions = this._configuration.GetSection("Serilog")?.GetSection("DataDog")
-                ?.Get<DatadogOptions>();
-            Console.WriteLine($"Got DataDog config: apiKey: {ddOptions.ApiKey}");
-            
             services.AddDataProtection();
             services.AddAuthentication(options => {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;

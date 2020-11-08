@@ -10,17 +10,7 @@ using Serilog.Sinks.Datadog.Logs;
 
 namespace Illusive {
     public class Program {
-        public static void Main(string[] args) {
-            CreateHostBuilder(args).Build().Run();
-            // try {
-            //     CreateHostBuilder(args).Build().Run();
-            // } catch ( Exception ex ) {
-            //     Log.Fatal(ex, "Application start-up failed");
-            // }
-            // finally {
-            //     Log.CloseAndFlush();
-            // }
-        }
+        public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
 
         public static IHostBuilder CreateHostBuilder(string[] args) {
             return Host.CreateDefaultBuilder(args)
