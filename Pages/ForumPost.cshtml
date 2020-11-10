@@ -148,6 +148,11 @@
         <script>
         
         // Received a boolean state (True = liked, False = unliked)
+        function ToggleLikeButton() {
+            const state = $(".like-post-action").attr("src") === "https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png";
+            UpdateLikeButton(!state);
+        }
+        
         function UpdateLikeButton(state) {
             const likeImage = $(".like-post-action");
             
@@ -158,12 +163,26 @@
                 console.log("Set button to unliked");
                 likeImage.attr("src","https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png");
             }
+            
+            UpdateLikeCounter(state);
         }
         
         // Updates the amount of likes
-        function UpdateLikeCounter(likes) {
-            const likeText = $("span.like-post-text");   
-            likeText.text(likes + (likes === 1 ? " like" : " likes"));
+        function UpdateLikeCounter(isLiked) {
+            const likeText = $("span.like-post-text");
+            let likes = parseInt(likeText.text().match(/\d/g));
+            
+            console.log(likeText)
+            
+            if (isLiked) likes++;
+            else likes--;
+            
+            SetLikeCounter(likes);
+        }
+        
+        function SetLikeCounter(value) {
+            const likeText = $("span.like-post-text");
+            likeText.text(value + (value === 1 ? " like" : " likes"));
         }
         
         $(() => {
@@ -174,7 +193,7 @@
             }
             
             UpdateLikeButton(@Json.Serialize(initialLiked));
-            UpdateLikeCounter(@Json.Serialize(likeCount));
+            SetLikeCounter(@Json.Serialize(likeCount));
             
             // Like button request
             $(".like-post-action").click(() => {
@@ -192,11 +211,15 @@
                     }),
                     success: (response) =>  {
                         // console.log(JSON.stringify(response))
-                        UpdateLikeButton(response.result === "liked");
-                        UpdateLikeCounter(response.likeCount);
+                        
                     },
                     failure: (response) =>  {
                         alert(response);
+                    },
+                    complete: () => {
+                        // Toggle like button client-side - We do this so we don't have to wait for the server's response which causes
+                        // a delay in the front-end.
+                        ToggleLikeButton();
                     }
                 });
             });
