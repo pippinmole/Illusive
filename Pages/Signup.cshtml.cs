@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Illusive.Illusive.Authentication.Utility;
 using Illusive.Illusive.Database.Extension_Methods;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Illusive.Database.Models;
@@ -60,7 +59,6 @@ namespace Illusive.Pages {
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
                 ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
             identity.AddClaim(new Claim(ClaimTypes.Name, username));
             identity.AddClaim(new Claim(ClaimTypes.Email, email));
             identity.AddClaim(new Claim(ClaimTypes.PrimarySid, newAccount.Id));

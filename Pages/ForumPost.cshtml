@@ -92,7 +92,6 @@
         
         .forum-actions-container {
             background-color: var(--container-colour-primary);
-            float: right;
             padding: 3px;
             display: flex;
             border-radius: 5px;
@@ -105,6 +104,43 @@
             margin: 2px;
             height: 25px;
             cursor: pointer;
+        }
+        
+        .hovertip {
+          position: relative;
+          display: inline-block;
+          border-bottom: 1px dotted black;
+          cursor: pointer;
+        }
+        
+        .hovertip .hovertiptext {
+          visibility: hidden;
+          width: 120px;
+          background-color: black;
+          color: #fff;
+          text-align: center;
+          border-radius: 6px;
+          padding: 5px 0;
+          position: absolute;
+          z-index: 1;
+          bottom: 150%;
+          left: 50%;
+          margin-left: -60px;
+        }
+        
+        .hovertip .hovertiptext::after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: black transparent transparent transparent;
+        }
+        
+        .hovertip:hover .hovertiptext {
+          visibility: visible;
         }
     </style>
     
@@ -126,11 +162,11 @@
         
         // Updates the amount of likes
         function UpdateLikeCounter(likes) {
-            const likeText = $("p.like-post-text");   
+            const likeText = $("span.like-post-text");   
             likeText.text(likes + (likes === 1 ? " like" : " likes"));
         }
         
-        $(function () {
+        $(() => {
             // Initialise starting state
             @{
                 var initialLiked = this.Model.ForumData.HasLikeFrom(this.User);
@@ -141,11 +177,11 @@
             UpdateLikeCounter(@Json.Serialize(likeCount));
             
             // Like button request
-            $(".like-post-action").click(function () {
+            $(".like-post-action").click(() => {
                 $.ajax({
                     type: "POST",
                     url: "/ForumPost?handler=LikePost",
-                    beforeSend: function (xhr) {
+                    beforeSend: (xhr) =>  {
                         xhr.setRequestHeader("XSRF-TOKEN",
                         $('input:hidden[name="__RequestVerificationToken"]').val());
                     },
@@ -154,16 +190,44 @@
                     data: JSON.stringify({
                         "forumId" : "@this.Model.ForumData.Id"
                     }),
-                    success: function (response) {
+                    success: (response) =>  {
                         // console.log(JSON.stringify(response))
                         UpdateLikeButton(response.result === "liked");
                         UpdateLikeCounter(response.likeCount);
                     },
-                    failure: function (response) {
+                    failure: (response) =>  {
                         alert(response);
                     }
                 });
             });
+        });
+        
+        // Delete post request
+        $(".delete-post-action").click(() => {
+            if (confirm("Are you sure you would like to delete this post?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/ForumPost?handler=DeletePost",
+                    beforeSend: (xhr) =>  {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "forumId" : "@this.Model.ForumData.Id"
+                    }),
+                    success: (response) =>  {
+                        // console.log(JSON.stringify(response))
+                        // UpdateLikeButton(response.result === "liked");
+                        // UpdateLikeCounter(response.likeCount);
+                        window.location.href = response.redirect;
+                    },
+                    failure: (response) =>  {
+                        alert(response);
+                    }
+                });
+            }
         });
         </script>
     }
@@ -184,6 +248,21 @@
             }
         }
     </span>
+    
+    <div class="forum-actions-container" style="margin-top: 10px">
+        @if ( this.User.CanDeletePost(forum) ) {
+            <div class="hovertip delete-post-action">
+                <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
+                <span class="hovertiptext">Delete post</span>
+            </div>
+        }
+        @if ( false ) {
+            <div class="hovertip">
+                <img src="https://illusivecdn.blob.core.windows.net/container-1/icon-edit.png" height="28px" width="28px" style="padding: 3px" alt=""/>
+                <span class="hovertiptext">Edit post (Coming soon)</span>
+            </div>
+        }
+    </div>
 
     <div class="forumBody">
         <div class="forum-author-container">
@@ -194,9 +273,9 @@
 
         <div class="forumContent">
             @if ( this.User.IsLoggedIn() ) {
-                <div class="forum-actions-container">
+                <div class="forum-actions-container hovertip float-right">
                     <img class="forum-action like-post-action" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png" alt="">
-                    <p style="margin: auto 5px;" class="like-post-text"></p>
+                    <span class="hovertiptext like-post-text"></span>
                 </div>
             }
 
@@ -213,7 +292,7 @@
             }
         </h4>
     </div>
-        
+
     @{
         var replies = forum.Replies;
         foreach ( var reply in replies ) {

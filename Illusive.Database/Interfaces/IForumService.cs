@@ -16,5 +16,7 @@ namespace Illusive.Illusive.Database.Interfaces {
         IReadOnlyList<ForumData> GetForumsWhere(Expression<Func<ForumData, bool>> expression);
 
         void UpdateForum(ForumData forumData, UpdateDefinition<ForumData> update);
+
+        void DeleteForum(Expression<Func<ForumData, bool>> expression);
     }
 }

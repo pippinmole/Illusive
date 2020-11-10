@@ -21,12 +21,10 @@ namespace Illusive.Pages {
         
         public async Task<RedirectToPageResult> OnGet() {
             try {
-                var user = this._accountService.GetAccountWhere(x => x.Id == this.User.GetUniqueId());
-                
                 if ( this.User.IsLoggedIn() ) {
                     await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                     
-                    this._logger.LogInformation($"{user.AccountName} has logged out.");
+                    this._logger.LogInformation($"{this.User.GetDisplayName()} has logged out.");
                 }
             } catch ( Exception e ) {
                 this._logger.LogError($"Error logging out {this.User.GetUniqueId()}: {e}");

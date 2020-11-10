@@ -48,5 +48,9 @@ namespace Illusive.Illusive.Database.Behaviour {
         public void UpdateForum(ForumData forumData, UpdateDefinition<ForumData> update) {
             this._forumData.UpdateOne(x => x.Id == forumData.Id, update);
         }
+
+        public void DeleteForum(Expression<Func<ForumData, bool>> expression) {
+            this._forumData.DeleteMany(expression);
+        }
     }
 }

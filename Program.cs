@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Core;
 using Serilog.Events;
-using Serilog.Sinks.Datadog.Logs;
 
 namespace Illusive {
     public class Program {

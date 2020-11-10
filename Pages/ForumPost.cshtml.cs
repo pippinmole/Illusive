@@ -55,7 +55,31 @@ namespace Illusive.Pages {
         public class ForumLike {
             public string forumId { get; set; }
         }
+        
+        public class ForumDelete {
+            public string forumId { get; set; }
+        }
 
+        // POST: DeletePost?handler={json}
+        public ActionResult OnPostDeletePost([FromBody] ForumDelete body) {
+            if ( !this.User.IsLoggedIn() )
+                this._logger.LogWarning("User attempting to delete a forum without being authenticated!");
+            
+            var forum = this._forumService.GetForumById(body.forumId);
+            var user = this.User;
+
+            if ( user.CanDeletePost(forum) ) {
+                this._forumService.DeleteForum(x => x.Id == forum.Id);
+                this._logger.LogInformation($"{this.User.GetDisplayName()} has successfully deleted forum with id {forum.Id}!");
+            } else {
+                this._logger.LogWarning($"{this.User.GetDisplayName()} is attempting to delete a forum without being authenticated!");
+            }
+
+            return new JsonResult(new {
+                Redirect = "/"
+            });
+        }
+        
         // POST: LikePost?handler={json}
         public ActionResult OnPostLikePost([FromBody] ForumLike body) {
             if ( !this.User.IsLoggedIn() )
