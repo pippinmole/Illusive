@@ -219,9 +219,13 @@
                     complete: () => {
                         // Toggle like button client-side - We do this so we don't have to wait for the server's response which causes
                         // a delay in the front-end.
-                        ToggleLikeButton();
+                        // ToggleLikeButton();
                     }
                 });
+                
+                // Toggle like button client-side - We do this so we don't have to wait for the server's response which causes
+                // a delay in the front-end.
+                ToggleLikeButton();
             });
         });
         
