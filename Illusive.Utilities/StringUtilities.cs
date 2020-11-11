@@ -1,6 +1,5 @@
-﻿namespace Illusive.Illusive.Utilities {
+﻿namespace Illusive.Utility {
     public static class StringUtilities {
-
         public static bool IsEmail(this string str) {
             try {
                 var addr = new System.Net.Mail.MailAddress(str);

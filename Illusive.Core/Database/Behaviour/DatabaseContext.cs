@@ -3,7 +3,7 @@ using Illusive.Illusive.Database.Interfaces;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
-namespace Illusive.Illusive.Database.Behaviour {
+namespace Illusive.Database {
     public class DatabaseContext : IDatabaseContext {
         
         public IMongoClient Client { get; }

@@ -2,7 +2,7 @@
 using Illusive.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Illusive.Illusive.Database.Models {
+namespace Illusive.Models {
     public class AccountData {
         
         [BsonId]

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
+using Illusive.Database;
 using MongoDB.Driver;
 
-namespace Illusive.Illusive.Database.Extension_Methods {
+namespace Illusive.Models.Extensions {
     public static class AccountServiceExtensionMethods {
         public static AccountData GetAccountByEmail(this IAccountService service, string email) {
             return service.GetAccountWhere(x => x.Email == email);

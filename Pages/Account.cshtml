@@ -1,10 +1,9 @@
 ﻿@page "/Account/{id?}"
 @inject IAccountService AccountService
 @inject IForumService ForumService
-@using global::Illusive.Illusive.Database.Interfaces
-@using global::Illusive.Illusive.Utilities
+@using global::Illusive.Database
+@using global::Illusive.Utility
 @using Humanizer
-@using global::Illusive.Illusive.Authentication.Utility
 @model AccountModel
 @{
     ViewData["Title"] = "Account";

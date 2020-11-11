@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Illusive.Illusive.Authentication.Utility;
-using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
+using Illusive.Database;
+using Illusive.Models;
+using Illusive.Models.Extensions;
+using Illusive.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;

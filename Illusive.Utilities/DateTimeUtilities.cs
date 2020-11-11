@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Illusive.Illusive.Utilities {
+namespace Illusive.Utility {
     public static class DateTimeUtilities {
 
         public static TimeSpan TimeSince(this DateTime date) {

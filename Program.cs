@@ -1,5 +1,5 @@
 using System;
-using Illusive.Illusive.Logging.Data;
+using Illusive.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.Storage.Blobs.Models;
 
-namespace Illusive.Illusive.Cdn.Interfaces {
+namespace Illusive {
     public interface IContentService {
 
         Task<string> UploadFileAsync(string fileName, FileStream fileStream);

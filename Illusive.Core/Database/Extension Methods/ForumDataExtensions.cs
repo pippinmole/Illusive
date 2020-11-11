@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
-using Illusive.Illusive.Authentication.Utility;
+using Illusive.Utility;
 
-namespace Illusive.Illusive.Database.Models {
+namespace Illusive.Models.Extensions {
     public static class ForumDataExtensions {
         
         public static ForumData AssignOwner(this ForumData forumData, ClaimsPrincipal claimsPrincipal) {

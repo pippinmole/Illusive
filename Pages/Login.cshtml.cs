@@ -2,10 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Illusive.Illusive.Authentication.Utility;
-using Illusive.Illusive.Database.Extension_Methods;
-using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
+using Illusive.Database;
+using Illusive.Models.Extensions;
+using Illusive.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;

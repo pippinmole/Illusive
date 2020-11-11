@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using Illusive.Illusive.Cdn.Behaviour;
-using Illusive.Illusive.Cdn.Interfaces;
-using Illusive.Illusive.Database.Behaviour;
+using Illusive.Database;
 using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
-using Illusive.Illusive.Logging.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,8 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Serialization;
 using Westwind.AspNetCore.Markdown;
 
 namespace Illusive {

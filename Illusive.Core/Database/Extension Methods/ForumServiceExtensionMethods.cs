@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-using Illusive.Illusive.Authentication.Utility;
-using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
+using Illusive.Database;
+using Illusive.Utility;
 using MongoDB.Driver;
 
-namespace Illusive.Illusive.Database.Extension_Methods {
+namespace Illusive.Models.Extensions {
     public static class ForumServiceExtensionMethods {
 
         public static ForumData GetForumById(this IForumService service, string id) {

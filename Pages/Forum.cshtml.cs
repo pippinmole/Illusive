@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
-using Illusive.Illusive.Utilities.Forum_Filters;
+using Illusive.Database;
+using Illusive.Models;
+using Illusive.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;

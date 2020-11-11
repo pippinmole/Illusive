@@ -6,7 +6,7 @@ using Illusive.Attributes;
 using Illusive.Settings;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Illusive.Illusive.Database.Models {
+namespace Illusive.Models {
     public class ForumData {
 
         [BsonId] public string Id { get; set; }

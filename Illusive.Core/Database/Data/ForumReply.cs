@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Illusive.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Illusive.Illusive.Database.Models {
+namespace Illusive.Models {
     public class ForumReply {
         [BsonId]
         public string Id { get; set; }

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Illusive.Illusive.Database.Models;
+using Illusive.Models;
 using MongoDB.Driver;
 
-namespace Illusive.Illusive.Database.Interfaces {
+namespace Illusive.Database {
     public interface IForumService {
-
         Task AddForumPostAsync(ForumData forumPost);
         Task<List<ForumData>> GetForumDataAsync();
         

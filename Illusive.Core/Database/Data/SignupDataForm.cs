@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Illusive.Illusive.Database.Models {
+namespace Illusive.Models {
     public class SignupDataForm {
             
         [Required, MaxLength(15)]

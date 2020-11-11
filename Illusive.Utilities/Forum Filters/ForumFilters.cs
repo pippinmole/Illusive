@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Illusive.Illusive.Database.Models;
+using Illusive.Models;
 
-namespace Illusive.Illusive.Utilities.Forum_Filters {
+namespace Illusive.Utility {
     public static class ForumFilters {
 
         private static readonly Dictionary<string, Func<List<ForumData>, List<ForumData>>> Filters = new Dictionary<string, Func<List<ForumData>, List<ForumData>>>

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Claims;
-using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
-using Illusive.Pages;
+﻿using System.Security.Claims;
+using Illusive.Models;
 
-namespace Illusive.Illusive.Authentication.Utility {
+namespace Illusive.Utility {
     public static class AccountAuthenticationUtilities {
 
         public static string GetUniqueId(this ClaimsPrincipal principal) {

@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
-using DnsClient.Internal;
 using Illusive.Illusive.Database.Interfaces;
-using Illusive.Illusive.Database.Models;
+using Illusive.Models;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Illusive.Illusive.Database.Behaviour {
+namespace Illusive.Database {
     public class ForumService : IForumService {
         private readonly ILogger<ForumService> _logger;
 

@@ -1,7 +1,7 @@
 ﻿using Serilog.Events;
 using Serilog.Sinks.Datadog.Logs;
 
-namespace Illusive.Illusive.Logging.Data {
+namespace Illusive.Logging {
     public class DatadogOptions {
         public string ServiceName { get; set; }
         public string AssemblyName { get; set; }

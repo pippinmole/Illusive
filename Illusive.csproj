@@ -25,4 +25,7 @@
     <PackageReference Include="Serilog.Sinks.Datadog.Logs" Version="0.3.3" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.4.5" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Illusive.Core" />
+  </ItemGroup>
 </Project>

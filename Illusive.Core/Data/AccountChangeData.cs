@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Illusive.Attributes;
 using Microsoft.AspNetCore.Http;
 
-namespace Illusive.Illusive.Data {
+namespace Illusive.Data {
     public class AccountChangeData {
         
         [StringLength(140)]

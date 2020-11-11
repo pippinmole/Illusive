@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Illusive.Illusive.Database.Interfaces;
+using Illusive.Models;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
-namespace Illusive.Illusive.Database.Models {
+namespace Illusive.Database {
     public class AccountService : IAccountService {
         
         private readonly ILogger<AccountService> _logger;
