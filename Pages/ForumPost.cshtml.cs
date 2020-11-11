@@ -90,10 +90,10 @@ namespace Illusive.Pages {
 
             var isLiked = forum.Likes.Contains(user.GetUniqueId());
             if ( isLiked ) {
-                this._logger.LogWarning($"{user.GetUniqueId()} is unliking post {body.ToJson()})");
+                this._logger.LogInformation($"{user.GetUniqueId()} is unliking post {body.ToJson()})");
                 this._forumService.RemoveLikeFromForum(forum, user);
             } else {
-                this._logger.LogWarning($"{user.GetUniqueId()} is liking post {body.ToJson()})");
+                this._logger.LogInformation($"{user.GetUniqueId()} is liking post {body.ToJson()})");
                 this._forumService.AddLikeToForum(forum, user);
             }
 
