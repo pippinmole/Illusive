@@ -50,18 +50,17 @@ namespace Illusive.Pages {
             this._logger.LogInformation($"{username} has signed up with email {email}");
 
             var newAccount = new AccountData(
-                Guid.NewGuid().ToString().Substring(0, 10), // TODO: Implement user id
+                Guid.NewGuid().ToString().Substring(0, 10),
                 username,
                 email,
                 17,
-                BCrypt.Net.BCrypt.HashPassword(password)
+                BCrypt.Net.BCrypt.HashPassword(password),
+                false
             );
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
                 ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.Name, username));
-            identity.AddClaim(new Claim(ClaimTypes.Email, email));
-            identity.AddClaim(new Claim(ClaimTypes.PrimarySid, newAccount.Id));
+            identity.AddClaimsForAccount(newAccount);
 
             var principal = new ClaimsPrincipal(identity);
             await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,

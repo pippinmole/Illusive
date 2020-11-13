@@ -63,9 +63,12 @@
     <img src="@user.ProfilePicture" style="width: 50px; height: 50px" alt=""/>
     <div>
         <h4 style="padding-left: 16px; margin: auto">
-            @user.AccountName 
+            @if ( user.IsAdmin ) {
+                <span style="color: red; font-size: 12px">[Admin]</span>
+            }
+            @user.AccountName
             <span style="font-size: 15px"> - @user.Id</span>
-            
+
             @if ( isMyAccount ) {
                 <img class="change-profile-button" onclick="changeProfileToggle()" src="https://illusivecdn.blob.core.windows.net/container-1/icon_settings.png" style="height: 15px; width: 15px; margin-left: 20px; align-self: center;" alt=""/>
             }

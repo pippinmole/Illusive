@@ -23,7 +23,9 @@ namespace Illusive.Models {
         
         public DateTime AccountCreated { get; set; }
         
-        public AccountData(string id, string accountName, string email, uint age, string hashedPassword) {
+        public bool IsAdmin { get; set; }
+        
+        public AccountData(string id, string accountName, string email, uint age, string hashedPassword, bool isAdmin) {
             this.Id = id;
             this.AccountName = accountName;
             this.Email = email;
@@ -32,6 +34,7 @@ namespace Illusive.Models {
             this.ProfilePicture = "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
             this.Bio = "I'm new here!";
             this.AccountCreated = DateTime.Now;
+            this.IsAdmin = isAdmin;
         }
     }
 }

@@ -276,7 +276,7 @@
     </span>
     
     <div class="forum-actions-container" style="margin-top: 10px">
-        @if ( this.User.CanDeletePost(forum) ) {
+        @if ( this.User.CanDeletePost(forum) || this.User.IsAdminAccount() ) {
             <div class="hovertip delete-post-action">
                 <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
                 <span class="hovertiptext">Delete post</span>
@@ -293,7 +293,12 @@
     <div class="forumBody">
         <div class="forum-author-container">
             <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner?.ProfilePicture" alt="">
-            <p style="font-size: 0.6rem; margin-bottom: 0"> @forumOwner?.AccountName </p>
+            <p style="font-size: 0.6rem; margin: 0 0.1rem;">
+                @if ( forumOwner?.IsAdmin == true ) {
+                    <span style="color: red;">[Admin]</span>
+                }
+                @forumOwner?.AccountName
+            </p>
             <p style="font-size: 0.5rem; font-style: italic">Joined @forumOwner?.AccountCreated.ToShortDateString()</p>
         </div>
 
@@ -325,10 +330,15 @@
             var replyOwner = AccountService.GetAccountWhere(x => x.Id == reply.AuthorId);
 
             <div class="replyBody">
-                <div style="width: 100px; height: 100px; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">
-                    <img style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@replyOwner.ProfilePicture" alt="">
-                    <p style="font-size: 0.6rem; margin-bottom: 0"> @replyOwner.AccountName </p>
-                    <p style="font-size: 0.5rem; font-style: italic">Joined @replyOwner.AccountCreated.ToShortDateString()</p>
+                <div style="width: 100px; min-width: 100px; height: auto; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">
+                    <img style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@replyOwner?.ProfilePicture" alt="">
+                    <p style="font-size: 0.6rem; margin: 0 0.1rem;">
+                        @if ( replyOwner?.IsAdmin == true ) {
+                            <span style="color: red;">[Admin]</span>
+                        }
+                        @replyOwner?.AccountName
+                    </p>
+                    <p style="font-size: 0.5rem; font-style: italic">Joined @replyOwner?.AccountCreated.ToShortDateString()</p>
                 </div>
 
                 <div class="replyContent">

@@ -44,6 +44,10 @@ namespace Illusive {
                 // options.Conventions.AllowAnonymousToPage("/Index");
             }).SetCompatibilityVersion(CompatibilityVersion.Latest).AddNewtonsoftJson();
 
+            services.AddAuthorization(options => {
+                options.AddPolicy("UserPolicy", policy => policy.RequireRole("IsAdmin"));
+            });
+            
             services.AddAntiforgery(options => {
                 options.HeaderName = "XSRF-TOKEN";
             });

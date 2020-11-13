@@ -7,6 +7,7 @@ using Illusive.Models.Extensions;
 using Illusive.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -17,11 +18,15 @@ namespace Illusive.Pages {
         [BindProperty] public LoginPost loginData { get; set; }
 
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<IdentityUser> _user;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IAccountService _accountService;
         
-        public LoginModel(IAccountService accountService, ILogger<LoginModel> logger) {
+        public LoginModel(IAccountService accountService, ILogger<LoginModel> logger, UserManager<IdentityUser> user, SignInManager<IdentityUser> signInManager) {
             this._accountService = accountService;
             this._logger = logger;
+            this._user = user;
+            this._signInManager = signInManager;
         }
         
         public IActionResult OnGet() {
@@ -52,16 +57,12 @@ namespace Illusive.Pages {
                 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
                 ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.Name, username));
-            identity.AddClaim(new Claim(ClaimTypes.Email, account?.Email));
-            identity.AddClaim(new Claim(ClaimTypes.PrimarySid, account?.Id));
+            identity.AddClaimsForAccount(account);
 
             var principal = new ClaimsPrincipal(identity);
             await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
-                new AuthenticationProperties {
-                    IsPersistent = rememberMe
-                });
-
+                new AuthenticationProperties { IsPersistent = rememberMe });
+            
             this._logger.LogInformation($"{account?.AccountName} has logged in.");
             
             if ( !string.IsNullOrEmpty(returnUrl) ) {
