@@ -19,12 +19,3 @@ function setTheme(themeName) {
     document.documentElement.className = themeName;
     Cookies.set("theme", themeName, { secure: true });
 }
-
-window.addEventListener("load", (event) => {
-    const theme = Cookies.get("theme");
-
-    setTheme(theme);
-
-    const toggle = $(".darkmode-toggle");
-    toggle.prop('checked', theme === 'darktheme');
-});
