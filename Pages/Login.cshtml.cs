@@ -18,15 +18,11 @@ namespace Illusive.Pages {
         [BindProperty] public LoginPost loginData { get; set; }
 
         private readonly ILogger<LoginModel> _logger;
-        private readonly UserManager<IdentityUser> _user;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IAccountService _accountService;
         
-        public LoginModel(IAccountService accountService, ILogger<LoginModel> logger, UserManager<IdentityUser> user, SignInManager<IdentityUser> signInManager) {
+        public LoginModel(IAccountService accountService, ILogger<LoginModel> logger) {
             this._accountService = accountService;
             this._logger = logger;
-            this._user = user;
-            this._signInManager = signInManager;
         }
         
         public IActionResult OnGet() {

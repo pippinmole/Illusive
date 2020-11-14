@@ -40,12 +40,70 @@
             padding: 5px 20px;
         }
         
+        /* Style the tab */
+        .tab {
+          overflow: hidden;
+          border: 1px solid #ccc;
+          background-color: #f1f1f1;
+        }
+        
+        /* Style the buttons inside the tab */
+        .tab button {
+          background-color: inherit;
+          float: left;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+        }
+        
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+          background-color: #ddd;
+        }
+        
+        /* Create an active/current tablink class */
+        .tab button.active {
+          background-color: #ccc;
+        }
+        
+        /* Style the tab content */
+        .tabcontent {
+          display: none;
+          padding: 6px 12px;
+          border: 1px solid #ccc;
+          border-top: none;
+        }
+        
     </style>
 
     <script type="text/javascript">    
         function changeProfileToggle() {
             $(".change-profile-container").fadeToggle();
         }
+    </script>
+    
+    <script>
+    function OpenListItem(cityName) {
+        const tabcontent = document.getElementsByClassName("tabcontent");
+        for (let i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        
+        const tablinks = document.getElementsByClassName("tablinks");
+        for (let i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+                      
+        document.getElementById(cityName).style.display = "block";
+        // evt.currentTarget.className += " active";
+    }
+    
+    window.addEventListener("load", () => {
+        OpenListItem("Posts"); 
+    });
     </script>
 
 </head>
@@ -95,37 +153,47 @@
 @* Profile post history *@
 <div class="profile-posts-container">
     
-    <h4 style="border-bottom: 1px solid var(--profile-posts-underline-background-color); text-align: center; padding-bottom: 10px">Posts</h4>
+    <div class="tab">
+      <button class="tablinks" onclick="OpenListItem('Posts')">Posts</button>
+      <button class="tablinks" onclick="OpenListItem('LikedPosts')">Liked Posts</button>
+    </div>
     
-    @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
-        <div class="message">
-            <span class="forum-stats">
-                <div class="forum-stat-elem">
-                    <img height="15px" width="15px" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png" alt="Likes"/>
-                    <span style="margin: 3px">@forum.Likes.Count</span>
-                </div>
-                                
-                <div class="forum-stat-elem">
-                    <img height="10px" src="~/img/forum-views.png" alt="Views"/>
-                    <span style="margin: 3px">@forum.Views</span>
-                </div>
-
-                <div class="forum-stat-elem">
-                    <img height="10px" src="~/img/forum-replies.png" alt="Replies"/>
-                    <span style="margin: 3px">@forum.Replies.Count</span>
-                </div>
-            </span>
-
-            <div class="image"><a href="/Account/@user.Id"><img src="@user.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
-            <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
-            <div class="user"><a href="/Account/@user.Id">[@user.AccountName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
-            @if ( forum.Tags != null ) {
-                foreach ( var tag in forum.Tags.Split(',') ) {
-                    <div class="forumTag noselect">@tag</div>
-                }
-            }
-        </div>
-    }
+    <div id="Posts" class="tabcontent">
+       @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
+              <div class="message">
+                  <span class="forum-stats">
+                      <div class="forum-stat-elem">
+                          <img height="15px" width="15px" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png" alt="Likes"/>
+                          <span style="margin: 3px">@forum.Likes.Count</span>
+                      </div>
+                                      
+                      <div class="forum-stat-elem">
+                          <img height="10px" src="~/img/forum-views.png" alt="Views"/>
+                          <span style="margin: 3px">@forum.Views</span>
+                      </div>
+      
+                      <div class="forum-stat-elem">
+                          <img height="10px" src="~/img/forum-replies.png" alt="Replies"/>
+                          <span style="margin: 3px">@forum.Replies.Count</span>
+                      </div>
+                  </span>
+      
+                  <div class="image"><a href="/Account/@user.Id"><img src="@user.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
+                  <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
+                  <div class="user"><a href="/Account/@user.Id">[@user.AccountName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
+                  @if ( forum.Tags != null ) {
+                      foreach ( var tag in forum.Tags.Split(',') ) {
+                          <div class="forumTag noselect">@tag</div>
+                      }
+                  }
+              </div>
+          }
+    </div>
+    
+    <div id="LikedPosts" class="tabcontent">
+      <h3>Liked Posts</h3>
+      <p>ADD LIST OF LIKED POSTS.</p> 
+    </div>
 </div>
 
 </body>
