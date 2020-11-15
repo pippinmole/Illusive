@@ -8,7 +8,7 @@
 @model ForumPost
 @{
     ViewData["Title"] = this.Model.ForumData.Title;
-    ViewData["DisableIndexing"] = true;
+    ViewData["Description"] = this.Model.ForumData.Content.Substring(0, 20);
 }
 
 <!DOCTYPE html>
