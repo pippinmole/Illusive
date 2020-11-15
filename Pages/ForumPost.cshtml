@@ -23,7 +23,6 @@
     
     <script src="~/js/party.js"></script>
     <script type="text/javascript">
-    
         $(function () {
             document.querySelector(".like-post-action").addEventListener("mouseup", (e) => {
                 e.preventDefault();
@@ -233,7 +232,7 @@
         });
         
         // Delete post request
-        $(".delete-post-action").click(() => {
+        function DeletePost() {
             if (confirm("Are you sure you would like to delete this post?")) {
                 $.ajax({
                     type: "POST",
@@ -258,7 +257,35 @@
                     }
                 });
             }
-        });
+        }
+        
+        function DeleteReply(replyId) {
+            if (confirm("Are you sure you would like to delete this reply? (" + replyId + ")")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/ForumPost?handler=DeleteReply",
+                    beforeSend: (xhr) =>  {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "forumId" : "@this.Model.ForumData.Id",
+                        "replyId" : replyId.toString()
+                    }),
+                    success: (response) =>  {
+                        // console.log(JSON.stringify(response))
+                        // UpdateLikeButton(response.result === "liked");
+                        // UpdateLikeCounter(response.likeCount);
+                        window.location.href = response.redirect;
+                    },
+                    failure: (response) =>  {
+                        alert(response);
+                    }
+                });
+            }
+        }
         </script>
     }
 </head>
@@ -281,7 +308,7 @@
     
     <div class="forum-actions-container" style="margin-top: 10px">
         @if ( this.User.CanDeletePost(forum) || this.User.IsAdminAccount() ) {
-            <div class="hovertip delete-post-action">
+            <div class="hovertip delete-post-action" onclick="DeletePost();">
                 <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
                 <span class="hovertiptext">Delete post</span>
             </div>
@@ -348,6 +375,13 @@
                 <div class="replyContent">
                     <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Commented @reply.TimeCreated.ToString("MMMM dd, yyyy") (@(reply.TimeCreated.TimeSince().Humanize()) ago)</span>
 
+                    @if ( this.User.CanDeleteReply(reply) || this.User.IsAdminAccount() ) {
+                        <div class="hovertip float-right" onclick="DeleteReply('@reply.Id');">
+                            <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
+                            <span class="hovertiptext">Delete reply</span>
+                        </div>
+                    }
+                    
                     <p>@reply.Content</p>
                 </div>
             </div>

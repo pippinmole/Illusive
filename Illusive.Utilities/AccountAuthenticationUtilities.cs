@@ -30,5 +30,9 @@ namespace Illusive.Utility {
         public static bool CanDeletePost(this ClaimsPrincipal principal, ForumData post) {
             return post.OwnerId == principal.GetUniqueId();
         }
+        
+        public static bool CanDeleteReply(this ClaimsPrincipal principal, ForumReply post) {
+            return post.AuthorId == principal.GetUniqueId();
+        }
     }
 }

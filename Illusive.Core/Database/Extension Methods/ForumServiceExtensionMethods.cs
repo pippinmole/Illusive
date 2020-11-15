@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using Illusive.Database;
 using Illusive.Utility;
@@ -39,6 +40,14 @@ namespace Illusive.Models.Extensions {
             forum.Likes.RemoveAll(x => x == userId);
             
             var update = Builders<ForumData>.Update.Set(x => x.Likes, forum.Likes);
+            service.UpdateForum(forum, update);
+        }
+        
+        public static void RemoveReplyFromForum(this IForumService service, ForumData forum, string replyId) {
+            var newReplies = forum.Replies;
+            newReplies.RemoveAll(x => x.Id == replyId);
+            
+            var update = Builders<ForumData>.Update.Set(x => x.Replies, newReplies);
             service.UpdateForum(forum, update);
         }
     }

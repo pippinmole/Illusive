@@ -14,6 +14,7 @@ namespace Illusive.Models {
         public DateTime TimeCreated { get; set; }
 
         public ForumReply() {
+            this.Id = Guid.NewGuid().ToString();
             this.TimeCreated = DateTime.Now;
         }
     }

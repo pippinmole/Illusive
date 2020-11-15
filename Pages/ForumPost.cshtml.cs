@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Illusive.Database;
 using Illusive.Models;
 using Illusive.Models.Extensions;
@@ -58,6 +59,11 @@ namespace Illusive.Pages {
         public class ForumDelete {
             public string forumId { get; set; }
         }
+        
+        public class ForumReplyDelete {
+            public string forumId { get; set; }
+            public string replyId { get; set; }
+        }
 
         // POST: DeletePost?handler={json}
         public ActionResult OnPostDeletePost([FromBody] ForumDelete body) {
@@ -99,6 +105,34 @@ namespace Illusive.Pages {
             return new JsonResult(new {
                 Result = isLiked ? "unliked" : "liked",
                 LikeCount = forum.Likes.Count
+            });
+        }
+        
+        // POST: DeleteReply?handler={json}
+        public ActionResult OnPostDeleteReply([FromBody] ForumReplyDelete body) {
+            
+            this._logger.LogWarning($"Attempting to delete reply id {body.replyId}");
+            
+            if ( !this.User.IsLoggedIn() )
+                this._logger.LogWarning("User attempting to delete a forum without being authenticated!");
+            
+            var forum = this._forumService.GetForumById(body.forumId);
+            var reply = forum.Replies.FirstOrDefault(x => x.Id == body.replyId);
+            var user = this.User;
+
+            if ( reply == null ) {
+                return new JsonResult(new { Error = "TRUE" });
+            }
+            
+            if ( user.CanDeleteReply(reply) || user.IsAdminAccount() ) {
+                this._forumService.RemoveReplyFromForum(forum, reply.Id);
+                this._logger.LogInformation($"{this.User.GetDisplayName()} has successfully deleted forum reply with id {reply.Id}!");
+            } else {
+                this._logger.LogWarning($"{this.User.GetDisplayName()} is attempting to delete a forum reply without being authenticated!");
+            }
+
+            return new JsonResult(new {
+                Redirect = $"/ForumPost?id={forum.Id}"
             });
         }
     }
