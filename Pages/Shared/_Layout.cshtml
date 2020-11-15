@@ -32,8 +32,10 @@
         
         setTheme(theme);
         
-        const toggle = $(".darkmode-toggle");
-        toggle.prop('checked', theme === 'darktheme');
+        window.addEventListener("load", () => {
+            const toggle = $(".darkmode-toggle");
+            toggle.prop('checked', theme === 'darktheme');
+        });
     </script>
 </head>
 <body>

@@ -292,12 +292,12 @@
 
     <div class="forumBody">
         <div class="forum-author-container">
-            <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner?.ProfilePicture" alt="">
+            <a href="/Account/@forumOwner?.Id"> <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner?.ProfilePicture" alt=""></a>
             <p style="font-size: 0.6rem; margin: 0 0.1rem;">
                 @if ( forumOwner?.IsAdmin == true ) {
                     <span style="color: red;">[Admin]</span>
                 }
-                @forumOwner?.AccountName
+                <a href="/Account/@forumOwner?.Id"> @forumOwner?.AccountName</a>
             </p>
             <p style="font-size: 0.5rem; font-style: italic">Joined @forumOwner?.AccountCreated.ToShortDateString()</p>
         </div>
@@ -336,7 +336,7 @@
                         @if ( replyOwner?.IsAdmin == true ) {
                             <span style="color: red;">[Admin]</span>
                         }
-                        @replyOwner?.AccountName
+                        <a href="/Account/@replyOwner?.Id"> @replyOwner?.AccountName</a>
                     </p>
                     <p style="font-size: 0.5rem; font-style: italic">Joined @replyOwner?.AccountCreated.ToShortDateString()</p>
                 </div>
