@@ -5,11 +5,16 @@
 <html lang="en">
 <head>
     <script src="~/js/site.js"></script>
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Illusive"/>
-    <meta property="og:description" content="An open source forum"/>
+
+    <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://illusive.azurewebsites.net/"/>
     <meta property="og:image" content="https://illusive.azurewebsites.net/favicon.ico"/>
+
+    @if ( (ViewData["DisableIndexing"] as bool?) != true ) {
+        <meta property="og:title" content="Illusive"/>
+        <meta property="og:description" content="An open source forum"/>
+    }
+    
     <meta name="theme-color" content="#DEEBFF">
     <meta charset="utf-8"/>
     <meta name="viewport" content="user-scalable=0, user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
