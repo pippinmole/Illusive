@@ -19,3 +19,13 @@ function setTheme(themeName) {
     document.documentElement.className = themeName;
     Cookies.set("theme", themeName, { secure: true });
 }
+
+window.addEventListener("load", () => {
+    const debouncers = $(".debounce");
+    for (let i = 0; i < debouncers.length; i++) {
+        const debouncer = debouncers[i];
+
+        debouncer.preventDefault();
+        debouncer.click(null);
+    }
+});

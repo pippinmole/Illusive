@@ -1,6 +1,12 @@
 ﻿@page
+@using Microsoft.Extensions.Configuration  
+@inject IConfiguration Configuration  
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
 @using global::Illusive.Settings
 @using global::Illusive.Utility
+@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore
+@using reCAPTCHA.AspNetCore.Templates
 @model CreatePostModel
 
 @{
@@ -41,6 +47,7 @@
             <input class="input-field" id="forum-title-input" asp-for="NewForumData.Title" placeholder="Forum Title"/><br/>
             <textarea type="text" class="forum-content" id="forum-content-input" rows="4" cols="50" asp-for="NewForumData.Content" placeholder="Enter your content here"></textarea>
             <input class="input-field mb-5" type="text" asp-for="NewForumData.Tags" placeholder="Tags (separate by comma): " />
+            @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
             <input class="btn w-100 button" type="submit" value="Create Post" />
             @Html.AntiForgeryToken()
         </form>

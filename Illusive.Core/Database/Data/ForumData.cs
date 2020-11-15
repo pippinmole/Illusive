@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Illusive.Attributes;
 using Illusive.Settings;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Models {

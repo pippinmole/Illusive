@@ -14,6 +14,7 @@ namespace Illusive.Database {
         public AccountService(ILogger<AccountService> logger, IDatabaseContext ctx) {
             this._logger = logger;
             this._accounts = ctx.GetDatabase("IllusiveDatabase").GetCollection<AccountData>("user_info");
+
         }
 
         public AccountData AddRecord(AccountData account) {

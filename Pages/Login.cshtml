@@ -1,4 +1,8 @@
 ﻿@page
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
+@using reCAPTCHA.AspNetCore
+@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore.Versions
 @model LoginModel
 @{
     ViewData["Title"] = "Home page";
@@ -16,7 +20,9 @@
             Username: <input class="input-field" style="width: 50%" asp-for="loginData.Username" placeholder="username"/><br/>
             Password: <input class="input-field" style="width: 50%" asp-for="loginData.Password" placeholder="password"/><br/>
             Remember me: <input asp-for="loginData.RememberMe" type="checkbox"/><br/>
-            <input type="submit" value="Login"/>
+            @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
+            <input id="recaptcha" type="submit" value="Login"/>
+            
             <p>Don't have an account? <a href="/Signup">Sign up!</a></p>
             @Html.AntiForgeryToken()
         </form>

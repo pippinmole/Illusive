@@ -15,6 +15,53 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
+    <script>
+        function displayMessage(message) {
+            $(".message-window > span#message").text(message);
+            $(".message-window").addClass("show").delay(3000).queue(function () {
+                $(this).removeClass("show").dequeue();
+            });
+        }
+        
+        jQuery(document).ready(function ($) {
+            $('#feedback-form').submit(function (event) {
+                event.preventDefault();
+                grecaptcha.execute('site_key', { action: 'submit' }).then(function (token) {
+                    var data = {
+                        name: $('#name').val(),
+                        email: $('#email').val(),
+                        feedback: $('#feedback').val(),
+                        token: token
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/feedback',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        dataType: "json",
+                        cache: false,
+                        complete: function (event) {
+                            switch(event.status) {
+                                case 200:
+                                    $('#name').val('');
+                                    $('#email').val('');
+                                    $('#feedback').val('');
+                                    displayMessage('Thank you for submitting your feedback!');
+                                    break;
+                                case 403:
+                                    displayMessage('Are you a robot?');
+                                    break;
+                                default:
+                                    displayMessage('Something went wrong. Please try later.');
+                                    break;
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    
     <script type="text/javascript">
         window.addEventListener("load", () => {
             const orderBy = $(".order-by");
@@ -26,6 +73,11 @@
     </script>
 </head>
 <body>
+
+<div class="message-window">
+    <div class="icon"></div>
+    <span id="message"></span>
+</div>
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>

@@ -7,17 +7,20 @@ using Illusive.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using reCAPTCHA.AspNetCore;
 
 namespace Illusive.Pages {
     public class CreatePostModel : PageModel {
         private readonly ILogger<CreatePostModel> _logger;
         private readonly IForumService _forumService;
+        private readonly IRecaptchaService _recaptchaService;
 
         [BindProperty] public ForumData NewForumData { get; set; } = new ForumData();
 
-        public CreatePostModel(ILogger<CreatePostModel> logger, IForumService forumService) {
+        public CreatePostModel(ILogger<CreatePostModel> logger, IForumService forumService, IRecaptchaService recaptchaService) {
             this._logger = logger;
             this._forumService = forumService;
+            this._recaptchaService = recaptchaService;
         }
         
         public void OnGet() {
@@ -28,6 +31,12 @@ namespace Illusive.Pages {
             if ( !this.ModelState.IsValid )
                 return this.Page();
 
+            var result = await this._recaptchaService.Validate(this.Request);
+            if ( !result.success ) {
+                this.ModelState.AddModelError("", "Recaptcha failed.");
+                return this.Page();
+            }
+            
             var user = this.HttpContext.User;
             if ( !user.IsLoggedIn() ) {
                 this._logger.LogWarning("Redirecting unauthenticated user to /Index");

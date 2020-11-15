@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using reCAPTCHA.AspNetCore;
 using Westwind.AspNetCore.Markdown;
 
 namespace Illusive {
@@ -47,7 +48,9 @@ namespace Illusive {
             services.AddAuthorization(options => {
                 options.AddPolicy("UserPolicy", policy => policy.RequireRole("IsAdmin"));
             });
-            
+
+            services.AddRecaptcha(this._configuration.GetSection("RecaptchaSettings"));
+
             services.AddAntiforgery(options => {
                 options.HeaderName = "XSRF-TOKEN";
             });

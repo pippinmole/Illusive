@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Illusive.Attributes;
 using Illusive.Database;
 using Illusive.Models.Extensions;
 using Illusive.Utility;
@@ -10,7 +11,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using reCAPTCHA.AspNetCore;
+using reCAPTCHA.AspNetCore.Attributes;
+using reCAPTCHA.AspNetCore.Templates;
 
 namespace Illusive.Pages {
     public class LoginModel : PageModel {
@@ -18,11 +23,15 @@ namespace Illusive.Pages {
         [BindProperty] public LoginPost loginData { get; set; }
 
         private readonly ILogger<LoginModel> _logger;
+        private readonly IRecaptchaService _recaptchaService;
+        private readonly IConfiguration _configuration;
         private readonly IAccountService _accountService;
         
-        public LoginModel(IAccountService accountService, ILogger<LoginModel> logger) {
+        public LoginModel(IConfiguration configuration, IAccountService accountService, ILogger<LoginModel> logger, IRecaptchaService recaptchaService) {
+            this._configuration = configuration;
             this._accountService = accountService;
             this._logger = logger;
+            this._recaptchaService = recaptchaService;
         }
         
         public IActionResult OnGet() {
@@ -36,11 +45,17 @@ namespace Illusive.Pages {
 
             return this.Page();
         }
-
+        
         public async Task<IActionResult> OnPostAsync(string returnUrl) {
             if ( !this.ModelState.IsValid )
                 return this.Page();
 
+            var result = await this._recaptchaService.Validate(this.Request);
+            if ( !result.success ) {
+                this.ModelState.AddModelError("", "Recaptcha failed.");
+                return this.Page();
+            }
+            
             var username = this.loginData.Username;
             var password = this.loginData.Password;
             var rememberMe = this.loginData.RememberMe;
@@ -76,6 +91,10 @@ namespace Illusive.Pages {
             public string Password { get; set; }
 
             public bool RememberMe { get; set; }
+
+            public LoginPost() {
+                
+            }
         }
     }
 }
