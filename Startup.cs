@@ -1,3 +1,4 @@
+using ChristianMihai.AspNetCoreThrottler;
 using Illusive.Database;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -61,6 +62,13 @@ namespace Illusive {
                 options.Password.RequiredLength = 5;
             });
 
+            services.Configure<RateLimitOptions>(config => {
+                config.RequestRateMs = 2000;
+                config.LimitSoft = 4;
+                config.LimitHard = 5;
+                config.HardLimitMessage = "You are requesting too frequently... Refresh this page to continue.";
+            });
+
             services.AddSingleton<IDatabaseContext, DatabaseContext>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IForumService, ForumService>();
@@ -89,6 +97,8 @@ namespace Illusive {
 
             app.UseMarkdown();
             app.UseRouting();
+            
+            app.UseThrottling();
             
             app.UseAuthorization();
             app.UseAuthentication();

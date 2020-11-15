@@ -36,7 +36,6 @@ namespace Illusive.Pages {
         }
 
         public class ForumResult {
-            
             public readonly int Page;
             public readonly int PageCount;
             public readonly IEnumerable<ForumData> Posts;
@@ -62,7 +61,7 @@ namespace Illusive.Pages {
             // Filter post
             var allPosts = await this._forumService.GetForumDataAsync();
             var filteredPosts = allPosts.OrderBy(order).Skip((pageNumberParam - 1) * forumLength).Take(forumLength);
-            var pageCount = (int)Math.Ceiling(allPosts.Count() / (float)forumLength);
+            var pageCount = (int)Math.Ceiling(allPosts.Count / (float)forumLength);
             
             // Return a result to the page
             return new ForumResult(pageNumberParam, pageCount, filteredPosts);

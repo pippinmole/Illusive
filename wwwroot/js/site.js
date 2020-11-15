@@ -21,11 +21,11 @@ function setTheme(themeName) {
 }
 
 window.addEventListener("load", () => {
-    const debouncers = $(".debounce");
+    const debouncers = $("button");
     for (let i = 0; i < debouncers.length; i++) {
         const debouncer = debouncers[i];
 
-        debouncer.preventDefault();
-        debouncer.click(null);
+        // debouncer.preventDefault();
+        // debouncer.click(null);
     }
 });
