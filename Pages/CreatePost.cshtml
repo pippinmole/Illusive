@@ -48,7 +48,7 @@
             <textarea type="text" class="forum-content" id="forum-content-input" rows="4" cols="50" asp-for="NewForumData.Content" placeholder="Enter your content here"></textarea>
             <input class="input-field mb-5" type="text" asp-for="NewForumData.Tags" placeholder="Tags (separate by comma): " />
             @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
-            <input class="btn w-100 button" type="submit" value="Create Post" />
+            <input class="btn w-100 button debounce" type="submit" value="Create Post" />
             @Html.AntiForgeryToken()
         </form>
     }

@@ -21,7 +21,7 @@
             Password: <input class="input-field" style="width: 50%" asp-for="loginData.Password" placeholder="password"/><br/>
             Remember me: <input asp-for="loginData.RememberMe" type="checkbox"/><br/>
             @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
-            <input id="recaptcha" type="submit" value="Login"/>
+            <input id="recaptcha" class="debounce" type="submit" value="Login"/>
             
             <p>Don't have an account? <a href="/Signup">Sign up!</a></p>
             @Html.AntiForgeryToken()
