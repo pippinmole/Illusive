@@ -392,7 +392,7 @@
         if ( this.User.IsLoggedIn() ) {
             <form method="post">
                 <textarea class="commentField" asp-route-id="@forum.Id" asp-for="ForumReply.Content" placeholder="Reply to this post" multiple></textarea><br/>
-                <button type="submit" class="button">Comment on this</button>
+                <button type="submit" class="button debounce">Comment on this</button>
             </form>
         }
     }
