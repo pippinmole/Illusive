@@ -2,6 +2,7 @@
 @using global::Illusive.Utility
 @using global::Illusive.Database
 @using Humanizer
+@using Microsoft.AspNetCore.Http
 @inject IAccountService AccountService
 @model ForumModel
 @{
@@ -62,14 +63,24 @@
         });
     </script>
     
-    <script type="text/javascript">
+    <script type="text/javascript">    
         window.addEventListener("load", () => {
             const orderBy = $(".order-by");
-            const queryString = window.location.search;
-            const newVal = "./Forum" + queryString;
+            orderBy.val(GetQueryValue("orderby"));
             
-            orderBy.val(newVal);
+            orderBy.on('change', (e) => {
+                SetQueryValue("orderby", e.target.value);
+            });
         });
+        
+        function IncrementPageCount() {
+            const val = Math.min(parseInt(GetQueryValue("pageCount")) + 1, 10);
+            SetQueryValue("pageCount", val)
+        }
+        function DecrementPageCount() {
+            const val = Math.max(parseInt(GetQueryValue("pageCount")) - 1, 1);
+            SetQueryValue("pageCount", val)
+        }
     </script>
 </head>
 <body>
@@ -89,42 +100,52 @@
     }
 </div>
 
-<select class="order-by" onChange="window.location.href=this.value" style="margin: auto; background-color: var(--container-colour-secondary); padding: 5px; border: none; border-radius: 5px; color: inherit">
-    <option value="./Forum?orderby=views">Order by views</option>
-     <option value="./Forum?orderby=date">Order by date created</option>
+<select class="order-by" style="margin: auto; background-color: var(--container-colour-secondary); padding: 5px; border: none; border-radius: 5px; color: inherit">
+    <option value="views">Order by views</option>
+    <option value="date">Order by date created</option>
 </select>
 
+<div style="margin-top: 15px">
+    <span class="button previous" onclick="DecrementPageCount()">&laquo; Previous</span>
+    <span class="button next" onclick="IncrementPageCount()">Next &raquo;</span>
+</div>
+
 <div>
-    @foreach ( var forum in await this.Model.GetForums() ) {
-        var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
+    @{
+        var postResults = await this.Model.GetForumsAsync();
+        foreach ( var forum in postResults.Posts ) {
+            var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
 
-        <div class="message">
-            <span class="forum-stats">
-                <div class="forum-stat-elem">
-                    <img height="15px" width="15px" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png" alt="Likes"/>
-                    <span style="margin: 3px">@forum.Likes.Count</span>
-                </div>
-                
-                <div class="forum-stat-elem">
-                    <img height="10px" src="~/img/forum-views.png" alt="Views"/>
-                    <span style="margin: 3px">@forum.Views</span>
-                </div>
+            <div class="message">
+                <span class="forum-stats">
+                    <div class="forum-stat-elem">
+                        <img height="15px" width="15px" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png" alt="Likes"/>
+                        <span style="margin: 3px">@forum.Likes.Count</span>
+                    </div>
 
-                <div class="forum-stat-elem">
-                    <img height="10px" src="~/img/forum-replies.png" alt="Replies"/>
-                    <span style="margin: 3px">@forum.Replies.Count</span>
-                </div>
-            </span>
+                    <div class="forum-stat-elem">
+                        <img height="10px" src="~/img/forum-views.png" alt="Views"/>
+                        <span style="margin: 3px">@forum.Views</span>
+                    </div>
 
-            <div class="image"><a href="/Account/@forumOwner?.Id"><img src="@forumOwner?.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
-            <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
-            <div class="user"><a href="/Account/@forumOwner?.Id">[@forumOwner?.AccountName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
-            @if ( forum.Tags != null ) {
-                foreach ( var tag in forum.Tags.Split(',') ) {
-                    <div class="forumTag noselect">@tag</div>
+                    <div class="forum-stat-elem">
+                        <img height="10px" src="~/img/forum-replies.png" alt="Replies"/>
+                        <span style="margin: 3px">@forum.Replies.Count</span>
+                    </div>
+                </span>
+
+                <div class="image"><a href="/Account/@forumOwner?.Id"><img src="@forumOwner?.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
+                <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
+                <div class="user"><a href="/Account/@forumOwner?.Id">[@forumOwner?.AccountName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
+                @if ( forum.Tags != null ) {
+                    foreach ( var tag in forum.Tags.Split(',') ) {
+                        <div class="forumTag noselect">@tag</div>
+                    }
                 }
-            }
-        </div>
+            </div>
+        }
+        
+        <h5>Page @postResults.Page of @postResults.PageCount</h5>
     }
 </div>
 

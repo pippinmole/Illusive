@@ -25,7 +25,7 @@ namespace Illusive.Database {
         public async Task<List<ForumData>> GetForumDataAsync() {
             var val = await this._forumData.FindAsync(x => true);
 
-            return await val.ToListAsync();
+            return val.ToList();
         }
 
         public ForumData GetForumById(string id) {

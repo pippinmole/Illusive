@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Illusive.Database;
 using Illusive.Models;
@@ -24,14 +27,45 @@ namespace Illusive.Pages {
             if ( string.IsNullOrEmpty(orderByParam) ) {
                 return this.RedirectToPage("/Forum", new { orderby = "views" });
             }
+            var pageCount = this.HttpContext.Request.Query["pageCount"];
+            if ( string.IsNullOrEmpty(pageCount) || !int.TryParse(pageCount, out var pageCountQuery) || pageCountQuery < 0 || pageCountQuery > 30) {
+                return this.RedirectToPage("/Forum", new {orderby = orderByParam, pageCount = 1});
+            }
 
             return this.Page();
         }
 
-        public async Task<List<ForumData>> GetForums() {
-            var posts = await this._forumService.GetForumDataAsync();
-            var orderByParam = this.HttpContext.Request.Query["OrderBy"];
-            return posts.FilterBy(orderByParam);
+        public class ForumResult {
+            
+            public readonly int Page;
+            public readonly int PageCount;
+            public readonly IEnumerable<ForumData> Posts;
+
+            public ForumResult(int page, int pageCount, IEnumerable<ForumData> posts) {
+                this.Page = page;
+                this.PageCount = pageCount;
+                this.Posts = posts;
+            }
+        }
+        
+        /// <summary>
+        /// <para> Returns all forms using the applied query strings.</para>
+        /// <para> NOTE: Query strings are sanities OnGet(), so treat all queries as valid. </para>
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ForumResult> GetForumsAsync() {
+            // Accept Query parameters
+            var order = this.HttpContext.Request.Query["OrderBy"];
+            var pageNumberParam = Convert.ToInt32(this.HttpContext.Request.Query["pageCount"]);
+            var forumLength = 15;
+
+            // Filter post
+            var allPosts = await this._forumService.GetForumDataAsync();
+            var filteredPosts = allPosts.OrderBy(order).Skip((pageNumberParam - 1) * forumLength).Take(forumLength);
+            var pageCount = (int)Math.Ceiling(allPosts.Count() / (float)forumLength);
+            
+            // Return a result to the page
+            return new ForumResult(pageNumberParam, pageCount, filteredPosts);
         }
     }
 }
