@@ -23,12 +23,15 @@ namespace Illusive.Pages {
             this._recaptchaService = recaptchaService;
         }
         
-        public void OnGet() {
-            
+        public IActionResult OnGet() {
+            if ( !this.User.IsLoggedIn() )
+                return this.LocalRedirect("/");
+
+            return this.Page();
         }
         
         public async Task<IActionResult> OnPostAsync() {
-            if ( !this.ModelState.IsValid )
+            if ( !this.User.IsLoggedIn() || !this.ModelState.IsValid )
                 return this.Page();
 
             var result = await this._recaptchaService.Validate(this.Request);
