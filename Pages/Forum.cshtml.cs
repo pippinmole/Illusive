@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Illusive.Database;
 using Illusive.Models;
@@ -17,12 +18,14 @@ namespace Illusive.Pages {
         private readonly ILogger<ForumModel> _logger;
         private readonly IForumService _forumService;
 
+        public ForumResult Forums { get; set; }
+        
         public ForumModel(ILogger<ForumModel> logger, IConfiguration configuration, IForumService forumService) {
             this._logger = logger;
             this._forumService = forumService;
         }
 
-        public IActionResult OnGet() {
+        public async Task<IActionResult> OnGetAsync() {
             var orderByParam = this.HttpContext.Request.Query["OrderBy"];
             if ( string.IsNullOrEmpty(orderByParam) ) {
                 return this.RedirectToPage("/Forum", new { orderby = "views" });
@@ -31,7 +34,9 @@ namespace Illusive.Pages {
             if ( string.IsNullOrEmpty(pageCount) || !int.TryParse(pageCount, out var pageCountQuery) || pageCountQuery < 0 || pageCountQuery > 30) {
                 return this.RedirectToPage("/Forum", new {orderby = orderByParam, pageCount = 1});
             }
-
+            
+            this.Forums = await this.GetForumsAsync();
+            
             return this.Page();
         }
 
@@ -52,7 +57,7 @@ namespace Illusive.Pages {
         /// <para> NOTE: Query strings are sanities OnGet(), so treat all queries as valid. </para>
         /// </summary>
         /// <returns></returns>
-        public async Task<ForumResult> GetForumsAsync() {
+        private async Task<ForumResult> GetForumsAsync() {
             // Accept Query parameters
             var order = this.HttpContext.Request.Query["OrderBy"];
             var pageNumberParam = Convert.ToInt32(this.HttpContext.Request.Query["pageCount"]);
