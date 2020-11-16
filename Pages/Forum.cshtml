@@ -101,8 +101,12 @@
 </div>
 
 <select class="order-by" style="margin: auto; background-color: var(--container-colour-secondary); padding: 5px; border: none; border-radius: 5px; color: inherit">
-    <option value="views">Order by views</option>
-    <option value="date">Order by date created</option>
+    <option value="views-asc">Order by views (Ascending)</option>
+    <option value="views-desc">Order by views (Descending)</option>
+    <option value="likes-asc">Order by likes (Ascending)</option>
+    <option value="likes-desc">Order by likes (Descending)</option>
+    <option value="date-desc">Order by date (Newest first)</option>
+    <option value="date-asc">Order by date (Oldest first)</option>
 </select>
 
 <div style="margin-top: 15px">
@@ -140,7 +144,7 @@
 
                 <div class="image"><a href="/Account/@forumOwner?.Id"><img src="@forumOwner?.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
                 <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
-                <div class="user"><a class="debounce" href="/Account/@forumOwner?.Id">[@forumOwner?.AccountName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
+                <div class="user"><a class="debounce" href="/Account/@forumOwner?.Id">[@(forumOwner?.AccountName ?? "Deleted User")]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
                 @if ( forum.Tags != null ) {
                     foreach ( var tag in forum.Tags.Split(',') ) {
                         <div class="forumTag noselect">@tag</div>

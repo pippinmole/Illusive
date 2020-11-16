@@ -9,10 +9,22 @@ namespace Illusive.Utility {
         private static readonly Dictionary<string, Func<IEnumerable<ForumData>, List<ForumData>>> Orders = new Dictionary<string, Func<IEnumerable<ForumData>, List<ForumData>>>
         {
             {
-                "date", x => x.OrderByDescending(y => y.TimeCreated).ToList()
+                "views-asc", x => x.OrderBy(y => y.Views).ToList()
             },
             {
-                "views", x => x.OrderByDescending(y => y.Views).ToList()
+                "views-desc", x => x.OrderByDescending(y => y.Views).ToList()
+            },
+            {
+                "likes-asc", x => x.OrderBy(y => y.Likes.Count).ToList()
+            },
+            {
+                "likes-desc", x => x.OrderByDescending(y => y.Likes.Count).ToList()
+            },
+            {
+                "date-asc", x => x.OrderBy(y => y.TimeCreated).ToList()
+            },
+            {
+                "date-desc", x => x.OrderByDescending(y => y.TimeCreated).ToList()
             }
         };
         

@@ -110,9 +110,6 @@ namespace Illusive.Pages {
         
         // POST: DeleteReply?handler={json}
         public ActionResult OnPostDeleteReply([FromBody] ForumReplyDelete body) {
-            
-            this._logger.LogWarning($"Attempting to delete reply id {body.replyId}");
-            
             if ( !this.User.IsLoggedIn() )
                 this._logger.LogWarning("User attempting to delete a forum without being authenticated!");
             
