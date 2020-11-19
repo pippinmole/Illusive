@@ -32,7 +32,7 @@ You will need to set up some services to obtain connection strings so the applic
 3. Add the app secret to the [appsettings.json](https://github.com/pippinmole/Illusive/blob/main/appsettings.json) file:
     ```json
     "ConnectionStrings": {
-      "DatabaseConnectionString": ""
+      "DatabaseConnectionString": "<api key>"
     }
     ```
 
@@ -42,7 +42,7 @@ You will need to set up some services to obtain connection strings so the applic
     ```json
     "Serilog": {
       "DataDog": {
-       "ApiKey": ""
+       "ApiKey": "<api key>"
       }
     }
     ```
