@@ -35,7 +35,6 @@ namespace Illusive {
                 options.LoginPath = "/Login";
                 options.LogoutPath = "/Logout";
                 options.AccessDeniedPath = "/Index";
-                options.SlidingExpiration = true;
             });
 
             services.AddMvc().AddRazorPagesOptions(options => {

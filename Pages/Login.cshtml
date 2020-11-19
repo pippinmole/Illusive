@@ -15,10 +15,13 @@
 
     <div align="center">
 
-        <form method="post">
+        <form method="post" id="loginField">
             <div asp-validation-summary="All" class="text-danger"></div>
             Username: <input class="input-field" style="width: 50%" asp-for="loginData.Username" placeholder="username"/><br/>
-            Password: <input class="input-field" style="width: 50%" asp-for="loginData.Password" placeholder="password"/><br/>
+            
+            Password: <i id="togglePassword" class="far fa-eye"></i>
+            <input class="input-field" id="password" style="width: 50%" asp-for="loginData.Password" placeholder="password"/>
+            
             Remember me: <input asp-for="loginData.RememberMe" type="checkbox"/><br/>
             @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
             <input id="recaptcha" class="debounce" type="submit" value="Login"/>
