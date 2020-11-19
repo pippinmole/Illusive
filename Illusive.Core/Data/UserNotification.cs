@@ -27,7 +27,5 @@ namespace Illusive.Data {
             this.Link = link;
             this.TriggerId = triggerId;
         }
-        
-        public void ReadNotification() => this.Read = true;
     }
 }

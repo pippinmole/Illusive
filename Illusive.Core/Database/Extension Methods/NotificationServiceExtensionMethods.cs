@@ -11,9 +11,9 @@ namespace Illusive.Models.Extensions {
         public static async Task<List<UserNotification>> GetNotificationsForUserAsync(this INotificationService notificationService, ClaimsPrincipal user) {
             return await notificationService.GetNotificationsWhereAsync(x => x.TargetUser == user.GetUniqueId());
         }
-        public static async Task ReadNotificationsForUserAsync(this INotificationService notificationService, string triggerId) {
+        public static async Task ReadNotificationsForUserAsync(this INotificationService notificationService, ClaimsPrincipal user, string triggerId) {
             var update = Builders<UserNotification>.Update.Set(x => x.Read, true);
-            await notificationService.UpdateNotificationsWhereAsync(x => x.TriggerId == triggerId, update);
+            await notificationService.UpdateNotificationsWhereAsync(x => x.TargetUser == user.GetUniqueId() && x.TriggerId == triggerId, update);
         }
     }
 }

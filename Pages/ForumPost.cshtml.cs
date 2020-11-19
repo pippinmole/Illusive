@@ -37,7 +37,7 @@ namespace Illusive.Pages {
                 return this.LocalRedirect("/Index");
 
             this._forumService.AddViewToForum(this.ForumData);
-            await this._notificationService.ReadNotificationsForUserAsync(this.ForumData.Id);
+            await this._notificationService.ReadNotificationsForUserAsync(this.User, this.ForumData.Id);
 
             return this.Page();
         }
@@ -57,7 +57,7 @@ namespace Illusive.Pages {
             if ( reply.AuthorId != forum.OwnerId ) {
                 await this._notificationService.AddNotificationAsync(new UserNotification(
                     target: forum.OwnerId ?? throw new InvalidOperationException(),
-                    content: $"{this.User.GetDisplayName()} has commented to your post: {reply.Content.Substring(0, 25)}...",
+                    content: $"{this.User.GetDisplayName()} has commented to your post: {reply.Content.SafeSubstring(0, 25)}...",
                     imageUrl: "",
                     link: this.Request.Path + this.Request.QueryString,
                     triggerId: forum.Id

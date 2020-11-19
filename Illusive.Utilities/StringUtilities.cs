@@ -1,4 +1,6 @@
-﻿namespace Illusive.Utility {
+﻿using System.Linq;
+
+namespace Illusive.Utility {
     public static class StringUtilities {
         public static bool IsEmail(this string str) {
             try {
@@ -8,6 +10,9 @@
                 return false;
             }
         }
-        
+
+        public static string SafeSubstring(this string value, int startIndex, int length) {
+            return new string((value ?? string.Empty).Skip(startIndex).Take(length).ToArray());
+        }
     }
 }

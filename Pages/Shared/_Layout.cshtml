@@ -68,9 +68,11 @@
                     }
                 </ul>
             </div>
-            
             @await Html.PartialAsync("Partials/_AccountDropdown", model: user)
-            @await Html.PartialAsync("Partials/NotificationDropdown", model: user)
+            
+            @if ( this.User.IsLoggedIn() ) {
+                @await Html.PartialAsync("Partials/NotificationDropdown", model: user)
+            }
             
         </div>
         
