@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
@@ -37,9 +38,10 @@ namespace Illusive.Database {
             return val.ToList();
         }
         
-        public async Task<List<UserNotification>> GetUnreadNotificationsForUserAsync(AccountData user) {
-            var id = user.Id;
-            var val = await this._notifications.FindAsync(x => x.TargetUser == id && x.Read == false);
+        public async Task<List<UserNotification>> GetUnreadNotificationsForUserAsync([MaybeNull] AccountData user) {
+            if ( user == null ) return null;
+            
+            var val = await this._notifications.FindAsync(x => x.TargetUser == user.Id && x.Read == false);
             return val.ToList();
         }
 

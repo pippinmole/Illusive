@@ -37,29 +37,17 @@
         
         <span style="display: inline-block; height: 25px; width: 25px; position: relative;">
             <img class="notifIcon" style="border-radius: 50px; width:90%; height:90%; right: 0; top: 0" src="https://illusivecdn.blob.core.windows.net/container-1/notification-icon.png" alt=""/>
-            @if ( notifications.Count != 0 ) {
+            @if ( notifications?.Count != 0 ) {
                 <div style="background-color: red; height: 10px; width: 10px; top: 0; position: absolute;right: 0; border-radius: 99px;"></div>
             }
         </span>
     </summary>
     <details-menu class="account-dropdown-details" style="min-height: 200px; min-width: 350px">
-        @foreach ( var notif in notifications ) {
-            @if ( string.IsNullOrEmpty(notif.Link) ) {
-                <div class="notifContainer">
-                    <img style="height: 30px; width: 30px;" src="@notif.ImageUrl" alt="">
-                    <span style="margin-left: 5px">
-                        <div style="font-size: 0.8rem">
-                            @notif.Content
-                        </div>
-                        <div style="font-size: 0.6rem">
-                            <i>@notif.TimeCreated.TimeSince().Humanize() ago</i>
-                        </div>
-                    </span>
-                </div>
-            } else {
-                <a href="@notif.Link">
+        @if ( notifications != null ) {
+            foreach ( var notif in notifications ) {
+                if ( string.IsNullOrEmpty(notif.Link) ) {
                     <div class="notifContainer">
-                        <img style="height: 30px; width: 30px;" src="https://illusivecdn.blob.core.windows.net/container-1/f27a7d05-2151-40e1-9bb7-6dfa879a1d89Greg_Heffley_Based_On.png" alt="">
+                        <img style="height: 30px; width: 30px;" src="@notif.ImageUrl" alt="">
                         <span style="margin-left: 5px">
                             <div style="font-size: 0.8rem">
                                 @notif.Content
@@ -69,7 +57,21 @@
                             </div>
                         </span>
                     </div>
-                </a>
+                } else {
+                    <a href="@notif.Link">
+                        <div class="notifContainer">
+                            <img style="height: 30px; width: 30px;" src="https://illusivecdn.blob.core.windows.net/container-1/f27a7d05-2151-40e1-9bb7-6dfa879a1d89Greg_Heffley_Based_On.png" alt="">
+                            <span style="margin-left: 5px">
+                                <div style="font-size: 0.8rem">
+                                    @notif.Content
+                                </div>
+                                <div style="font-size: 0.6rem">
+                                    <i>@notif.TimeCreated.TimeSince().Humanize() ago</i>
+                                </div>
+                            </span>
+                        </div>
+                    </a>
+                }
             }
         }
     </details-menu>
