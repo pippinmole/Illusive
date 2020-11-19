@@ -38,7 +38,8 @@ namespace Illusive.Database {
         }
         
         public async Task<List<UserNotification>> GetUnreadNotificationsForUserAsync(AccountData user) {
-            var val = await this._notifications.FindAsync(x => x.TargetUser == user.Id && x.Read == false);
+            var id = user.Id;
+            var val = await this._notifications.FindAsync(x => x.TargetUser == id && x.Read == false);
             return val.ToList();
         }
 
