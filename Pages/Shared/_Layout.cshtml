@@ -68,37 +68,13 @@
                     }
                 </ul>
             </div>
-
-            @if ( this.User.IsLoggedIn() ) {
-                <details class="account-dropdown-button details-animated noselect">
-                    <summary>
-                        <span><img style="height: 25px; width: 25px; border-radius: 50px;" src="@user.ProfilePicture" alt=""/></span>
-                        @user.AccountName
-                    </summary>
-                    <details-menu class="account-dropdown-details">
-                        <a href="/Account"><button class="button account-dropdown-elem" style="width: 100%;">My Profile</button></a>
-                        <a href="/Logout"><button class="button account-dropdown-elem" style="width: 100%;">Sign out</button></a>
-                    </details-menu>
-                </details>
-            } else {
-                <details class="account-dropdown-button details-animated noselect">
-                    <summary>Signed out</summary>
-                    <details-menu class="account-dropdown-details">
-                        <a href="/Login"><button class="button account-dropdown-elem" style="width: 100%;">Sign in</button></a>
-                        <a href="/Signup"><button class="button account-dropdown-elem" style="width: 100%;">Sign up</button></a>
-                    </details-menu>
-                </details>
-            }
-            <br/>
+            
+            @await Html.PartialAsync("Partials/_AccountDropdown", model: user)
+            @await Html.PartialAsync("Partials/NotificationDropdown", model: user)
+            
         </div>
         
-        <p style="text-align: center; display: contents">Dark Mode:</p>
-        <div style="float: right;">
-            <label class="switch">
-                <input type="checkbox" class="darkmode-toggle" onclick="DarkModeToggle()" checked>
-                <span class="slider round"></span>
-            </label>
-        </div>
+        @await Html.PartialAsync("Partials/_DarkModeToggle")
     </nav>
 </header>
 
@@ -108,11 +84,7 @@
     </main>
 </div>
 
-<footer class="border-page-top footer text-muted navbar-color shadow-lg">
-    <div class="container" style="text-overflow: clip">
-        &copy; 2020 - <a href="https://github.com/pippinmole/" target="_blank">pippin_mole</a> - <a asp-area="" asp-page="/Privacy">Privacy</a> - <a href="https://github.com/pippinmole/Illusive" target="_blank">Open Source</a>
-    </div>
-</footer>
+<partial name="Partials/_Footer" />
 
 @await RenderSectionAsync("Scripts", required: false)
 </body>

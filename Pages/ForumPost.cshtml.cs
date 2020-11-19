@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Illusive.Data;
 using Illusive.Database;
+using Illusive.Illusive.Core.Database.Interfaces;
 using Illusive.Models;
 using Illusive.Models.Extensions;
 using Illusive.Utility;
@@ -15,28 +18,31 @@ namespace Illusive.Pages {
         private readonly ILogger<ForumPost> _logger;
         private readonly IForumService _forumService;
         private readonly IAccountService _accountService;
+        private readonly INotificationService _notificationService;
 
         public ForumData ForumData { get; set; }
         [BindProperty] public ForumReply ForumReply { get; set; }
 
-        public ForumPost(ILogger<ForumPost> logger, IForumService forumService, IAccountService accountService) {
+        public ForumPost(ILogger<ForumPost> logger, IForumService forumService, IAccountService accountService, INotificationService notificationService) {
             this._logger = logger;
             this._forumService = forumService;
             this._accountService = accountService;
+            this._notificationService = notificationService;
         }
 
-        public IActionResult OnGet(string id) {
+        public async Task<IActionResult> OnGetAsync(string id) {
             this.ForumData = this._forumService.GetForumById(id);
             
             if ( this.ForumData == null )
                 return this.LocalRedirect("/Index");
 
             this._forumService.AddViewToForum(this.ForumData);
+            await this._notificationService.ReadNotificationsForUserAsync(this.ForumData.Id);
 
             return this.Page();
         }
 
-        public IActionResult OnPost(string id) {
+        public async Task<IActionResult> OnPost(string id) {
             if ( !this.ModelState.IsValid ) {
                 return this.Redirect($"/ForumPost?id={id}");
             }
@@ -46,6 +52,17 @@ namespace Illusive.Pages {
             reply.AuthorId = this.User.GetUniqueId();
 
             this._forumService.AddReplyToForum(forum, reply);
+
+            // Don't notify the owner of their own comments!
+            if ( reply.AuthorId != forum.OwnerId ) {
+                await this._notificationService.AddNotificationAsync(new UserNotification(
+                    target: forum.OwnerId ?? throw new InvalidOperationException(),
+                    content: $"{this.User.GetDisplayName()} has commented to your post: {reply.Content.Substring(0, 25)}...",
+                    imageUrl: "",
+                    link: this.Request.Path + this.Request.QueryString,
+                    triggerId: forum.Id
+                ));
+            }
 
             this._logger.LogInformation($"{this.User.GetUniqueId()} has replied to forum post {forum.Id}");
             

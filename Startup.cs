@@ -1,5 +1,6 @@
 using ChristianMihai.AspNetCoreThrottler;
 using Illusive.Database;
+using Illusive.Illusive.Core.Database.Interfaces;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -72,6 +73,7 @@ namespace Illusive {
             services.AddSingleton<IDatabaseContext, DatabaseContext>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IForumService, ForumService>();
+            services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IContentService, ContentService>();
 
             services.AddMarkdown();

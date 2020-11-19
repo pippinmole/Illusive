@@ -10,7 +10,7 @@ namespace Illusive.Database {
         public string ConnectionString { get; }
         
         public DatabaseContext(IConfiguration configuration) {
-            this.ConnectionString = configuration.GetConnectionString("AppConfig");
+            this.ConnectionString = configuration.GetConnectionString("DatabaseConnectionString");
             this.Client = new MongoClient(this.ConnectionString);
         }
         

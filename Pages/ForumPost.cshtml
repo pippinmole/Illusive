@@ -37,7 +37,6 @@
     
     
     <style type="text/css">
-        
         .commentField {
             width: 100%; 
             padding: 10px;
@@ -106,43 +105,6 @@
             margin: 2px;
             height: 25px;
             cursor: pointer;
-        }
-        
-        .hovertip {
-          position: relative;
-          display: inline-block;
-          border-bottom: 1px dotted black;
-          cursor: pointer;
-        }
-        
-        .hovertip .hovertiptext {
-          visibility: hidden;
-          width: 120px;
-          background-color: black;
-          color: #fff;
-          text-align: center;
-          border-radius: 6px;
-          padding: 5px 0;
-          position: absolute;
-          z-index: 1;
-          bottom: 150%;
-          left: 50%;
-          margin-left: -60px;
-        }
-        
-        .hovertip .hovertiptext::after {
-          content: "";
-          position: absolute;
-          top: 100%;
-          left: 50%;
-          margin-left: -5px;
-          border-width: 5px;
-          border-style: solid;
-          border-color: black transparent transparent transparent;
-        }
-        
-        .hovertip:hover .hovertiptext {
-          visibility: visible;
         }
     </style>
     
@@ -310,13 +272,13 @@
         @if ( this.User.CanDeletePost(forum) || this.User.IsAdminAccount() ) {
             <div class="hovertip delete-post-action" onclick="DeletePost();">
                 <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
-                <span class="hovertiptext">Delete post</span>
+                <span class="hovertiptext-top">Delete post</span>
             </div>
         }
         @if ( false ) {
             <div class="hovertip">
                 <img src="https://illusivecdn.blob.core.windows.net/container-1/icon-edit.png" height="28px" width="28px" style="padding: 3px" alt=""/>
-                <span class="hovertiptext">Edit post (Coming soon)</span>
+                <span class="hovertiptext-top">Edit post (Coming soon)</span>
             </div>
         }
     </div>
@@ -337,7 +299,7 @@
             @if ( this.User.IsLoggedIn() ) {
                 <div class="forum-actions-container hovertip float-right">
                     <img class="forum-action like-post-action" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png" alt="">
-                    <span class="hovertiptext like-post-text"></span>
+                    <span class="hovertiptext-top like-post-text"></span>
                 </div>
             }
 
@@ -378,7 +340,7 @@
                     @if ( this.User.CanDeleteReply(reply) || this.User.IsAdminAccount() ) {
                         <div class="hovertip float-right" onclick="DeleteReply('@reply.Id');">
                             <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
-                            <span class="hovertiptext">Delete reply</span>
+                            <span class="hovertiptext-top">Delete reply</span>
                         </div>
                     }
                     

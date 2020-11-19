@@ -23,6 +23,8 @@ for details on configuring this project to bundle and minify static web assets. 
     --forum-stat-element-color: #414c50;
     
     --box-shadow-p25r: 0 .25rem .75rem rgba(0, 0, 0, .05);
+
+    --invert-colors: invert(100%);
 }
 .lighttheme {
 
@@ -46,6 +48,8 @@ for details on configuring this project to bundle and minify static web assets. 
     --forum-stat-element-color: #c4c4c4;
     
     --box-shadow-p25r: 0 .25rem .75rem rgba(0, 0, 0, .05);
+
+    --invert-colors: invert(0%);
 }
 
 .navbar-color {
@@ -132,6 +136,7 @@ button.accept-policy {
 html {
     position: relative;
     min-height: 100%;
+    overflow: scroll;
 }
 
 body {
@@ -182,11 +187,18 @@ body {
     padding: 5px;
     box-shadow: none;
     transition: box-shadow 0.3s ease-in-out;
+    border-radius: 4px;
+    margin: 0 3px;
 }
 
 .account-dropdown-button:hover {
     box-shadow: 0 0 2pt 1pt #bebebe;
     transition: box-shadow 0.3s ease-in-out;
+}
+
+.account-dropdown-button:active {
+    box-shadow: 0 0 2pt 1pt #666666;
+    transition: box-shadow 0.1s ease-in-out;
 }
 
 .button {
@@ -392,4 +404,74 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+.nosummarytriangle {
+    list-style: none;
+}
+
+.hovertip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.hovertip .hovertiptext-top {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.hovertip .hovertiptext-top::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.hovertip:hover .hovertiptext-top {
+    visibility: visible;
+}
+
+.hovertip .hovertiptext-bottom {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.hovertip .hovertiptext-bottom::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.hovertip:hover .hovertiptext-bottom {
+    visibility: visible;
 }
