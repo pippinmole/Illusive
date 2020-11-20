@@ -475,3 +475,10 @@ input:checked + .slider:before {
 .hovertip:hover .hovertiptext-bottom {
     visibility: visible;
 }
+
+details > summary {
+    list-style: none;
+}
+details > summary::-webkit-details-marker {
+    display: none;
+}
