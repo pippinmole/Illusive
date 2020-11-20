@@ -113,5 +113,5 @@ You will need to set up some services to obtain connection strings so the applic
 | [Serilog.Sinks.Datadog.Logs](https://www.nuget.org/packages/Serilog.Sinks.Datadog.Logs/)     	| A C# driver that works with Serilog.Sinks.Async.                                                                                             	|
 
 ## Licence
-Copyright (c) 2020 [pippin_mole](https://github.com/pippinmole).  
+Copyright © 2020 [pippin_mole](https://github.com/pippinmole).  
 Illusive is licensed under [MIT](https://github.com/pippinmole/Illusive/blob/main/LICENSE). Do what you want.
