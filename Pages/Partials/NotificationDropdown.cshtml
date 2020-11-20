@@ -39,7 +39,7 @@
         </span>
     </summary>
     <details-menu class="account-dropdown-details" style="min-height: 200px; min-width: 350px">
-        @if ( notifications != null ) {
+        @if ( notifications != null && notifications.Count > 0 ) {
             foreach ( var notif in notifications ) {
                 if ( string.IsNullOrEmpty(notif.Link) ) {
                     <div class="notifContainer">
@@ -69,6 +69,12 @@
                     </a>
                 }
             }
+        } else {
+            <div style="width: 100%; height: 100%">
+                <p style="display: flex;align-items: center;justify-content: center;color: rgba(255, 255, 255, 0.55);font-style: italic; margin-top: 19px">
+                    No new notifications.
+                </p>
+            </div>
         }
     </details-menu>
 </details>
