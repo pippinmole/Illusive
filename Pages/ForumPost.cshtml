@@ -14,7 +14,6 @@
 <!DOCTYPE html>
 
 <html>
-@Html.AntiForgeryToken()
 <head>
     <title>@this.Model.ForumData.Title</title>
     
@@ -353,8 +352,10 @@
     @{
         if ( this.User.IsLoggedIn() ) {
             <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
                 <textarea class="commentField" asp-route-id="@forum.Id" asp-for="ForumReply.Content" placeholder="Reply to this post" multiple></textarea><br/>
                 <button type="submit" class="button debounce">Comment on this</button>
+                @Html.AntiForgeryToken()
             </form>
         }
     }

@@ -43,8 +43,10 @@ namespace Illusive.Pages {
         }
 
         public async Task<IActionResult> OnPost(string id) {
+            this.ForumData = this._forumService.GetForumById(id);
+            
             if ( !this.ModelState.IsValid ) {
-                return this.Redirect($"/ForumPost?id={id}");
+                return this.Page();
             }
 
             var forum = this._forumService.GetForumById(id);
