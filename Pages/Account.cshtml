@@ -15,6 +15,7 @@
 <html>
 <head>
     <script type="text/javascript" src="~/lib/bootstrap-filestyle.min.js"> </script>
+    <script type="text/javascript" src="~/js/Account/requests.js"> </script>
 
     <style type="text/css"> 
         .change-profile-button {
@@ -148,6 +149,8 @@
 
         <input asp-page-handler="Upload" class="button" type="submit" value="Update"/>
     </form>
+    
+    <button class="container p-1 m-2 btn-danger" onclick="DeleteAccount('@this.User.GetUniqueId()')">Delete Account</button>
 </div>
 
 @* Profile post history *@

@@ -6,6 +6,8 @@ using Illusive.Database;
 using Illusive.Data;
 using Illusive.Models;
 using Illusive.Utility;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -69,6 +71,32 @@ namespace Illusive.Pages {
             }
 
             return this.Page();
+        }
+
+        public class DeleteAccountPost {
+            public string accountId;
+        }
+        
+        public async Task<IActionResult> OnPostDeleteAccountAsync([FromBody] DeleteAccountPost post) {
+            if ( !this.ModelState.IsValid )
+                return this.Page();
+
+            var reqAccountId = post.accountId;
+            if ( this.User.GetUniqueId() != reqAccountId ) {
+                this._logger.LogWarning($"{this.User.GetUniqueId()} tried to delete account of id {reqAccountId}!");
+                return this.Forbid();
+            }
+
+            var wasRemoved = await this._accountService.RemoveAccountWhereAsync(x => x.Id == reqAccountId);
+            if ( wasRemoved ) {
+                await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                
+                this._logger.LogInformation($"Account with id {reqAccountId} was deleted successfully.");
+            }
+
+            return new JsonResult(new {
+                Redirect = "/Index"
+            });
         }
     }
 }

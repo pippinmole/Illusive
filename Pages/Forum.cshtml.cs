@@ -28,6 +28,7 @@ namespace Illusive.Pages {
             if ( string.IsNullOrEmpty(orderByParam) ) {
                 return this.RedirectToPage("/Forum", new { orderby = "views-asc" });
             }
+            
             var pageCount = this.HttpContext.Request.Query["pageCount"];
             if ( string.IsNullOrEmpty(pageCount) || !int.TryParse(pageCount, out var pageCountQuery) || pageCountQuery < 0 || pageCountQuery > 30) {
                 return this.RedirectToPage("/Forum", new {orderby = orderByParam, pageCount = 1});

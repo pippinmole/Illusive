@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Models;
 using Microsoft.Extensions.Logging;
@@ -33,6 +34,16 @@ namespace Illusive.Database {
 
         public void UpdateAccount(string accountId, UpdateDefinition<AccountData> update) {
             this._accounts.UpdateOne(x => x.Id == accountId, update);
+        }
+        
+        public bool RemoveAccountWhere(Expression<Func<AccountData, bool>> expression) {
+            var result = this._accounts.DeleteOne(expression);
+            return result.DeletedCount == 1;
+        }
+
+        public async Task<bool> RemoveAccountWhereAsync(Expression<Func<AccountData, bool>> expression) {
+            var result = await this._accounts.DeleteOneAsync(expression);
+            return result.DeletedCount == 1;
         }
     }
 }
