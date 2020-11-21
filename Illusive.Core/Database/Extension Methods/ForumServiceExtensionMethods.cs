@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Illusive.Database;
 using Illusive.Utility;
 using MongoDB.Driver;
@@ -17,14 +18,14 @@ namespace Illusive.Models.Extensions {
             newReplies.Add(forumReply);
 
             var update = Builders<ForumData>.Update.Set(x => x.Replies, newReplies);
-            service.UpdateForum(forum, update);
+            service.UpdateForum(forum.Id, update);
         }
 
         public static void AddViewToForum(this IForumService service, ForumData forum) {
             var newViews = forum.Views + 1;
 
             var update = Builders<ForumData>.Update.Set(x => x.Views, newViews);
-            service.UpdateForum(forum, update);
+            service.UpdateForum(forum.Id, update);
         }
         
         public static void AddLikeToForum(this IForumService service, ForumData forum, ClaimsPrincipal user) {
@@ -32,7 +33,7 @@ namespace Illusive.Models.Extensions {
             forum.Likes.Add(userId);
             
             var update = Builders<ForumData>.Update.Set(x => x.Likes, forum.Likes);
-            service.UpdateForum(forum, update);
+            service.UpdateForum(forum.Id, update);
         }
         
         public static void RemoveLikeFromForum(this IForumService service, ForumData forum, ClaimsPrincipal user) {
@@ -40,7 +41,7 @@ namespace Illusive.Models.Extensions {
             forum.Likes.RemoveAll(x => x == userId);
             
             var update = Builders<ForumData>.Update.Set(x => x.Likes, forum.Likes);
-            service.UpdateForum(forum, update);
+            service.UpdateForum(forum.Id, update);
         }
         
         public static void RemoveReplyFromForum(this IForumService service, ForumData forum, string replyId) {
@@ -48,7 +49,7 @@ namespace Illusive.Models.Extensions {
             newReplies.RemoveAll(x => x.Id == replyId);
             
             var update = Builders<ForumData>.Update.Set(x => x.Replies, newReplies);
-            service.UpdateForum(forum, update);
+            service.UpdateForum(forum.Id, update);
         }
     }
 }

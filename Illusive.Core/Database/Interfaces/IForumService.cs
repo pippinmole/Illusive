@@ -13,7 +13,8 @@ namespace Illusive.Database {
         ForumData GetForumWhere(Expression<Func<ForumData, bool>> expression);
         IReadOnlyList<ForumData> GetForumsWhere(Expression<Func<ForumData, bool>> expression);
 
-        void UpdateForum(ForumData forumData, UpdateDefinition<ForumData> update);
+        void UpdateForum(string id, UpdateDefinition<ForumData> update);
+        Task UpdateForumAsync(string id, UpdateDefinition<ForumData> update);
 
         void DeleteForum(Expression<Func<ForumData, bool>> expression);
     }

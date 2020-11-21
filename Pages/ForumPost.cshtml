@@ -7,8 +7,10 @@
 @inject IAccountService AccountService
 @model ForumPost
 @{
+    var content = this.Model.ForumData.Content;
+    
     ViewData["Title"] = this.Model.ForumData.Title;
-    ViewData["Description"] = this.Model.ForumData.Content.Substring(0, 20);
+    ViewData["Description"] = content.Length < 20 ? content : content.Substring(0, 20);
 }
 
 <!DOCTYPE html>
@@ -273,13 +275,14 @@
                 <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
                 <span class="hovertiptext-top">Delete post</span>
             </div>
+            
         }
-        @if ( false ) {
-            <div class="hovertip">
-                <img src="https://illusivecdn.blob.core.windows.net/container-1/icon-edit.png" height="28px" width="28px" style="padding: 3px" alt=""/>
-                <span class="hovertiptext-top">Edit post (Coming soon)</span>
-            </div>
-        }
+                    <a asp-page="EditPost" asp-route-id="@forum.Id">
+                        <div class="hovertip">
+                            <img src="https://illusivecdn.blob.core.windows.net/container-1/icon-edit.png" height="28px" width="28px" style="padding: 3px" alt=""/>
+                            <span class="hovertiptext-top">Edit post</span>
+                        </div>
+                    </a>
     </div>
 
     <div class="forumBody">
@@ -304,7 +307,7 @@
 
             <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Created @forum.TimeCreated.Date.ToString("MMMM dd, yyyy") (@(forum.TimeCreated.TimeSince().Humanize()) ago)</span>
 
-            <p>@Markdown.ParseHtmlString(forum.Content)</p>
+            <p style="min-width: 100%; width: 0">@Markdown.ParseHtmlString(forum.Content)</p>
         </div>
     </div>
 
@@ -322,7 +325,7 @@
             var replyOwner = AccountService.GetAccountWhere(x => x.Id == reply.AuthorId);
 
             <div class="replyBody">
-                <div style="width: 100px; min-width: 100px; height: auto; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">
+                <div style="width: 100px; min-width: 100px; height: 100px; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">
                     <img style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@replyOwner?.ProfilePicture" alt="">
                     <p style="font-size: 0.6rem; margin: 0 0.1rem;">
                         @if ( replyOwner?.IsAdmin == true ) {
@@ -343,7 +346,7 @@
                         </div>
                     }
                     
-                    <p>@reply.Content</p>
+                    <p style="min-width: 100%; width: 0">@reply.Content</p>
                 </div>
             </div>
         }

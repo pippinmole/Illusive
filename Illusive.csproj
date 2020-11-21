@@ -31,4 +31,9 @@
   <ItemGroup>
     <Folder Include="Illusive.Core" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\EditPost.cs">
+      <DependentUpon>EditPost.cshtml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

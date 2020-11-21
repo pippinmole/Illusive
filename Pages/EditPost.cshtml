@@ -1,0 +1,59 @@
+﻿@page
+@using Microsoft.Extensions.Configuration  
+@inject IConfiguration Configuration  
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
+@inject IForumService ForumService
+@using global::Illusive.Settings
+@using global::Illusive.Utility
+@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore
+@using reCAPTCHA.AspNetCore.Templates
+@using global::Illusive.Database
+@model EditPostModel
+
+@{
+    ViewData["Title"] = "Edit Post";
+    // ViewData["Description"] = "Create a forum post or blog here!";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+    <script>
+        window.addEventListener("load", (event) => {
+            const simplemde = new SimpleMDE({ element: document.getElementById("forum-content-input") });
+            simplemde.value();
+        });
+    </script>
+</head>
+<body>
+<h1 class="text-center display-4">@ViewData["Title"]</h1>
+
+<div>
+    Your post must adhere to some rules:
+    <ol>
+        <li>Your title must be within @ForumSettings.MinTitleLength and @ForumSettings.MaxTitleLength characters.</li>
+        <li>Your content must be within @ForumSettings.MinContentLength and @ForumSettings.MaxContentLength characters.</li>
+        <li>All of your tags must be under @ForumSettings.MaxTagLength characters.</li>
+    </ol>
+    
+</div>
+
+@{
+    if ( this.User.IsLoggedIn() ) {
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input class="input-field" id="forum-title-input" asp-for="NewForumData.Title" placeholder="Forum Title"/><br/>
+            <textarea type="text" class="forum-content" id="forum-content-input" rows="4" cols="50" asp-for="NewForumData.Content" placeholder="Enter your content here"></textarea>
+            <input class="input-field mb-5" type="text" asp-for="NewForumData.Tags" placeholder="Tags (separate by comma): " />
+            @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
+            <input class="btn w-100 button debounce" type="submit" value="Create Post" />
+            @Html.AntiForgeryToken()
+        </form>
+    }
+}
+</body>
+</html>

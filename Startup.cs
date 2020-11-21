@@ -1,3 +1,4 @@
+using System;
 using ChristianMihai.AspNetCoreThrottler;
 using Illusive.Database;
 using Illusive.Illusive.Core.Database.Interfaces;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,15 +28,11 @@ namespace Illusive {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddDataProtection();
-            services.AddAuthentication(options => {
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options => {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
                 // options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 options.LoginPath = "/Login";
                 options.LogoutPath = "/Logout";
-                options.AccessDeniedPath = "/Index";
+                options.AccessDeniedPath = "/AccessDenied";
             });
 
             services.AddMvc().AddRazorPagesOptions(options => {

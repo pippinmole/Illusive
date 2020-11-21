@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Illusive.Illusive.Database.Interfaces;
 using Illusive.Models;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Illusive.Database {
@@ -41,8 +44,12 @@ namespace Illusive.Database {
             return this._forumData.Find(expression).ToList();
         }
 
-        public void UpdateForum(ForumData forumData, UpdateDefinition<ForumData> update) {
-            this._forumData.UpdateOne(x => x.Id == forumData.Id, update);
+        public void UpdateForum(string id, UpdateDefinition<ForumData> update) {
+            this._forumData.UpdateOne(x => x.Id == id, update);
+        }
+
+        public async Task UpdateForumAsync(string id, UpdateDefinition<ForumData> update) {
+            await this._forumData.UpdateOneAsync(x => x.Id == id, update);
         }
 
         public void DeleteForum(Expression<Func<ForumData, bool>> expression) {
