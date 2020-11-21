@@ -25,6 +25,8 @@ window.addEventListener("load", () => {
     const togglePassword = document.querySelector('#togglePassword');
     const password = document.querySelector('#password');
 
+    if(!togglePassword) return;
+    
     togglePassword.addEventListener('click', function (e) {
         // toggle the type attribute
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';

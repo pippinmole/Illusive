@@ -9,6 +9,9 @@
 @{
     var content = this.Model.ForumData.Content;
     
+    var initialLiked = this.Model.ForumData.HasLikeFrom(this.User);
+    var likeCount = this.Model.ForumData.Likes.Count;
+    
     ViewData["Title"] = this.Model.ForumData.Title;
     ViewData["Description"] = content.Length < 20 ? content : content.Substring(0, 20);
 }
@@ -23,6 +26,7 @@
     <meta property="og:description" content="Created @this.Model.ForumData.TimeCreated.Humanize()"/>
     
     <script src="~/js/party.js"></script>
+    <script src="js/ForumPost/requests.js"></script>
     <script type="text/javascript">
         $(function () {
             document.querySelector(".like-post-action").addEventListener("mouseup", (e) => {
@@ -32,8 +36,10 @@
                     color: party.array(['#ffa68d', '#fd3a84'])
                 });
             });
+            // Initialise starting state
+            SetLikeText($("span.like-post-text"), @Json.Serialize(likeCount));
+            SetLikeState(@Json.Serialize(initialLiked));
         });
-    
     </script>
     
     
@@ -108,149 +114,6 @@
             cursor: pointer;
         }
     </style>
-    
-    @section scripts {
-        <script>
-        
-        // Received a boolean state (True = liked, False = unliked)
-        function ToggleLikeButton() {
-            const state = $(".like-post-action").attr("src") === "https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png";
-            UpdateLikeButton(!state);
-        }
-        
-        function UpdateLikeButton(state) {
-            const likeImage = $(".like-post-action");
-            
-            if (state === true) {
-                console.log("Set button to liked");
-                likeImage.attr("src","https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png");
-            } else {
-                console.log("Set button to unliked");
-                likeImage.attr("src","https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png");
-            }
-            
-            UpdateLikeCounter(state);
-        }
-        
-        // Updates the amount of likes
-        function UpdateLikeCounter(isLiked) {
-            const likeText = $("span.like-post-text");
-            let likes = parseInt(likeText.text().match(/\d/g));
-            
-            console.log(likeText)
-            
-            if (isLiked) likes++;
-            else likes--;
-            
-            SetLikeCounter(likes);
-        }
-        
-        function SetLikeCounter(value) {
-            const likeText = $("span.like-post-text");
-            likeText.text(value + (value === 1 ? " like" : " likes"));
-        }
-        
-        $(() => {
-            // Initialise starting state
-            @{
-                var initialLiked = this.Model.ForumData.HasLikeFrom(this.User);
-                var likeCount = this.Model.ForumData.Likes.Count;
-            }
-            
-            UpdateLikeButton(@Json.Serialize(initialLiked));
-            SetLikeCounter(@Json.Serialize(likeCount));
-            
-            // Like button request
-            $(".like-post-action").click(() => {
-                $.ajax({
-                    type: "POST",
-                    url: "/ForumPost?handler=LikePost",
-                    beforeSend: (xhr) =>  {
-                        xhr.setRequestHeader("XSRF-TOKEN",
-                        $('input:hidden[name="__RequestVerificationToken"]').val());
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: JSON.stringify({
-                        "forumId" : "@this.Model.ForumData.Id"
-                    }),
-                    success: (response) =>  {
-                        // console.log(JSON.stringify(response))
-                        
-                    },
-                    failure: (response) =>  {
-                        alert(response);
-                    },
-                    complete: () => {
-                        // Toggle like button client-side - We do this so we don't have to wait for the server's response which causes
-                        // a delay in the front-end.
-                        // ToggleLikeButton();
-                    }
-                });
-                
-                // Toggle like button client-side - We do this so we don't have to wait for the server's response which causes
-                // a delay in the front-end.
-                ToggleLikeButton();
-            });
-        });
-        
-        // Delete post request
-        function DeletePost() {
-            if (confirm("Are you sure you would like to delete this post?")) {
-                $.ajax({
-                    type: "POST",
-                    url: "/ForumPost?handler=DeletePost",
-                    beforeSend: (xhr) =>  {
-                        xhr.setRequestHeader("XSRF-TOKEN",
-                        $('input:hidden[name="__RequestVerificationToken"]').val());
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: JSON.stringify({
-                        "forumId" : "@this.Model.ForumData.Id"
-                    }),
-                    success: (response) =>  {
-                        // console.log(JSON.stringify(response))
-                        // UpdateLikeButton(response.result === "liked");
-                        // UpdateLikeCounter(response.likeCount);
-                        window.location.href = response.redirect;
-                    },
-                    failure: (response) =>  {
-                        alert(response);
-                    }
-                });
-            }
-        }
-        
-        function DeleteReply(replyId) {
-            if (confirm("Are you sure you would like to delete this reply? (" + replyId + ")")) {
-                $.ajax({
-                    type: "POST",
-                    url: "/ForumPost?handler=DeleteReply",
-                    beforeSend: (xhr) =>  {
-                        xhr.setRequestHeader("XSRF-TOKEN",
-                        $('input:hidden[name="__RequestVerificationToken"]').val());
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: JSON.stringify({
-                        "forumId" : "@this.Model.ForumData.Id",
-                        "replyId" : replyId.toString()
-                    }),
-                    success: (response) =>  {
-                        // console.log(JSON.stringify(response))
-                        // UpdateLikeButton(response.result === "liked");
-                        // UpdateLikeCounter(response.likeCount);
-                        window.location.href = response.redirect;
-                    },
-                    failure: (response) =>  {
-                        alert(response);
-                    }
-                });
-            }
-        }
-        </script>
-    }
 </head>
 <body>
 
@@ -271,7 +134,7 @@
     
     <div class="forum-actions-container" style="margin-top: 10px">
         @if ( this.User.CanDeletePost(forum) || this.User.IsAdminAccount() ) {
-            <div class="hovertip delete-post-action" onclick="DeletePost();">
+            <div class="hovertip delete-post-action" onclick="DeletePost('@forum.Id')">
                 <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
                 <span class="hovertiptext-top">Delete post</span>
             </div>
@@ -300,7 +163,7 @@
         <div class="forumContent">
             @if ( this.User.IsLoggedIn() ) {
                 <div class="forum-actions-container hovertip float-right">
-                    <img class="forum-action like-post-action" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png" alt="">
+                    <img class="forum-action like-post-action" onclick="LikePost('@forum.Id')" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png" alt="">
                     <span class="hovertiptext-top like-post-text"></span>
                 </div>
             }

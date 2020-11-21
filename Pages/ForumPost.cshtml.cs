@@ -91,6 +91,11 @@ namespace Illusive.Pages {
             var forum = this._forumService.GetForumById(body.forumId);
             var user = this.User;
 
+            if ( forum == null ) {
+                this._logger.LogWarning($"{this.User.GetUniqueId()} is trying to delete an invalid forum ({body.forumId})");
+                return this.BadRequest();
+            }
+            
             if ( user.CanDeletePost(forum) || user.IsAdminAccount() ) {
                 this._forumService.DeleteForum(x => x.Id == forum.Id);
                 this._logger.LogInformation($"{this.User.GetDisplayName()} has successfully deleted forum with id {forum.Id}!");
