@@ -77,7 +77,6 @@
           border: 1px solid #ccc;
           border-top: none;
         }
-        
     </style>
 
     <script type="text/javascript">    
@@ -153,47 +152,46 @@
 
 @* Profile post history *@
 <div class="profile-posts-container">
-    
     <div class="tab">
-      <button class="tablinks" onclick="OpenListItem('Posts')">Posts</button>
-      <button class="tablinks" onclick="OpenListItem('LikedPosts')">Liked Posts</button>
+        <button class="tablinks" onclick="OpenListItem('Posts')">Posts</button>
+        <button class="tablinks" onclick="OpenListItem('LikedPosts')">Liked Posts</button>
     </div>
     
     <div id="Posts" class="tabcontent">
-       @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
-              <div class="message">
-                  <span class="forum-stats">
-                      <div class="forum-stat-elem">
-                          <img height="15px" width="15px" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png" alt="Likes"/>
-                          <span style="margin: 3px">@forum.Likes.Count</span>
-                      </div>
+        @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
+            <div class="message">
+                <span class="forum-stats">
+                    <div class="forum-stat-elem">
+                        <img height="15px" width="15px" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_checked.png" alt="Likes"/>
+                        <span style="margin: 3px">@forum.Likes.Count</span>
+                    </div>
                                       
-                      <div class="forum-stat-elem">
-                          <img height="10px" src="~/img/forum-views.png" alt="Views"/>
-                          <span style="margin: 3px">@forum.Views</span>
-                      </div>
+                    <div class="forum-stat-elem">
+                        <img height="10px" src="~/img/forum-views.png" alt="Views"/>
+                        <span style="margin: 3px">@forum.Views</span>
+                    </div>
       
-                      <div class="forum-stat-elem">
-                          <img height="10px" src="~/img/forum-replies.png" alt="Replies"/>
-                          <span style="margin: 3px">@forum.Replies.Count</span>
-                      </div>
-                  </span>
+                    <div class="forum-stat-elem">
+                        <img height="10px" src="~/img/forum-replies.png" alt="Replies"/>
+                        <span style="margin: 3px">@forum.Replies.Count</span>
+                    </div>
+                </span>
       
-                  <div class="image"><a href="/Account/@user.Id"><img src="@user.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
-                  <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
-                  <div class="user"><a href="/Account/@user.Id">[@user.AccountName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
-                  @if ( forum.Tags != null ) {
-                      foreach ( var tag in forum.Tags.Split(',') ) {
-                          <div class="forumTag noselect">@tag</div>
-                      }
-                  }
-              </div>
-          }
+                <div class="image"><a href="/Account/@user.Id"><img src="@user.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
+                <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
+                <div class="user"><a href="/Account/@user.Id">[@user.AccountName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
+                @if ( forum.Tags != null ) {
+                    foreach ( var tag in forum.Tags.Split(',') ) {
+                        <div class="forumTag noselect">@tag</div>
+                    }
+                }
+            </div>
+        }
     </div>
     
     <div id="LikedPosts" class="tabcontent">
-      <h3>Liked Posts</h3>
-      <p>ADD LIST OF LIKED POSTS.</p> 
+        <h3>Liked Posts</h3>
+        <p>ADD LIST OF LIKED POSTS.</p> 
     </div>
 </div>
 

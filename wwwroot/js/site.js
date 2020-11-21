@@ -21,14 +21,6 @@ function setTheme(themeName) {
 }
 
 window.addEventListener("load", () => {
-    const debouncers = $("button");
-    for (let i = 0; i < debouncers.length; i++) {
-        const debouncer = debouncers[i];
-
-        // debouncer.preventDefault();
-        // debouncer.click(null);
-    }
-
     // Toggle password buttons
     const togglePassword = document.querySelector('#togglePassword');
     const password = document.querySelector('#password');
@@ -40,4 +32,17 @@ window.addEventListener("load", () => {
         // toggle the eye slash icon
         this.classList.toggle('fa-eye-slash');
     });
+});
+
+window.addEventListener("load", () => {
+    // Dark theme
+    let theme = Cookies.get("theme");
+    if(theme === undefined){
+        theme = "lighttheme";
+    }
+
+    setTheme(theme);
+
+    const toggle = $(".darkmode-toggle");
+    toggle.prop('checked', theme === 'darktheme');
 });
