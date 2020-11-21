@@ -14,6 +14,8 @@
     
     ViewData["Title"] = this.Model.ForumData.Title;
     ViewData["Description"] = content.Length < 20 ? content : content.Substring(0, 20);
+    
+    @Html.AntiForgeryToken()
 }
 
 <!DOCTYPE html>
@@ -138,13 +140,23 @@
                 <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
                 <span class="hovertiptext-top">Delete post</span>
             </div>
-            
+
             <a asp-page="EditPost" asp-route-id="@forum.Id">
                 <div class="hovertip">
                     <img src="https://illusivecdn.blob.core.windows.net/container-1/icon-edit.png" height="28px" width="28px" style="padding: 3px" alt=""/>
                     <span class="hovertiptext-top">Edit post</span>
                 </div>
             </a>
+
+            <div class="hovertip" onclick="LockPost('@forum.Id')">
+                @if ( forum.IsLocked ) {
+                    <img style="width: 20px; height: 20px;" src="https://illusivecdn.blob.core.windows.net/container-1/icon-padlock-locked.png" alt=""/>
+                    <span class="hovertiptext-top">Unlock post</span>
+                } else {
+                    <img style="width: 20px; height: 20px;" src="https://illusivecdn.blob.core.windows.net/container-1/icon-padlock-unlocked.png" alt=""/>
+                    <span class="hovertiptext-top">Lock post</span>
+                }
+            </div>
         }
     </div>
 
@@ -216,12 +228,15 @@
     }
 
     @{
-        if ( this.User.IsLoggedIn() ) {
+        if ( forum.IsLocked ) {
+            <div class="container text-center m-3">
+                <p>You cannot comment because this forum has been locked.</p>
+            </div>
+        } else if ( this.User.IsLoggedIn() ) {
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <textarea class="commentField" asp-route-id="@forum.Id" asp-for="ForumReply.Content" placeholder="Reply to this post" multiple></textarea><br/>
                 <button type="submit" class="button debounce">Comment on this</button>
-                @Html.AntiForgeryToken()
             </form>
         }
     }

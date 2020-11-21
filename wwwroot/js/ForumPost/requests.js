@@ -74,6 +74,30 @@ function DeletePost(id) {
     }
 }
 
+function LockPost(id) {
+    if (confirm("Are you sure you would like to lock this post?")) {
+        $.ajax({
+            type: "POST",
+            url: "/ForumPost?handler=LockPost",
+            beforeSend: (xhr) =>  {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({
+                "forumId" : id.toString()
+            }),
+            success: (response) =>  {
+                window.location.href = response.redirect;
+            },
+            failure: (response) =>  {
+                alert(response);
+            }
+        });
+    }
+}
+
 // Delete reply request
 function DeleteReply(forumId, replyId) {
     if (confirm("Are you sure you would like to delete this reply? (" + replyId + ")")) {

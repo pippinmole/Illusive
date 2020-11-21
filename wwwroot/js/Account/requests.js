@@ -19,8 +19,7 @@
             failure: (response) => {
                 alert(response);
             },
-            complete: () => {
-            }
+            complete: () => { }
         });
     }
 }

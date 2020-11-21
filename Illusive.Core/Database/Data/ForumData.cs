@@ -28,6 +28,7 @@ namespace Illusive.Models {
         public List<ForumReply> Replies { get; set; }
         public uint Views { get; set; }
         public List<string> Likes { get; set; }
+        public bool IsLocked { get; set; }
 
         public ForumData() {
             this.Id = Guid.NewGuid().ToString();

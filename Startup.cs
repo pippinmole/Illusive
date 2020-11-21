@@ -6,6 +6,7 @@ using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IISIntegration;
@@ -28,11 +29,16 @@ namespace Illusive {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddDataProtection();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
-                // options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-                options.LoginPath = "/Login";
-                options.LogoutPath = "/Logout";
-                options.AccessDeniedPath = "/AccessDenied";
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {
+                    options.LoginPath = new PathString("/Login");
+                    options.LogoutPath = new PathString("/Logout");
+                    options.AccessDeniedPath = new PathString("/AccessDenied");
+                });
+            
+            services.AddAuthorization(options => {
+                options.AddPolicy("UserPolicy", policy => policy.RequireRole("IsAdmin"));
             });
 
             services.AddMvc().AddRazorPagesOptions(options => {
@@ -43,10 +49,6 @@ namespace Illusive {
                 // options.Conventions.AllowAnonymousToPage("/Signup");
                 // options.Conventions.AllowAnonymousToPage("/Index");
             }).SetCompatibilityVersion(CompatibilityVersion.Latest).AddNewtonsoftJson();
-
-            services.AddAuthorization(options => {
-                options.AddPolicy("UserPolicy", policy => policy.RequireRole("IsAdmin"));
-            });
 
             services.AddRecaptcha(this._configuration.GetSection("RecaptchaSettings"));
 
@@ -99,8 +101,8 @@ namespace Illusive {
             
             app.UseThrottling();
             
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapRazorPages();
