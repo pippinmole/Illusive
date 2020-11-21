@@ -276,13 +276,13 @@
                 <span class="hovertiptext-top">Delete post</span>
             </div>
             
+            <a asp-page="EditPost" asp-route-id="@forum.Id">
+                <div class="hovertip">
+                    <img src="https://illusivecdn.blob.core.windows.net/container-1/icon-edit.png" height="28px" width="28px" style="padding: 3px" alt=""/>
+                    <span class="hovertiptext-top">Edit post</span>
+                </div>
+            </a>
         }
-                    <a asp-page="EditPost" asp-route-id="@forum.Id">
-                        <div class="hovertip">
-                            <img src="https://illusivecdn.blob.core.windows.net/container-1/icon-edit.png" height="28px" width="28px" style="padding: 3px" alt=""/>
-                            <span class="hovertiptext-top">Edit post</span>
-                        </div>
-                    </a>
     </div>
 
     <div class="forumBody">
