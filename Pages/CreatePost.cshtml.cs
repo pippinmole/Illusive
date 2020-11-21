@@ -50,16 +50,6 @@ namespace Illusive.Pages {
             if ( forumPost.Tags != null ) {
                 forumPost.Tags = forumPost.Tags.ToLower();
 
-                if ( forumPost.Title.Length > 100 ) {
-                    this.ModelState.AddModelError("", "The forum title has to be under 100 characters.");
-                    return this.Page();
-                }
-
-                if ( forumPost.Content.Length > 10000 ) {
-                    this.ModelState.AddModelError("", "The forum contents has to be under 10,000 characters.");
-                    return this.Page();
-                }
-
                 // Sanitise tags
                 var tags = forumPost.Tags.Trim().Split(',');
                 if ( tags.Any(string.IsNullOrEmpty) ) {
