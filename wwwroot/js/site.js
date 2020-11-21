@@ -34,15 +34,8 @@ window.addEventListener("load", () => {
     });
 });
 
+// Dark theme
 window.addEventListener("load", () => {
-    // Dark theme
-    let theme = Cookies.get("theme");
-    if(theme === undefined){
-        theme = "lighttheme";
-    }
-
-    setTheme(theme);
-
     const toggle = $(".darkmode-toggle");
     toggle.prop('checked', theme === 'darktheme');
 });

@@ -1,4 +1,15 @@
-﻿<p style="text-align: center; display: contents">Dark Mode:</p>
+﻿
+<script>
+    // Dark theme
+    let theme = Cookies.get("theme");
+    if(theme === undefined){
+        theme = "lighttheme";
+    }
+    
+    setTheme(theme);
+</script>
+
+<p style="text-align: center; display: contents">Dark Mode:</p>
 <div style="float: right;">
     <label class="switch">
         <input type="checkbox" class="darkmode-toggle" onclick="DarkModeToggle()" checked>
