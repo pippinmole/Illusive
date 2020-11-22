@@ -49,6 +49,20 @@ You will need to set up some services to obtain connection strings so the applic
 
 ###### Content Delivery
 
+###### Mail Handling
+You will need access to an SMTP server for password resetting to work, since an email does get sent out to users' accounts in the scenario that they have forgotten their credentials.
+
+To set up email services:
+1. Register an SMTP server and obtain the relevant credentials
+2. Enter the credentials into the appsettings.json
+    ```json
+    "MailSenderOptions": {
+      "AddressFrom": "",
+      "Password": "",
+      "SmtpHostAddress": "",
+      "Port": ""
+    }
+    ```
 
 #### Example appsettings.json
 ```json

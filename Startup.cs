@@ -1,7 +1,9 @@
-using System;
 using ChristianMihai.AspNetCoreThrottler;
 using Illusive.Database;
 using Illusive.Illusive.Core.Database.Interfaces;
+using Illusive.Illusive.Core.Mail.Behaviour;
+using Illusive.Illusive.Core.Mail.Interfaces;
+using Illusive.Illusive.Core.Mail.Options;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +11,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +25,6 @@ namespace Illusive {
         public Startup(IConfiguration configuration) {
             this._configuration = configuration;
         }
-        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
@@ -55,7 +55,8 @@ namespace Illusive {
             services.AddAntiforgery(options => {
                 options.HeaderName = "XSRF-TOKEN";
             });
-            
+
+            services.Configure<MailSenderOptions>(this._configuration.GetSection(MailSenderOptions.Name));
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -69,6 +70,7 @@ namespace Illusive {
                 config.HardLimitMessage = "You are requesting too frequently... Refresh this page to continue.";
             });
 
+            services.AddSingleton<IMailSender, MailSender>();
             services.AddSingleton<IDatabaseContext, DatabaseContext>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IForumService, ForumService>();
