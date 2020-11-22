@@ -9,26 +9,46 @@
     ViewData["Description"] = "Log in to your account";
 }
 
-<div class="text-center">
-    
-    <h1 class="display-4">Login</h1>
+<div class="w-50 m-auto">
+    <h1 class="text-center display-4">Login</h1>
 
-    <div align="center">
-        <form method="post" id="loginField">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            Username: <input class="input-field" style="width: 50%" asp-for="loginData.Username" placeholder="username"/><br/>
+    <form method="post" id="loginField" class="border border-light p-5">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label for="info-username" class="col-xs-2 control-label">Username</label>
+            <input type="text" asp-for="loginData.Username" id="info-username" class="form-control mb-4" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <label for="info-password" class="col-xs-2 control-label">Password</label>
+            <input type="password" asp-for="loginData.Password" id="info-password" class="form-control mb-4" placeholder="Password">
+        </div>
             
-            Password: <i id="togglePassword" class="far fa-eye"></i>
-            <input class="input-field" id="password" style="width: 50%" asp-for="loginData.Password" placeholder="password"/>
-            
-            Remember me: <input asp-for="loginData.RememberMe" type="checkbox"/><br/>
+        <div class="d-flex justify-content-between">
+            <div>
+                <div class="custom-control custom-checkbox">
+                    <input asp-for="loginData.RememberMe" type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                    <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+                </div>
+            </div>
+            <div>
+                @* TODO: Add forgot password functionality *@
+                @* <a href="">Forgot password?</a> *@
+            </div>
+        </div>
+                    
+        <div class="d-inline-block m-3">
             @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
-            <input id="recaptcha" class="debounce" type="submit" value="Login"/>
+        </div>
             
-            <p>Don't have an account? <a href="/Signup">Sign up!</a></p>
-            @Html.AntiForgeryToken()
-        </form>
-
-    </div>
+        <button class="btn btn-info btn-block my-4 debounce" type="submit" id="recaptcha">Sign in</button>
+                    
+        <div class="text-center">
+            <p>Not a member?
+                <a asp-page="./Signup">Register</a>
+            </p>
+        </div>
+        @Html.AntiForgeryToken()
+    </form>
 
 </div>

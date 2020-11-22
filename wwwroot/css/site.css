@@ -136,7 +136,7 @@ button.accept-policy {
 html {
     position: relative;
     min-height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 body {

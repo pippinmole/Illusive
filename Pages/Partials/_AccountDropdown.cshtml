@@ -19,11 +19,14 @@
         </details-menu>
     </details>
 } else {
-    <details class="account-dropdown-button details-animated noselect">
-        <summary>Signed out</summary>
-        <details-menu class="account-dropdown-details">
-            <a href="/Login"><button class="button account-dropdown-elem" style="width: 100%;">Sign in</button></a>
-            <a href="/Signup"><button class="button account-dropdown-elem" style="width: 100%;">Sign up</button></a>
-        </details-menu>
-    </details>
+    <a asp-page="./Login"><button class="btn btn-default">Sign in</button></a>
+    <a asp-page="./Signup"><button class="btn btn-outline-dark">Sign Up</button></a>
+    
+@*     <details class="account-dropdown-button details-animated noselect"> *@
+@*         <summary>Signed out</summary> *@
+@*         <details-menu class="account-dropdown-details"> *@
+@*             <a href="/Login"><button class="button account-dropdown-elem" style="width: 100%;">Sign in</button></a> *@
+@*             <a href="/Signup"><button class="button account-dropdown-elem" style="width: 100%;">Sign up</button></a> *@
+@*         </details-menu> *@
+@*     </details> *@
 }

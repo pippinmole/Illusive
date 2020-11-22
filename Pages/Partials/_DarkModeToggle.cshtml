@@ -9,10 +9,9 @@
     setTheme(theme);
 </script>
 
-<p style="text-align: center; display: contents">Dark Mode:</p>
-<div style="float: right;">
-    <label class="switch">
-        <input type="checkbox" class="darkmode-toggle" onclick="DarkModeToggle()" checked>
-        <span class="slider round"></span>
-    </label>
+@* TODO: Make the label text a hovertip *@
+<div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input darkmode-toggle" onclick="DarkModeToggle()" id="customSwitches">
+    
+    <label class="custom-control-label input100" for="customSwitches">Dark Mode</label>
 </div>

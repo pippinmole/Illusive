@@ -47,16 +47,9 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-page="/Forum">Forum</a>
                     </li>
-
-                    @if ( this.User.IsLoggedIn() ) {
-                        <div float="right">
-                            <a class="nav-link" asp-area="" asp-page="/Account">Account</a>
-                        </div>
-                    } else {
-                        // Logged-out specific headings here
-                    }
                 </ul>
             </div>
+            
             @await Html.PartialAsync("Partials/_AccountDropdown", model: user)
             
             @if ( this.User.IsLoggedIn() ) {

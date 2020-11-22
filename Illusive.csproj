@@ -29,9 +29,6 @@
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.4.5" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Illusive.Core" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Pages\EditPost.cs">
       <DependentUpon>EditPost.cshtml</DependentUpon>
     </Compile>

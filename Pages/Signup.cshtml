@@ -1,4 +1,8 @@
 ﻿@page
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
+@using reCAPTCHA.AspNetCore.Templates
+@using reCAPTCHA.AspNetCore
+@using Microsoft.Extensions.Options
 @model SignupModel
 
 @{
@@ -13,19 +17,46 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div align="center" class="container-post">
-    <h1 class="display-4">Sign up</h1>
+<div class="w-50 m-auto">
+    <h1 class="text-center display-4">Sign Up</h1>
 
-    <form method="post">
+    <form method="post" id="loginField" class="border border-light p-5">
         <div asp-validation-summary="All" class="text-danger"></div>
-        Username: <input class="input-field" style="width: 50%" asp-for="SignupData.Username" placeholder="username"/><br/>
-        Email: <input class="input-field" style="width: 50%" asp-for="SignupData.Email" placeholder="email@email.com"/><br/>
-        Password:<i id="togglePassword" class="far fa-eye"></i>
-        <input class="input-field" id="password" style="width: 50%" asp-for="SignupData.Password" type="password" placeholder="password"/><br/>
-        <input type="submit" value="Sign Up"/>
-        <p>Already have an account? <a href="/Login">Sign in!</a></p>
+            
+        <div class="form-group">
+            <label for="info-username" class="col-xs-2 control-label">Username</label>
+            <input type="text" asp-for="SignupData.Username" id="info-username" class="form-control mb-4" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <label for="info-email" class="col-xs-2 control-label">E-mail</label>
+            <input type="email" asp-for="SignupData.Email" id="info-email" class="form-control mb-4" placeholder="E-mail">
+        </div>
+        <div class="form-group">
+            <label for="info-password" class="col-xs-2 control-label">Password</label>
+            <input type="password" asp-for="SignupData.Password" id="info-password" class="form-control mb-4" placeholder="Password">
+        </div>
+        
+        <div class="d-flex justify-content-between">
+            <div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                    <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+                </div>
+            </div>
+            <div>
+                @* TODO: Add forgot password functionality *@
+                @* <a href="">Forgot password?</a> *@
+            </div>
+        </div>
+                    
+        <div class="d-inline-block m-3">
+            @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
+        </div>
+            
+        <button class="btn btn-info btn-block my-4 debounce" type="submit" id="recaptcha">Sign Up</button>
         @Html.AntiForgeryToken()
     </form>
+
 </div>
 </body>
 </html>
