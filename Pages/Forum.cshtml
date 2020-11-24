@@ -120,7 +120,7 @@
     @{
         var postResults = this.Model.Forums;
         foreach ( var forum in postResults.Posts ) {
-            @await Html.PartialAsync("Partials/ForumPostComponent", model: forum)
+            @await Html.PartialAsync("Partials/_ForumPostComponent", model: forum)
         }
 
         <h5>Page @postResults.Page of @postResults.PageCount</h5>

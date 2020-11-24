@@ -49,8 +49,7 @@ namespace Illusive.Pages {
 
             var forum = this._forumService.GetForumById(id);
             var reply = this.ForumReply;
-            // TODO: Fix this
-            // reply.AuthorId = this.User.GetUniqueId();
+            reply.AuthorId = this.User.GetUniqueId();
 
             if ( forum.IsLocked ) {
                 this._logger.LogError($"{this.User.GetDisplayName()} tried to reply to a locked forum! This shouldn't be possible.");
