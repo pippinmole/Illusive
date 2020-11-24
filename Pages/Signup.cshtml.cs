@@ -7,6 +7,7 @@ using Illusive.Models.Extensions;
 using Illusive.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -14,13 +15,15 @@ using Microsoft.Extensions.Logging;
 namespace Illusive.Pages {
     public class SignupModel : PageModel {
         private readonly ILogger<SignupModel> _logger;
-        private readonly IAccountService _accountService;
-        
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
         [BindProperty] public SignupDataForm SignupData { get; set; }
 
-        public SignupModel(ILogger<SignupModel> logger, IAccountService accountService) {
+        public SignupModel(ILogger<SignupModel> logger, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
             this._logger = logger;
-            this._accountService = accountService;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
         }
         
         public void OnGet() {
@@ -40,35 +43,24 @@ namespace Illusive.Pages {
                 return this.Page();
             }
 
-            var accountExists = this._accountService.AccountExistsWhere(
-                account => account.AccountName == username || account.Email == email, out _);
-            if ( accountExists ) {
-                this.ModelState.AddModelError("", "An account with that username or email already exists!");
-                return this.Page();
-            }
-
-            this._logger.LogInformation($"{username} has signed up with email {email}");
-
-            var newAccount = new AccountData(
-                Guid.NewGuid().ToString().Substring(0, 10),
-                username,
-                email,
-                17,
-                BCrypt.Net.BCrypt.HashPassword(password),
-                false
+            var newAccount = new ApplicationUser(
+                userName: username,
+                email: email
             );
 
-            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
-                ClaimTypes.Role);
-            identity.AddClaimsForAccount(newAccount);
+            var result = await this._userManager.CreateAsync(newAccount, password);
+            if ( !result.Succeeded ) {
+                foreach ( var error in result.Errors ) {
+                    this.ModelState.AddModelError(error.Code, error.Description);
+                    this._logger.LogWarning($"Error creating user account: {error.Description}");
+                }
 
-            var principal = new ClaimsPrincipal(identity);
-            await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
-                new AuthenticationProperties {IsPersistent = true});
+                return this.Page();
+            } else {
+                this._logger.LogInformation($"Successfully created account with username {username}");
 
-            this._logger.LogInformation($"{username} has logged in.");
-            
-            this._accountService.AddRecord(newAccount);
+                await this._signInManager.SignInAsync(newAccount, true);
+            }
 
             return this.RedirectToPage("/Account");
         }

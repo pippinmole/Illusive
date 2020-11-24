@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Illusive.Attributes;
 using Illusive.Settings;
-using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Models {
@@ -23,11 +22,11 @@ namespace Illusive.Models {
         [StringLength(ForumSettings.MaxTagLength), UnicodeOnly]
         public string? Tags { get; set; } = "";
 
-        public string? OwnerId { get; set; } // Will be null in the user-request, but not when stored in the database.
+        public Guid OwnerId { get; set; } // Will be null in the user-request, but not when stored in the database.
         public DateTime TimeCreated { get; set; }
         public List<ForumReply> Replies { get; set; }
         public uint Views { get; set; }
-        public List<string> Likes { get; set; }
+        public List<Guid> Likes { get; set; }
         public bool IsLocked { get; set; }
 
         public ForumData() {
@@ -35,7 +34,7 @@ namespace Illusive.Models {
             this.Replies = new List<ForumReply>();
             this.TimeCreated = DateTime.Now;
             this.Views = 0;
-            this.Likes = new List<string>();
+            this.Likes = new List<Guid>();
         }
     }
 }

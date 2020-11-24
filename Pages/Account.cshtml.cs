@@ -1,40 +1,41 @@
 ﻿#nullable enable
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Illusive.Database;
 using Illusive.Data;
-using Illusive.Models;
+using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Utility;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
 
 namespace Illusive.Pages {
     public class AccountModel : PageModel {
 
         private readonly ILogger<AccountModel> _logger;
-        private readonly IAccountService _accountService;
+        private readonly IAppUserManager _userManager;
         private readonly IContentService _contentService;
         
         [BindProperty] public AccountChangeData AccountUpdate { get; set; }
         
-        public AccountModel(ILogger<AccountModel> logger, IAccountService accService, IContentService contentService) {
+        public AccountModel(ILogger<AccountModel> logger, IAppUserManager userManager, IContentService contentService) {
             this._logger = logger;
-            this._accountService = accService ?? throw new NullReferenceException("AccountService needs to be setup!");
+            this._userManager = userManager ?? throw new NullReferenceException("AccountService needs to be setup!");
             this._contentService = contentService;
         }
 
-        public IActionResult OnGet() {
-            var accountId = (string)this.HttpContext.Request.RouteValues["id"];
+        public async Task<IActionResult> OnGetAsync(string? id) {
+            if ( id == null || !Guid.TryParse(id, out var guid) ) {
+                this._logger.LogInformation($"User attempted to access invalid user id - redirecting...");
+                
+                if ( this.User.IsLoggedIn() )
+                    return this.Redirect($"/Account/{this.User.GetUniqueId()}");
 
-            if ( string.IsNullOrEmpty(accountId) )
-                return this.Redirect($"/Account/{this.User.GetUniqueId()}");
+                return this.LocalRedirect("/");
+            }
 
-            var account = this._accountService.GetAccountWhere(x => x.Id == accountId);
+            var account = await this._userManager.GetUserByIdAsync(guid);
             if ( account == null ) return this.Redirect("/");
 
             return this.Page();
@@ -44,15 +45,20 @@ namespace Illusive.Pages {
             if ( !this.ModelState.IsValid )
                 return this.Page();
 
-            var accountId = this.User.GetUniqueId();
+            var accountId = this.User.GetUniqueId().ToString();
+            var user = await this._userManager.GetUserByIdAsync(accountId);
             var accountUpdate = this.AccountUpdate ?? throw new NullReferenceException("Account Change data shouldn't be null!");
 
             var profileBio = accountUpdate.Bio;
             if ( !string.IsNullOrEmpty(profileBio) ) {
-                var update = Builders<AccountData>.Update.Set(x => x.Bio, profileBio);
-                this._accountService.UpdateAccount(accountId, update);
+                user.Bio = accountUpdate.Bio;
                 
-                this._logger.LogInformation($"User {accountId} changed profile biography to {profileBio}");
+                var result = await this._userManager.UpdateUserAsync(user);
+                if ( result.Succeeded ) {
+                    this._logger.LogInformation($"User {accountId} changed profile biography to {profileBio}");
+                } else {
+                    this._logger.LogError($"Uncaught error when trying to update {user}'s bio to {profileBio}: {result.Errors.FirstOrDefault()}");
+                }
             }
             
             var profilePic = accountUpdate.ProfilePicture;
@@ -64,17 +70,20 @@ namespace Illusive.Pages {
 
                 var path = await this._contentService.UploadFileAsync(Path.GetFileName(profilePic.FileName), stream);
 
-                var update = Builders<AccountData>.Update.Set(x => x.ProfilePicture, path);
-                this._accountService.UpdateAccount(accountId, update);
-                
-                this._logger.LogInformation($"User {accountId} changed profile picture to {path}");
+                user.ProfilePicture = path;
+                var result = await this._userManager.UpdateUserAsync(user);
+                if ( result.Succeeded ) {
+                    this._logger.LogInformation($"User {accountId} changed profile picture to {path}");
+                } else {
+                    this._logger.LogError($"Uncaught error when trying to update {user}'s profile picture to {path}: {result.Errors.FirstOrDefault()}");
+                }
             }
 
             return this.Page();
         }
 
         public class DeleteAccountPost {
-            public string accountId;
+            public Guid accountId;
         }
         
         public async Task<IActionResult> OnPostDeleteAccountAsync([FromBody] DeleteAccountPost post) {
@@ -87,11 +96,15 @@ namespace Illusive.Pages {
                 return this.Forbid();
             }
 
-            var wasRemoved = await this._accountService.RemoveAccountWhereAsync(x => x.Id == reqAccountId);
-            if ( wasRemoved ) {
-                await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                
-                this._logger.LogInformation($"Account with id {reqAccountId} was deleted successfully.");
+            var user = await this._userManager.GetUserByIdAsync(reqAccountId);
+            var result = await this._userManager.RemoveUserAsync(user);
+            
+            if ( result.Succeeded ) {
+                this._logger.LogInformation($"{user.UserName} has been deleted");
+
+                await this._userManager.SignOutAsync();
+            } else {
+                this._logger.LogError($"Error when trying to delete user {user.UserName}.");
             }
 
             return new JsonResult(new {

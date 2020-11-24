@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Attributes;
 using Illusive.Database;
+using Illusive.Models;
 using Illusive.Models.Extensions;
 using Illusive.Utility;
 using Microsoft.AspNetCore.Authentication;
@@ -24,14 +26,12 @@ namespace Illusive.Pages {
 
         private readonly ILogger<LoginModel> _logger;
         private readonly IRecaptchaService _recaptchaService;
-        private readonly IConfiguration _configuration;
-        private readonly IAccountService _accountService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         
-        public LoginModel(IConfiguration configuration, IAccountService accountService, ILogger<LoginModel> logger, IRecaptchaService recaptchaService) {
-            this._configuration = configuration;
-            this._accountService = accountService;
+        public LoginModel(ILogger<LoginModel> logger, IRecaptchaService recaptchaService, SignInManager<ApplicationUser> signInManager) {
             this._logger = logger;
             this._recaptchaService = recaptchaService;
+            this._signInManager = signInManager;
         }
         
         public IActionResult OnGet() {
@@ -58,23 +58,17 @@ namespace Illusive.Pages {
             
             var username = this.loginData.Username;
             var password = this.loginData.Password;
-            var rememberMe = this.loginData.RememberMe;
+            var isPersistent = this.loginData.RememberMe;
+            
+            var signInResult = await this._signInManager.PasswordSignInAsync(username, password, isPersistent, false);
 
-            var accountExists = this._accountService.AccountExistsWhere(x => x.AccountName == username, out var account);
-            if ( !accountExists || !account.VerifyPasswordHashEquals(password)) {
-                this.ModelState.AddModelError("", "username or password is invalid");
+            if ( signInResult.Succeeded ) {
+                this._logger.LogInformation($"{username} has logged in.");
+            } else {
+                this._logger.LogWarning("Login attempt failed");
+                this.ModelState.AddModelError("", "Login failed");
                 return this.Page();
             }
-                
-            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name,
-                ClaimTypes.Role);
-            identity.AddClaimsForAccount(account);
-
-            var principal = new ClaimsPrincipal(identity);
-            await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
-                new AuthenticationProperties { IsPersistent = rememberMe });
-            
-            this._logger.LogInformation($"{account?.AccountName} has logged in.");
             
             if ( !string.IsNullOrEmpty(returnUrl) ) {
                 return this.LocalRedirect(returnUrl);

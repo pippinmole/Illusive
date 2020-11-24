@@ -17,17 +17,15 @@ namespace Illusive.Pages {
 
         private readonly ILogger<ForumPost> _logger;
         private readonly IForumService _forumService;
-        private readonly IAccountService _accountService;
         private readonly INotificationService _notificationService;
 
         public ForumData ForumData { get; set; }
         [BindProperty] public ForumReply ForumReply { get; set; }
 
-        public ForumPost(ILogger<ForumPost> logger, IForumService forumService, IAccountService accountService,
+        public ForumPost(ILogger<ForumPost> logger, IForumService forumService,
             INotificationService notificationService) {
             this._logger = logger;
             this._forumService = forumService;
-            this._accountService = accountService;
             this._notificationService = notificationService;
         }
 
@@ -51,7 +49,8 @@ namespace Illusive.Pages {
 
             var forum = this._forumService.GetForumById(id);
             var reply = this.ForumReply;
-            reply.AuthorId = this.User.GetUniqueId();
+            // TODO: Fix this
+            // reply.AuthorId = this.User.GetUniqueId();
 
             if ( forum.IsLocked ) {
                 this._logger.LogError($"{this.User.GetDisplayName()} tried to reply to a locked forum! This shouldn't be possible.");
@@ -63,7 +62,7 @@ namespace Illusive.Pages {
             // Don't notify the owner of their own comments!
             if ( reply.AuthorId != forum.OwnerId ) {
                 await this._notificationService.AddNotificationAsync(new UserNotification(
-                    target: forum.OwnerId ?? throw new InvalidOperationException(),
+                    target: forum.OwnerId,
                     content:
                     $"{this.User.GetDisplayName()} has commented to your post: {reply.Content.SafeSubstring(0, 25)}...",
                     imageUrl: "",

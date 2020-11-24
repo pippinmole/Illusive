@@ -8,7 +8,7 @@ namespace Illusive.Data {
         [BsonId]
         public string Id { get; set; }
         
-        public string TargetUser { get; set; }
+        public Guid TargetUser { get; set; }
         public bool Read { get; set; }
         public string Content { get; set; }
         public string ImageUrl { get; set; }
@@ -17,7 +17,7 @@ namespace Illusive.Data {
         
         public string TriggerId { get; set; }
         
-        public UserNotification(string target, string content, string imageUrl, string triggerId, string? link = null) {
+        public UserNotification(Guid target, string content, string imageUrl, string triggerId, string? link = null) {
             this.Id = Guid.NewGuid().ToString();
             this.TargetUser = target;
             this.Read = false;

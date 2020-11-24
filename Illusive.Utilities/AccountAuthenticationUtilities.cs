@@ -1,12 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using Illusive.Models;
 
 namespace Illusive.Utility {
     public static class AccountAuthenticationUtilities {
 
-        public static string GetUniqueId(this ClaimsPrincipal principal) {
-            return principal.FindFirst(ClaimTypes.PrimarySid)?.Value;
+        public static Guid GetUniqueId(this ClaimsPrincipal principal) {
+            return new Guid(principal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new NullReferenceException("User Id is null!"));
         }
         
         public static string GetDisplayName(this ClaimsPrincipal principal) {

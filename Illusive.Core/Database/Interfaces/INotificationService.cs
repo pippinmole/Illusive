@@ -12,8 +12,7 @@ namespace Illusive.Illusive.Core.Database.Interfaces {
 
         Task AddNotificationAsync(UserNotification notification);
         Task<List<UserNotification>> GetNotificationsWhereAsync(Expression<Func<UserNotification, bool>> expression);
-        Task<List<UserNotification>> GetUnreadNotificationsForUserAsync(ClaimsPrincipal user);
-        Task<List<UserNotification>> GetUnreadNotificationsForUserAsync(AccountData user);
+        Task<List<UserNotification>> GetUnreadNotificationsForUserAsync(ApplicationUser user);
 
         Task UpdateNotificationsWhereAsync(Expression<Func<UserNotification, bool>> expression,
             UpdateDefinition<UserNotification> update);

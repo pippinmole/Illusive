@@ -2,9 +2,10 @@
 @using Westwind.AspNetCore.Markdown
 @using global::Illusive.Utility
 @using global::Illusive.Database
+@using global::Illusive.Illusive.Core.User_Management.Interfaces
 @using global::Illusive.Models.Extensions
 @using Humanizer
-@inject IAccountService AccountService
+@inject IAppUserManager UserManager
 @model ForumPost
 @{
     var content = this.Model.ForumData.Content;
@@ -121,7 +122,8 @@
 
 @{
     var forum = this.Model.ForumData;
-    var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
+    // var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
+    var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId);
 }
 
 <div>
@@ -167,9 +169,9 @@
                 @if ( forumOwner?.IsAdmin == true ) {
                     <span style="color: red;">[Admin]</span>
                 }
-                <a href="/Account/@forumOwner?.Id"> @forumOwner?.AccountName</a>
+                <a href="/Account/@forumOwner?.Id"> @forumOwner?.UserName</a>
             </p>
-            <p style="font-size: 0.5rem; font-style: italic">Joined @forumOwner?.AccountCreated.ToShortDateString()</p>
+            <p style="font-size: 0.5rem; font-style: italic">Joined @forumOwner?.CreatedOn.ToShortDateString()</p>
         </div>
 
         <div class="forumContent">
@@ -197,7 +199,7 @@
     @{
         var replies = forum.Replies;
         foreach ( var reply in replies ) {
-            var replyOwner = AccountService.GetAccountWhere(x => x.Id == reply.AuthorId);
+            var replyOwner = await UserManager.GetUserByIdAsync(reply.AuthorId);
 
             <div class="replyBody">
                 <div style="width: 100px; min-width: 100px; height: 100px; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">
@@ -206,9 +208,9 @@
                         @if ( replyOwner?.IsAdmin == true ) {
                             <span style="color: red;">[Admin]</span>
                         }
-                        <a href="/Account/@replyOwner?.Id"> @replyOwner?.AccountName</a>
+                        <a href="/Account/@replyOwner?.Id"> @replyOwner?.UserName</a>
                     </p>
-                    <p style="font-size: 0.5rem; font-style: italic">Joined @replyOwner?.AccountCreated.ToShortDateString()</p>
+                    <p style="font-size: 0.5rem; font-style: italic">Joined @replyOwner?.CreatedOn.ToShortDateString()</p>
                 </div>
 
                 <div class="replyContent">

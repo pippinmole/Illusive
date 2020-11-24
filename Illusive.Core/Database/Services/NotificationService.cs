@@ -33,15 +33,10 @@ namespace Illusive.Database {
             return val.ToList();
         }
 
-        public async Task<List<UserNotification>> GetUnreadNotificationsForUserAsync(ClaimsPrincipal user) {
-            var val = await this._notifications.FindAsync(x => x.TargetUser == user.GetUniqueId() && x.Read == false);
-            return val.ToList();
-        }
-        
-        public async Task<List<UserNotification>> GetUnreadNotificationsForUserAsync([MaybeNull] AccountData user) {
+        public async Task<List<UserNotification>> GetUnreadNotificationsForUserAsync(ApplicationUser user) {
             if ( user == null ) return null;
             
-            var val = await this._notifications.FindAsync(x => x.TargetUser == user.Id && x.Read == false);
+            var val = await this._notifications.FindAsync(x => x.TargetUser.Equals(user.Id) && x.Read == false);
             return val.ToList();
         }
 

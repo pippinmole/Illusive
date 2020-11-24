@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Illusive.Database;
+using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -11,24 +13,19 @@ using Microsoft.Extensions.Logging;
 namespace Illusive.Pages {
     public class LogoutModel : PageModel {
         private readonly ILogger<LogoutModel> _logger;
-        private readonly IAccountService _accountService;
+        private readonly IAppUserManager _userManager;
 
-        public LogoutModel(ILogger<LogoutModel> logger, IAccountService accountService) {
+        public LogoutModel(ILogger<LogoutModel> logger, IAppUserManager userManager) {
             this._logger = logger;
-            this._accountService = accountService;
+            this._userManager = userManager;
         }
-        
-        public async Task<RedirectToPageResult> OnGet() {
-            try {
-                if ( this.User.IsLoggedIn() ) {
-                    await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    
-                    this._logger.LogInformation($"{this.User.GetDisplayName()} has logged out.");
-                }
-            } catch ( Exception e ) {
-                this._logger.LogError($"Error logging out {this.User.GetUniqueId()}: {e}");
+
+        public async Task<IActionResult> OnGet() {
+            if ( this.User.IsLoggedIn() ) {
+                await this._userManager.SignOutAsync();
+                this._logger.LogInformation($"{this.User.GetDisplayName()} has logged out.");
             }
-            
+
             return this.RedirectToPage("/Index");
         }
     }

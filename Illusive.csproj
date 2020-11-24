@@ -12,9 +12,9 @@
     <_ContentIncludedByDefault Remove="Pages\Test\SubTest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="2.1.1" />
     <PackageReference Include="AspNetCoreThrottler" Version="1.0.1" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0-preview.1" />
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
     <PackageReference Include="Humanizer.Core" Version="2.8.26" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="4.0.0" />

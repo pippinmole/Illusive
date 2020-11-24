@@ -1,9 +1,15 @@
+using System;
+using AspNetCore.Identity.MongoDbCore.Extensions;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using AspNetCore.Identity.MongoDbCore.Models;
 using ChristianMihai.AspNetCoreThrottler;
 using Illusive.Database;
 using Illusive.Illusive.Core.Database.Interfaces;
 using Illusive.Illusive.Core.Mail.Behaviour;
 using Illusive.Illusive.Core.Mail.Interfaces;
 using Illusive.Illusive.Core.Mail.Options;
+using Illusive.Illusive.Core.User_Management.Behaviour;
+using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDbGenericRepository;
 using reCAPTCHA.AspNetCore;
 using Westwind.AspNetCore.Markdown;
 
@@ -56,6 +63,31 @@ namespace Illusive {
                 options.HeaderName = "XSRF-TOKEN";
             });
 
+            var mongoDbIdentity = new MongoDbIdentityConfiguration {
+                MongoDbSettings = new MongoDbSettings {
+                    ConnectionString = this._configuration.GetConnectionString("DatabaseConnectionString"),
+                    DatabaseName = "IllusiveDatabase"
+                },
+                IdentityOptionsAction = options => {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+
+                    // Lockout settings
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                    options.Lockout.MaxFailedAccessAttempts = 10;
+
+                    // ApplicationUser settings
+                    options.User.RequireUniqueEmail = true;
+                    options.User.AllowedUserNameCharacters =
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
+                }
+            };
+
+            services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentity);
+            
             services.Configure<MailSenderOptions>(this._configuration.GetSection(MailSenderOptions.Name));
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = false;
@@ -70,9 +102,9 @@ namespace Illusive {
                 config.HardLimitMessage = "You are requesting too frequently... Refresh this page to continue.";
             });
 
+            services.AddScoped<IAppUserManager, AppUserManager>();
             services.AddSingleton<IMailSender, MailSender>();
             services.AddSingleton<IDatabaseContext, DatabaseContext>();
-            services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IForumService, ForumService>();
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IContentService, ContentService>();

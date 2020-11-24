@@ -1,6 +1,7 @@
 ﻿@using global::Illusive.Utility
 @using global::Illusive.Database
-@inject IAccountService AccountService
+@using global::Illusive.Illusive.Core.User_Management.Interfaces
+@inject IAppUserManager UserManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +34,7 @@
 <body>
 <header>
     @{
-        var user = AccountService.GetAccountWhere(x => x.Id == this.User.GetUniqueId());
+        var user = await UserManager.GetUserAsync(this.User);
     }
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-color border-page-bottom box-shadow-bottom mb-3">
         <div class="container">

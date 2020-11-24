@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
 using Illusive.Illusive.Core.Mail.Interfaces;
 using Illusive.Illusive.Core.Mail.Options;
@@ -28,10 +31,11 @@ namespace Illusive.Illusive.Core.Mail.Behaviour {
             var msg = new MailMessage {
                 Subject = subject, 
                 Body = body, 
-                IsBodyHtml = true, 
-                From = new MailAddress(options.AddressFrom)
+                IsBodyHtml = true,
+                From = new MailAddress(options.AddressFrom),
+                BodyEncoding = Encoding.UTF8
             };
-            
+
             foreach ( var recipient in recipients ) {
                 msg.To.Add(recipient);
             }

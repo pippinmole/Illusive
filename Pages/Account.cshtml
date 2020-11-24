@@ -1,9 +1,8 @@
 ﻿@page "/Account/{id?}"
-@inject IAccountService AccountService
 @inject IForumService ForumService
+@inject UserManager<ApplicationUser> UserManager
 @using global::Illusive.Database
-@using global::Illusive.Utility
-@using Humanizer
+@using Microsoft.AspNetCore.Identity
 @model AccountModel
 @{
     ViewData["Title"] = "Account";
@@ -112,8 +111,8 @@
 
 @{ 
     var accountId = (string)this.HttpContext.Request.RouteValues["id"];
-    var user = AccountService.GetAccountWhere(x => x.Id == accountId);
-    var isMyAccount = this.User.GetUniqueId() == user.Id;
+    var user = await UserManager.FindByIdAsync(accountId);
+    var isMyAccount = true;//this.User.GetUniqueId() == user.Id;
 }
 
 <div asp-validation-summary="All" class="text-danger"></div>
@@ -125,7 +124,7 @@
             @if ( user.IsAdmin ) {
                 <span style="color: red; font-size: 12px">[Admin]</span>
             }
-            @user.AccountName
+            @user.UserName
             <span style="font-size: 15px"> - @user.Id</span>
 
             @if ( isMyAccount ) {
@@ -150,7 +149,7 @@
         <input asp-page-handler="Upload" class="button" type="submit" value="Update"/>
     </form>
     
-    <button class="container p-1 m-2 btn-danger" onclick="DeleteAccount('@this.User.GetUniqueId()')">Delete Account</button>
+    <button class="container p-1 m-2 btn-danger" onclick="DeleteAccount('@user.Id')">Delete Account</button>
 </div>
 
 @* Profile post history *@
@@ -161,9 +160,9 @@
     </div>
     
     <div id="Posts" class="tabcontent">
-        @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
-            @await Html.PartialAsync("Partials/ForumPostComponent", model: forum)
-        }
+@*         @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId != null && x.OwnerId.Value == user.Id) ) { *@
+@*             @await Html.PartialAsync("Partials/ForumPostComponent", model: forum) *@
+@*         } *@
     </div>
     
     <div id="LikedPosts" class="tabcontent">
