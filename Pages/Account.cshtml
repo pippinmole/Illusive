@@ -160,9 +160,9 @@
     </div>
     
     <div id="Posts" class="tabcontent">
-@*         @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId != null && x.OwnerId.Value == user.Id) ) { *@
-@*             @await Html.PartialAsync("Partials/ForumPostComponent", model: forum) *@
-@*         } *@
+         @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId != null && x.OwnerId == user.Id) ) {
+             @await Html.PartialAsync("Partials/_ForumPostComponent", model: forum)
+         }
     </div>
     
     <div id="LikedPosts" class="tabcontent">

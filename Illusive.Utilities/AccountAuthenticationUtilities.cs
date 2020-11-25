@@ -7,7 +7,10 @@ namespace Illusive.Utility {
     public static class AccountAuthenticationUtilities {
 
         public static Guid GetUniqueId(this ClaimsPrincipal principal) {
-            return new Guid(principal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new NullReferenceException("User Id is null!"));
+            var name = principal.FindFirst(ClaimTypes.NameIdentifier);
+            if ( name == null ) return Guid.Empty;
+            
+            return new Guid(name.Value);
         }
         
         public static string GetDisplayName(this ClaimsPrincipal principal) {
