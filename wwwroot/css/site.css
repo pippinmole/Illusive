@@ -52,6 +52,14 @@ for details on configuring this project to bundle and minify static web assets. 
     --invert-colors: invert(0%);
 }
 
+.btn {
+    color: inherit !important;
+}
+
+.dropdown-menu {
+    background-color: var(--container-colour-secondary) !important;
+}
+
 .navbar-color {
     background-color: var(--navbar-background-color);
 }
@@ -145,6 +153,7 @@ body {
     /*position: relative;*/
     background-color: var(--container-colour-primary) !important;
     color: var(--text-color) !important;
+    transition: color .1s ease-in-out,background-color .1s ease-in-out;
 }
 .footer {
     position: absolute;
