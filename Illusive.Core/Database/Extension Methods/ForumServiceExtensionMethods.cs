@@ -57,7 +57,6 @@ namespace Illusive.Models.Extensions {
             service.UpdateForum(forum.Id, update);
         }
         public static void ToggleLockState(this IForumService service, ForumData forum) {
-            Console.WriteLine($"Setting forum lock state to {!forum.IsLocked}");
             var update = Builders<ForumData>.Update.Set(x => x.IsLocked, !forum.IsLocked);
             service.UpdateForum(forum.Id, update);
         }

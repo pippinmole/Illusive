@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Illusive.Illusive.Core.User_Management.Extension_Methods;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
@@ -9,10 +11,16 @@ namespace Illusive.Illusive.Core.User_Management.Behaviour {
         
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public AppUserManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
+        public AppUserManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager) {
             this._userManager = userManager;
             this._signInManager = signInManager;
+            this._roleManager = roleManager;
+            
+            this._roleManager.SetInitialRoles(new List<string> {
+                "Admin"
+            });
         }
 
         public async Task<ApplicationUser> GetUserAsync(ClaimsPrincipal principal) {
@@ -49,6 +57,14 @@ namespace Illusive.Illusive.Core.User_Management.Behaviour {
 
         public async Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string token, string password) {
             return await this._userManager.ResetPasswordAsync(user, token, password);
+        }
+
+        public async Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role) {
+            return await this._userManager.AddToRoleAsync(user, role);
+        }
+
+        public async Task<bool> IsUserInRole(ApplicationUser user, string role) {
+            return await this._userManager.IsInRoleAsync(user, role);
         }
     }
 }

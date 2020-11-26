@@ -2,6 +2,7 @@
 @using Westwind.AspNetCore.Markdown
 @using global::Illusive.Utility
 @using global::Illusive.Database
+@using global::Illusive.Illusive.Core.User_Management.Extension_Methods
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
 @using global::Illusive.Models.Extensions
 @using Humanizer
@@ -166,7 +167,7 @@
         <div class="forum-author-container">
             <a href="/Account/@forumOwner?.Id"> <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner?.ProfilePicture" alt=""></a>
             <p style="font-size: 0.6rem; margin: 0 0.1rem;">
-                @if ( forumOwner?.IsAdmin == true ) {
+                @if ( await UserManager.IsUserAdmin(forumOwner) ) {
                     <span style="color: red;">[Admin]</span>
                 }
                 <a href="/Account/@forumOwner?.Id"> @forumOwner?.UserName</a>
@@ -205,7 +206,7 @@
                 <div style="width: 100px; min-width: 100px; height: 100px; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">
                     <img style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@replyOwner?.ProfilePicture" alt="">
                     <p style="font-size: 0.6rem; margin: 0 0.1rem;">
-                        @if ( replyOwner?.IsAdmin == true ) {
+                        @if ( await UserManager.IsUserAdmin(replyOwner) ) {
                             <span style="color: red;">[Admin]</span>
                         }
                         <a href="/Account/@replyOwner?.Id"> @replyOwner?.UserName</a>

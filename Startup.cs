@@ -9,6 +9,7 @@ using Illusive.Illusive.Core.Mail.Behaviour;
 using Illusive.Illusive.Core.Mail.Interfaces;
 using Illusive.Illusive.Core.Mail.Options;
 using Illusive.Illusive.Core.User_Management.Behaviour;
+using Illusive.Illusive.Core.User_Management.Extension_Methods;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -58,7 +59,6 @@ namespace Illusive {
             }).SetCompatibilityVersion(CompatibilityVersion.Latest).AddNewtonsoftJson();
 
             services.AddRecaptcha(this._configuration.GetSection("RecaptchaSettings"));
-
             services.AddAntiforgery(options => {
                 options.HeaderName = "XSRF-TOKEN";
             });

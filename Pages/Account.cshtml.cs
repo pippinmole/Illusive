@@ -2,7 +2,9 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using AspNetCore.Identity.MongoDbCore.Extensions;
 using Illusive.Data;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Utility;
@@ -45,14 +47,14 @@ namespace Illusive.Pages {
             if ( !this.ModelState.IsValid )
                 return this.Page();
 
-            var accountId = this.User.GetUniqueId().ToString();
+            var accountId = this.User.GetUniqueId();
             var user = await this._userManager.GetUserByIdAsync(accountId);
             var accountUpdate = this.AccountUpdate ?? throw new NullReferenceException("Account Change data shouldn't be null!");
 
             var profileBio = accountUpdate.Bio;
             if ( !string.IsNullOrEmpty(profileBio) ) {
                 user.Bio = accountUpdate.Bio;
-                
+
                 var result = await this._userManager.UpdateUserAsync(user);
                 if ( result.Succeeded ) {
                     this._logger.LogInformation($"User {accountId} changed profile biography to {profileBio}");
