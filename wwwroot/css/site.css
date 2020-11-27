@@ -56,6 +56,10 @@ for details on configuring this project to bundle and minify static web assets. 
     color: inherit !important;
 }
 
+.btn-outline-dark {
+    border-color: var(--container-colour-secondary) !important;
+}
+
 .dropdown-menu {
     background-color: var(--container-colour-secondary) !important;
 }
