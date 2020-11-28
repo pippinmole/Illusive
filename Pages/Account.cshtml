@@ -2,9 +2,10 @@
 @inject IForumService ForumService
 @inject IAppUserManager UserManager
 @using global::Illusive.Database
-@using global::Illusive.Illusive.Core.User_Management.Extension_Methods
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
 @using global::Illusive.Utility
+@using Humanizer
+@using Microsoft.AspNetCore.Html
 @model AccountModel
 @{
     ViewData["Title"] = "Account";
@@ -102,7 +103,203 @@
         OpenListItem("Posts"); 
     });
     </script>
-
+    
+    <style type="text/css">
+        .cover-sec {
+            width: 100%;
+        }
+        .cover-sec img {
+            width: 100%;
+            max-height: 250px;
+        }
+        
+        .user-profile {
+            width: 100%;
+            float: left;
+            background-color: var(--container-colour-primary);
+            border-right: 1px solid var(--container-colour-primary-border);
+            border-bottom: 2px solid var(--container-colour-primary-border);
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .follow-status {
+            padding: 0;
+            list-style: none;
+            justify-content: center;
+            display: flex;
+        }
+        
+        .follow-status li {
+            display: inline-block;
+            margin-right: 30px;
+            text-align: center;
+        }
+        
+        .follow-status li:last-child {
+            margin-right: 0;
+        }
+        
+        .follow-status li span {
+            display: block;
+        }
+        
+        .user-stats {
+            width: 100%;
+            padding-left: 13px;
+        }
+        
+        .user-profile-image {
+            text-align: center;
+            position: relative;
+            margin-bottom: 15px;
+            margin-top: -95px;
+        }
+        
+        .user-profile-image img {
+            border-radius: 999px;
+            height: 150px;
+            width: 150px;
+        }
+        
+        .user-social-links {
+            float: left;
+            width: 100%;
+            text-align: left;
+            padding: 0;
+            font-size: 0.8rem;
+        }
+        
+        .user-social-links li {
+            float: left;
+            width: 100%;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e5e5e5;
+            font-weight: 700;
+            
+            list-style: none;
+        }
+        
+        .user-overview {
+            
+        }
+        
+        .user-feed {
+            margin-top: 30px;
+        }
+        
+        .user-post {
+            float: left;
+            width: 100%;
+            border-right: 1px solid var(--container-colour-primary-border);
+            border-bottom: 2px solid var(--container-colour-primary-border);
+            padding: 15px;
+            background-color: var(--container-colour-primary);
+            border-radius: 5px;
+        }
+        
+        .user-post-top {
+            float: left;
+            width: 100%;
+            position: relative;
+        }
+        
+        .user-post-content {
+        
+        }
+        
+        .user-post-content h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .user-post-content p {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .user-post-top-details {
+            display: inline-flex;
+        }
+        
+        .user-post-top-details img {
+            border-radius: 999px;
+            height: 35px;
+            width: 35px;
+        }
+        
+        .user-post-top-details h3 {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        
+        .user-post-top-details span {
+            font-size: 12px;
+        }
+        
+        .user-description span {
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+        
+        .settings-btn {
+            float: right;
+            margin-top: 25px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .widget {
+            float: left;
+            width: 100%;
+            border-right: 1px solid var(--container-colour-primary-border);
+            border-bottom: 1px solid var(--container-colour-primary-border);
+            border-bottom: 20px;
+            padding: 15px;
+            background-color: var(--container-colour-primary);
+            border-radius: 3px;
+        }
+        
+        .widget h1 {
+            float: left;
+            width: 100%;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #757575;
+            font-size: 1.2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .widget p {
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+        
+        .user-tab {
+        
+        }
+        
+        .user-tab ul {
+            float: left;
+            width: 100%;
+            list-style: none;
+            display: flex;
+        }
+        
+        .user-tab ul li {
+            margin-right: 25px;
+        }
+        
+        .user-tab ul li:last-child {
+            margin-right: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -111,52 +308,120 @@
     var user = await UserManager.GetUserByIdAsync(accountId);
 }
 
-<div asp-validation-summary="All" class="text-danger"></div>
+@functions {
 
-<div style="display: inline-flex; width: 100%; border-bottom: 1px solid grey;">
-    <img src="@user.ProfilePicture" style="width: 50px; height: 50px" alt=""/>
-    <div>
-        <h4 style="padding-left: 16px; margin: auto">
-            @if ( await UserManager.IsUserAdmin(user) ) {
-                <span style="color: red; font-size: 12px">[Admin]</span>
-            }
-            @user.UserName
-            <span style="font-size: 15px"> - @user.Id</span>
-            <span>
-                @if ( this.User.GetUniqueId() == user.Id ) {
-                    <a style="font-size: 1rem" asp-page="AccountChange">Change</a>
-                }
-            </span>
-        </h4>
+    static HtmlString SocialLinkFor(string profileUrl, string accountName, string classTags, string color) {
+        if ( string.IsNullOrEmpty(accountName) )
+            return HtmlString.Empty;
+
+        var str = $"<li>" +
+                  $"<i class=\"{classTags}\" style=\"color: {color} !important;\"> </i>" +
+                  $" <a href=\"{profileUrl}{accountName}\" target=\"_blank\"> {accountName}</a>" +
+                  $"</li>";
+        return new HtmlString(str);
+    }
+
+}
+
+<section class="cover-sec">
+    <img src="@user?.CoverPicture" alt="">
+</section>
+
+<main>
+    <div class="container row">
+        <div class="col-lg-3">
+            
+            <div class="user-profile">
+                <div class="user-profile-image">
+                    <img src="@user?.ProfilePicture" alt=""/>
+                </div>
+                
+                <div class="user-stats">
+                    <ul class="follow-status">
+                        <li>
+                            <span>Following</span>
+                            <b>999</b>
+                        </li>
+                                    
+                        <li>
+                            <span>Followers</span>
+                            <b>999</b>
+                        </li>
+                    </ul>
+                </div>
+                
+                <ul class="user-social-links">
+                    @SocialLinkFor(SocialMediaConstants.TwitterUserUrl, user?.TwitterUrl, "fa fa-twitter text-decoration-none", "#1da1f2")
+                    @SocialLinkFor(SocialMediaConstants.LinkedinUserUrl, user?.LinkedinUrl, "fa fa-linkedin text-decoration-none", "#2867b2")
+                    @SocialLinkFor(SocialMediaConstants.RedditUserUrl, user?.RedditUrl, "fa fa-reddit text-decoration-none", "#1da1f2")
+                    @SocialLinkFor(SocialMediaConstants.SteamUserUrl, user?.SteamUrl, "fa fa-steam text-decoration-none", "#171A21")
+                    @SocialLinkFor(SocialMediaConstants.GithubUserUrl, user?.GithubUrl, "fa fa-github text-decoration-none", "#white")
+                </ul>
+            </div>
+        </div>
         
-        @* Profile Biography *@
-        <p style="padding-left: 16px; padding-bottom: 10px; font-style: italic; font-size: 11px">
-            @user.Bio
-        </p>
-    </div>
-</div>
+        <div class="col-lg-6 pt-4">
+            <div class="user-overview">
+                <h3>
+                    @user?.UserName
+                </h3>
+                <div class="user-description">
+                    <span>@user?.Bio</span>
+                </div>
+            </div>
 
-@await Html.PartialAsync("Partials/_SocialMediaLinks", model: user)
+            <div class="user-feed">
+                @foreach ( var post in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
+                    if ( post.OwnerId == Guid.Empty ) {
+                        continue;
+                    }
+                    
+                    var postOwner = await UserManager.GetUserByIdAsync(post.OwnerId);
+                    
+                    <div class="user-post">
+                        <div class="user-post-top">
+                            <div class="user-post-top-details">
+                                <img src="@postOwner?.ProfilePicture" alt="">
+                                <div class="pl-2">
+                                    <h3>@postOwner?.UserName</h3>
+                                    <span><i class="fa fa-clock-o"></i> @post.TimeCreated.TimeSince().Humanize() ago</span>
+                                </div>
+                            </div>
+                        </div>
 
-@* Profile post history *@
-<div class="m-2">
-    <div>
-        <div class="tab">
-            <button class="tablinks" onclick="OpenListItem('Posts')">Posts</button>
-            <button class="tablinks" onclick="OpenListItem('LikedPosts')">Liked Posts</button>
+                        <div class="user-post-content">
+                            <h3>@post?.Title</h3>
+                            <p>
+                                @post?.Content.SafeSubstring(0, 225)
+                                <a asp-page="/ForumPost" asp-route-id="@post?.Id">Read more</a>
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-
-        <div id="Posts" class="tabcontent">
-            @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId != null && x.OwnerId == user.Id) ) {
-                @await Html.PartialAsync("Partials/_ForumPostComponent", model: forum)
+        
+        <div class="col-lg-3">
+            @if ( user?.Id == this.User.GetUniqueId() ) {
+                <a asp-page="/AccountChange" class="settings-btn">
+                    <button class="btn btn-info">
+                        <i class="fa fa-cogs"></i>
+                        Profile Settings
+                    </button>
+                </a>
             }
-        </div>
 
-        <div id="LikedPosts" class="tabcontent">
-            <h3>Liked Posts</h3>
-            <p>ADD LIST OF LIKED POSTS.</p>
+            <div class="right-column">
+                <div class="widget">
+                    <h1>Some Widget</h1>
+            
+                    <p>
+                        This is some widget content right here.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</main>
 </body>
 </html>

@@ -12,6 +12,7 @@ namespace Illusive {
 
         public uint Age { get; set; }
         public string ProfilePicture { get; set; }
+        public string CoverPicture { get; set; }
         public string Bio { get; set; }
 
         public string GithubUrl { get; set; }
@@ -24,6 +25,7 @@ namespace Illusive {
             this.Age = 17;
             this.ProfilePicture =
                 "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
+            this.CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
             this.Bio = "I'm new here!";
         }
 
@@ -31,6 +33,7 @@ namespace Illusive {
             this.Age = 17;
             this.ProfilePicture =
                 "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
+            this.CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
             this.Bio = "I'm new here!";
         }
     }

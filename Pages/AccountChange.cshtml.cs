@@ -67,6 +67,22 @@ namespace Illusive.Pages {
                     this._logger.LogError($"Uncaught error when trying to update {user}'s profile picture to {path}: {result.Errors.FirstOrDefault()}");
                 }
             }
+            
+            var coverPicture = accountUpdate.CoverPicture;
+            if ( coverPicture != null && coverPicture.Length > 0 ) {
+                await using var stream = System.IO.File.Create(Path.GetTempFileName(), (int) coverPicture.Length);
+                await coverPicture.CopyToAsync(stream);
+
+                var path = await this._contentService.UploadFileAsync(Path.GetFileName(coverPicture.FileName), stream);
+                user.CoverPicture = path;
+                
+                var result = await this._userManager.UpdateUserAsync(user);
+                if ( result.Succeeded ) {
+                    this._logger.LogInformation($"User {accountId} changed profile picture to {path}");
+                } else {
+                    this._logger.LogError($"Uncaught error when trying to update {user}'s profile picture to {path}: {result.Errors.FirstOrDefault()}");
+                }
+            }
 
             return this.Page();
         }
