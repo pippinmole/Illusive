@@ -4,6 +4,7 @@
 @using global::Illusive.Database
 @using global::Illusive.Illusive.Core.User_Management.Extension_Methods
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
+@using global::Illusive.Utility
 @model AccountModel
 @{
     ViewData["Title"] = "Account";
@@ -35,11 +36,6 @@
             font-style: inherit;
             box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
             display: none; /*Disable by default*/
-        }
-        
-        .profile-posts-container {
-            margin: 10px 0;
-            padding: 5px 20px;
         }
         
         /* Style the tab */
@@ -113,7 +109,6 @@
 @{ 
     var accountId = (string)this.HttpContext.Request.RouteValues["id"];
     var user = await UserManager.GetUserByIdAsync(accountId);
-    var isMyAccount = true;//this.User.GetUniqueId() == user.Id;
 }
 
 <div asp-validation-summary="All" class="text-danger"></div>
@@ -127,10 +122,11 @@
             }
             @user.UserName
             <span style="font-size: 15px"> - @user.Id</span>
-
-            @if ( isMyAccount ) {
-                <img class="change-profile-button" onclick="changeProfileToggle()" src="https://illusivecdn.blob.core.windows.net/container-1/icon_settings.png" style="height: 15px; width: 15px; margin-left: 20px; align-self: center;" alt=""/>
-            }
+            <span>
+                @if ( this.User.GetUniqueId() == user.Id ) {
+                    <a style="font-size: 1rem" asp-page="AccountChange">Change</a>
+                }
+            </span>
         </h4>
         
         @* Profile Biography *@
@@ -140,37 +136,27 @@
     </div>
 </div>
 
-@* Profile changing settings *@
-<div class="change-profile-container">
-    <h4 class="text-center">Change profile settings</h4>
-    <form enctype="multipart/form-data" method="post">
-        <input asp-for="AccountUpdate.Bio" class="input-field" style="margin-bottom: 10px" type="text" placeholder="What's on your mind?">
-        Change your profile picture <input asp-for="AccountUpdate.ProfilePicture" class="filestyle" type="file" accept="image/*"> <br/>
-
-        <input asp-page-handler="Upload" class="button" type="submit" value="Update"/>
-    </form>
-    
-    <button class="container p-1 m-2 btn-danger" onclick="DeleteAccount('@user.Id')">Delete Account</button>
-</div>
+@await Html.PartialAsync("Partials/_SocialMediaLinks", model: user)
 
 @* Profile post history *@
-<div class="profile-posts-container">
-    <div class="tab">
-        <button class="tablinks" onclick="OpenListItem('Posts')">Posts</button>
-        <button class="tablinks" onclick="OpenListItem('LikedPosts')">Liked Posts</button>
-    </div>
-    
-    <div id="Posts" class="tabcontent">
-         @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId != null && x.OwnerId == user.Id) ) {
-             @await Html.PartialAsync("Partials/_ForumPostComponent", model: forum)
-         }
-    </div>
-    
-    <div id="LikedPosts" class="tabcontent">
-        <h3>Liked Posts</h3>
-        <p>ADD LIST OF LIKED POSTS.</p> 
+<div class="m-2">
+    <div>
+        <div class="tab">
+            <button class="tablinks" onclick="OpenListItem('Posts')">Posts</button>
+            <button class="tablinks" onclick="OpenListItem('LikedPosts')">Liked Posts</button>
+        </div>
+
+        <div id="Posts" class="tabcontent">
+            @foreach ( var forum in ForumService.GetForumsWhere(x => x.OwnerId != null && x.OwnerId == user.Id) ) {
+                @await Html.PartialAsync("Partials/_ForumPostComponent", model: forum)
+            }
+        </div>
+
+        <div id="LikedPosts" class="tabcontent">
+            <h3>Liked Posts</h3>
+            <p>ADD LIST OF LIKED POSTS.</p>
+        </div>
     </div>
 </div>
-
 </body>
 </html>

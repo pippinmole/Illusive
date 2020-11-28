@@ -14,15 +14,23 @@ namespace Illusive {
         public string ProfilePicture { get; set; }
         public string Bio { get; set; }
 
+        public string GithubUrl { get; set; }
+        public string TwitterUrl { get; set; }
+        public string RedditUrl { get; set; }
+        public string SteamUrl { get; set; }
+        public string LinkedinUrl { get; set; }
+
         public ApplicationUser() : base() {
             this.Age = 17;
-            this.ProfilePicture = "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
+            this.ProfilePicture =
+                "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
             this.Bio = "I'm new here!";
         }
 
         public ApplicationUser(string userName, string email) : base(userName, email) {
             this.Age = 17;
-            this.ProfilePicture = "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
+            this.ProfilePicture =
+                "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
             this.Bio = "I'm new here!";
         }
     }

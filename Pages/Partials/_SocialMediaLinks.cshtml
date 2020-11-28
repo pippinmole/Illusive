@@ -1,0 +1,25 @@
+﻿@using global::Illusive.Utility
+@using Microsoft.AspNetCore.Html
+@model ApplicationUser
+
+@{
+    var user = this.Model;
+}
+
+@functions {
+    public static HtmlString SocialLinkFor(string profileUrl, string accountName, string classTags, string color) {
+        if ( string.IsNullOrEmpty(accountName) )
+            return HtmlString.Empty;
+
+        var str = $"<a href=\"{profileUrl}{accountName}\" class=\"{classTags}\" style=\"color: {color} !important;\" target=\"_blank\"></a>";
+        return new HtmlString(str);
+    }
+}
+
+<div class="w-100 p-2 text-center">
+    @SocialLinkFor(SocialMediaConstants.TwitterUserUrl,user.TwitterUrl, "fa fa-2x fa-twitter text-decoration-none", "#1da1f2")
+    @SocialLinkFor(SocialMediaConstants.LinkedinUserUrl, user.LinkedinUrl, "fa fa-2x fa-linkedin text-decoration-none", "#2867b2")
+    @SocialLinkFor(SocialMediaConstants.RedditUserUrl, user.RedditUrl, "fa fa-2x fa-reddit text-decoration-none", "#1da1f2")
+    @SocialLinkFor(SocialMediaConstants.SteamUserUrl,user.SteamUrl, "fa fa-2x fa-steam text-decoration-none", "#171A21")
+    @SocialLinkFor(SocialMediaConstants.GithubUserUrl, user.GithubUrl, "fa fa-2x fa-github text-decoration-none", "#white")
+</div>

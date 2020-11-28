@@ -1,0 +1,66 @@
+﻿@page "/profile/change"
+@using global::Illusive.Utility
+@model AccountChangeModel
+@{
+    ViewData["Title"] = "Homepage";
+    ViewData["Description"] = "Home Page";
+    
+    var user = this.Model.User;
+
+}
+
+<div class="w-100 mt-2">
+    <h4 class="text-center">Change profile settings</h4>
+    <form enctype="multipart/form-data" method="post" class="w-50 m-auto">
+        <div class="form-group">
+            <label for="info-bio" class="col-xs-2 control-label">What's on your mind?</label>
+            <input type="text" asp-for="AccountUpdate.Bio" id="info-bio" class="form-control mb-4">
+        </div>
+
+        <div class="custom-file mb-3">
+          <input type="file" asp-for="AccountUpdate.ProfilePicture" class="custom-file-input" id="customFile" accept="image/*">
+          <label class="custom-file-label" for="customFile">Profile Picture</label>
+        </div>
+
+        <h5>Social Media</h5>
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">@SocialMediaConstants.GithubUserUrl</span>
+            </div>
+            <input type="text" class="form-control" id="basic-url" asp-for="AccountUpdate.GithubUrl" aria-describedby="basic-addon3">
+        </div>
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">@SocialMediaConstants.TwitterUserUrl</span>
+            </div>
+            <input type="text" class="form-control" id="basic-url" asp-for="AccountUpdate.TwitterUrl" aria-describedby="basic-addon3">
+        </div>
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">@SocialMediaConstants.RedditUserUrl</span>
+            </div>
+            <input type="text" class="form-control" id="basic-url" asp-for="AccountUpdate.RedditUrl" aria-describedby="basic-addon3">
+        </div>
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">@SocialMediaConstants.SteamUserUrl</span>
+            </div>
+            <input type="text" class="form-control" id="basic-url" asp-for="AccountUpdate.SteamUrl" aria-describedby="basic-addon3">
+        </div>
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">@SocialMediaConstants.LinkedinUserUrl</span>
+            </div>
+            <input type="text" class="form-control" id="basic-url" asp-for="AccountUpdate.LinkedInUrl" aria-describedby="basic-addon3">
+        </div>
+        
+        <button class="p-1 m-2 btn-primary w-100" type="submit" asp-page-handler="Upload">Update</button>
+        <button class="p-1 m-2 btn-danger w-100" type="button" onclick="DeleteAccount('@user.GetUniqueId()')">Delete Account</button>
+        @Html.AntiForgeryToken()
+    </form>
+</div>
