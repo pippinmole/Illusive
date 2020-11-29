@@ -1,4 +1,9 @@
 ﻿@charset "UTF-8";
+
+.topbar {
+    display: none;
+}
+
 .swagger-ui html {
     box-sizing: border-box
 }

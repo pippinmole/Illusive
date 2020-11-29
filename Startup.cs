@@ -158,7 +158,7 @@ namespace Illusive {
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Illusive API v1");
                 c.DocumentTitle = "Illusive API v1";
-                c.RoutePrefix = "api";
+                c.RoutePrefix = "api/v1";
                 c.InjectStylesheet("/css/swagger-themes/theme-muted.css"); // wwwroot implied
             });
 
