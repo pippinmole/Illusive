@@ -4,6 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>280fd33c-94c2-4cee-8d18-d8442f0e9894</UserSecretsId>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DocumentationFile>bin\Debug\Illusive.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DocumentationFile>bin\Release\Illusive.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\obj\Illusive.csproj.nuget.dgspec.json" />
     <_ContentIncludedByDefault Remove="Pages\obj\project.assets.json" />
@@ -25,6 +33,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.1-dev-00188" />
     <PackageReference Include="Serilog.Sinks.Async" Version="1.4.1-dev-00073" />
     <PackageReference Include="Serilog.Sinks.Datadog.Logs" Version="0.3.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="ThrottlR" Version="2.0.0" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.4.5" />
   </ItemGroup>
