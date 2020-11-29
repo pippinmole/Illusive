@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Models;
@@ -21,6 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using MongoDbGenericRepository;
 using reCAPTCHA.AspNetCore;
 using Westwind.AspNetCore.Markdown;
@@ -90,8 +93,8 @@ namespace Illusive {
 
             services.Configure<RateLimitOptions>(config => {
                 config.RequestRateMs = 2000;
-                config.LimitSoft = 4;
-                config.LimitHard = 5;
+                config.LimitSoft = 6;
+                config.LimitHard = 10;
                 config.HardLimitMessage = "You are requesting too frequently... Refresh this page to continue.";
             });
 
@@ -102,13 +105,30 @@ namespace Illusive {
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IContentService, ContentService>();
 
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApiInfo {
+                    Version = "v1",
+                    Title = "Illusive Public API",
+                    Description = "A REST Web API to get data from Illusive forum services.",
+                    // TermsOfService = new Uri(""),
+                    License = new OpenApiLicense {
+                        Name = "Use under MIT",
+                        Url = new Uri("https://github.com/pippinmole/Illusive/blob/main/LICENSE"),
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+            
             services.AddMarkdown();
 
             services.AddControllers();
             services.AddRazorPages();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if ( env.IsDevelopment() ) {
                 app.UseDeveloperExceptionPage();
@@ -128,6 +148,16 @@ namespace Illusive {
             
             app.UseThrottling();
             
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger(a => { });
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Illusive API v1");
+                c.DocumentTitle = "Illusive API v1";
+            });
+
             app.UseAuthentication();
             app.UseAuthorization();
 
