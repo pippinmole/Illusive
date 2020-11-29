@@ -144,9 +144,14 @@
             display: block;
         }
         
+        .other-stats {
+            list-style: none;
+            display: flex;
+            padding: 0 15px;
+        }
+        
         .user-stats {
             width: 100%;
-            padding-left: 13px;
         }
         
         .user-profile-image {
@@ -259,8 +264,7 @@
             float: left;
             width: 100%;
             border-right: 1px solid var(--container-colour-primary-border);
-            border-bottom: 1px solid var(--container-colour-primary-border);
-            border-bottom: 20px;
+            border-bottom: 2px solid var(--container-colour-primary-border);
             padding: 15px;
             background-color: var(--container-colour-primary);
             border-radius: 3px;
@@ -347,6 +351,14 @@
                             <span>Followers</span>
                             <b>999</b>
                         </li>
+                    </ul>
+                    <ul class="other-stats">
+                        @if ( !string.IsNullOrEmpty(user?.Location) ) {
+                            <div>
+                                <i class="fa fa-map-marker"></i>
+                                <span>@user?.Location</span>
+                            </div>
+                        }
                     </ul>
                 </div>
                 

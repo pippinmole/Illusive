@@ -84,7 +84,18 @@ namespace Illusive.Pages {
                 }
             }
 
-            return this.Page();
+            if ( accountUpdate.Location != user.Location ) {
+                user.Location = accountUpdate.Location;
+                
+                var result = await this._userManager.UpdateUserAsync(user);
+                if ( result.Succeeded ) {
+                    this._logger.LogInformation($"User {accountId} changed their account location.");
+                } else {
+                    this._logger.LogError($"Uncaught error when trying to update {user}'s account location.");
+                }
+            }
+
+            return this.RedirectToPage("Account");
         }
     }
 }
