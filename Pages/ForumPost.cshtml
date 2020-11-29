@@ -17,7 +17,7 @@
     ViewData["Description"] = content.Length < 20 ? content : content.Substring(0, 20);
     
     var forum = this.Model.ForumData;
-    var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId) ?? ApplicationUser.Default;
+    var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId) ?? ApplicationUser.NoUser;
     @Html.AntiForgeryToken()
 }
 
@@ -195,7 +195,7 @@
     @{
         var replies = forum.Replies;
         foreach ( var reply in replies ) {
-            var replyOwner = await UserManager.GetUserByIdAsync(reply.AuthorId) ?? ApplicationUser.Default;
+            var replyOwner = await UserManager.GetUserByIdAsync(reply.AuthorId) ?? ApplicationUser.NoUser;
 
             <div class="replyBody">
                 <div style="width: 100px; min-width: 100px; height: 100px; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">

@@ -388,7 +388,7 @@
                         continue;
                     }
                     
-                    var postOwner = await UserManager.GetUserByIdAsync(post.OwnerId) ?? ApplicationUser.Default;
+                    var postOwner = await UserManager.GetUserByIdAsync(post.OwnerId) ?? ApplicationUser.NoUser;
                     
                     <div class="user-post">
                         <div class="user-post-top">

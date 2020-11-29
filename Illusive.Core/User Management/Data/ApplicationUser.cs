@@ -40,7 +40,7 @@ namespace Illusive {
             this.Location = "";
         }
 
-        public static readonly ApplicationUser Default = new ApplicationUser("Deleted User", "unknown@unknown.com");
+        public static readonly ApplicationUser NoUser = new ApplicationUser("Deleted User", "unknown@unknown.com");
     }
 
     public class ApplicationRole : MongoIdentityRole<Guid> {
