@@ -1,7 +1,6 @@
-﻿@page
+﻿@page "/post"
 @using Westwind.AspNetCore.Markdown
 @using global::Illusive.Utility
-@using global::Illusive.Database
 @using global::Illusive.Illusive.Core.User_Management.Extension_Methods
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
 @using global::Illusive.Models.Extensions
@@ -17,6 +16,8 @@
     ViewData["Title"] = this.Model.ForumData.Title;
     ViewData["Description"] = content.Length < 20 ? content : content.Substring(0, 20);
     
+    var forum = this.Model.ForumData;
+    var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId) ?? ApplicationUser.Default;
     @Html.AntiForgeryToken()
 }
 
@@ -121,12 +122,6 @@
 </head>
 <body>
 
-@{
-    var forum = this.Model.ForumData;
-    // var forumOwner = AccountService.GetAccountWhere(x => x.Id == forum.OwnerId);
-    var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId);
-}
-
 <div>
     <span style="display: block ruby; padding-bottom: 8px; border-bottom: 1px solid black">
         <h3 class="forumTitle">@forum.Title</h3>
@@ -165,12 +160,12 @@
 
     <div class="forumBody">
         <div class="forum-author-container">
-            <a href="/Account/@forumOwner?.Id"> <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner?.ProfilePicture" alt=""></a>
+            <a asp-page="Account" asp-route-id="@forumOwner?.Id"> <img class="forum-author-picture" style="margin: 5px auto auto;height: 40px; width: 40px; border-radius: 25px" src="@forumOwner?.ProfilePicture" alt=""></a>
             <p style="font-size: 0.6rem; margin: 0 0.1rem;">
                 @if ( await UserManager.IsUserAdmin(forumOwner) ) {
                     <span style="color: red;">[Admin]</span>
                 }
-                <a href="/Account/@forumOwner?.Id"> @forumOwner?.UserName</a>
+                <a asp-page="Account" asp-route-id="@forumOwner?.Id"> @forumOwner?.UserName</a>
             </p>
             <p style="font-size: 0.5rem; font-style: italic">Joined @forumOwner?.CreatedOn.ToShortDateString()</p>
         </div>
@@ -192,7 +187,7 @@
     <div style="width: 100%; border-bottom: 1px solid black;">
         <h4 style="display: inline-flex">Comments
             @if ( !this.User.IsLoggedIn() ) {
-                <div style="font-size: 0.7rem; height: 100%; margin: auto auto auto 5px;">(<a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to comment on a post!)</div>
+                <div style="font-size: 0.7rem; height: 100%; margin: auto auto auto 5px;">(<a asp-page="Login">Login</a> or <a asp-page="Signup">Sign up</a> to comment on a post!)</div>
             }
         </h4>
     </div>
@@ -200,7 +195,7 @@
     @{
         var replies = forum.Replies;
         foreach ( var reply in replies ) {
-            var replyOwner = await UserManager.GetUserByIdAsync(reply.AuthorId);
+            var replyOwner = await UserManager.GetUserByIdAsync(reply.AuthorId) ?? ApplicationUser.Default;
 
             <div class="replyBody">
                 <div style="width: 100px; min-width: 100px; height: 100px; background-color: var(--container-colour-primary); display: grid; text-align: center; border-radius: 4px;">
@@ -209,7 +204,7 @@
                         @if ( await UserManager.IsUserAdmin(replyOwner) ) {
                             <span style="color: red;">[Admin]</span>
                         }
-                        <a href="/Account/@replyOwner?.Id"> @replyOwner?.UserName</a>
+                        <a asp-page="Account" asp-route-id="@replyOwner?.Id"> @replyOwner?.UserName</a>
                     </p>
                     <p style="font-size: 0.5rem; font-style: italic">Joined @replyOwner?.CreatedOn.ToShortDateString()</p>
                 </div>

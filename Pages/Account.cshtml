@@ -253,7 +253,6 @@
         .settings-btn {
             float: right;
             margin-top: 25px;
-            margin-bottom: 30px;
             border-radius: 5px;
             font-size: 16px;
             font-weight: 500;
@@ -268,6 +267,7 @@
             padding: 15px;
             background-color: var(--container-colour-primary);
             border-radius: 3px;
+            margin-top: 30px;
         }
         
         .widget h1 {
@@ -388,7 +388,7 @@
                         continue;
                     }
                     
-                    var postOwner = await UserManager.GetUserByIdAsync(post.OwnerId);
+                    var postOwner = await UserManager.GetUserByIdAsync(post.OwnerId) ?? ApplicationUser.Default;
                     
                     <div class="user-post">
                         <div class="user-post-top">

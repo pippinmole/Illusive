@@ -39,6 +39,8 @@ namespace Illusive {
             this.Bio = "I'm new here!";
             this.Location = "";
         }
+
+        public static readonly ApplicationUser Default = new ApplicationUser("Deleted User", "unknown@unknown.com");
     }
 
     public class ApplicationRole : MongoIdentityRole<Guid> {
