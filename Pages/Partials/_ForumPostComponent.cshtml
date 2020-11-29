@@ -27,9 +27,9 @@
         </div>
     </span>
       
-    <div class="image"><a href="/Account/@forumOwner?.Id"><img src="@forumOwner?.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
+    <div class="image"><a asp-page="Account" asp-route-id="@forumOwner?.Id"><img src="@forumOwner?.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
     <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
-    <div class="user"><a href="/Account/@forumOwner?.Id">[@forumOwner?.UserName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
+    <div class="user"><a asp-page="Account" asp-route-id="@forumOwner?.Id">[@forumOwner?.UserName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
     @if ( forum.Tags != null ) {
         foreach ( var tag in forum.Tags.Split(',') ) {
             <div class="forumTag noselect">@tag</div>
