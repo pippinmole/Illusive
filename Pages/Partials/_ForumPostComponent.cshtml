@@ -6,7 +6,7 @@
 
 @{
     var forum = this.Model;
-    var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId);
+    var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId) ?? ApplicationUser.NoUser;
 }
 
 <div class="message">
