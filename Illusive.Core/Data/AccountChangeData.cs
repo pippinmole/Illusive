@@ -21,5 +21,6 @@ namespace Illusive.Data {
         [StringLength(25)] public string? RedditUrl { get; set; }
         [StringLength(25)] public string? SteamUrl { get; set; }
         [StringLength(25)] public string? LinkedInUrl { get; set; }
+        [StringLength(25)] public string? Location { get; set; }
     }
 }

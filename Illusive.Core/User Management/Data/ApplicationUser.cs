@@ -20,6 +20,7 @@ namespace Illusive {
         public string RedditUrl { get; set; }
         public string SteamUrl { get; set; }
         public string LinkedinUrl { get; set; }
+        public string Location { get; set; }
 
         public ApplicationUser() : base() {
             this.Age = 17;
@@ -27,6 +28,7 @@ namespace Illusive {
                 "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
             this.CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
             this.Bio = "I'm new here!";
+            this.Location = "";
         }
 
         public ApplicationUser(string userName, string email) : base(userName, email) {
@@ -35,6 +37,7 @@ namespace Illusive {
                 "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
             this.CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
             this.Bio = "I'm new here!";
+            this.Location = "";
         }
     }
 
