@@ -49,14 +49,7 @@ namespace Illusive {
                 options.AddPolicy("UserPolicy", policy => policy.RequireRole("IsAdmin"));
             });
 
-            services.AddMvc().AddRazorPagesOptions(options => {
-                // options.Conventions.AddPageRoute("/Forum", "ForumPage/{text?}");
-                // options.Conventions.AuthorizeFolder("/");
-                // options.Conventions.AllowAnonymousToPage("/Login");
-                // options.Conventions.AllowAnonymousToPage("/Logout");
-                // options.Conventions.AllowAnonymousToPage("/Signup");
-                // options.Conventions.AllowAnonymousToPage("/Index");
-            }).SetCompatibilityVersion(CompatibilityVersion.Latest).AddNewtonsoftJson();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest).AddNewtonsoftJson();
 
             services.AddRecaptcha(this._configuration.GetSection("RecaptchaSettings"));
             services.AddAntiforgery(options => {
@@ -140,6 +133,7 @@ namespace Illusive {
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
