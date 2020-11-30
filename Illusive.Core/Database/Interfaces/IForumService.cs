@@ -7,9 +7,13 @@ using MongoDB.Driver;
 
 namespace Illusive.Database {
     public interface IForumService {
+
+        int CollectionSize();
+        
         Task AddForumPostAsync(ForumData forumPost);
         Task<List<ForumData>> GetForumDataAsync();
-        
+
+        ForumData GetForumIndex(int index);
         ForumData GetForumWhere(Expression<Func<ForumData, bool>> expression);
         IReadOnlyList<ForumData> GetForumsWhere(Expression<Func<ForumData, bool>> expression);
 

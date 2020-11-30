@@ -21,7 +21,7 @@ namespace Illusive.Models {
 
         [StringLength(ForumSettings.MaxTagLength), UnicodeOnly]
         public string? Tags { get; set; } = "";
-
+        
         public Guid OwnerId { get; set; } // Will be null in the user-request, but not when stored in the database.
         public DateTime TimeCreated { get; set; }
         public List<ForumReply> Replies { get; set; }

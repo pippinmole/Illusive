@@ -10,6 +10,8 @@
     var user = await UserManager.GetUserByIdAsync(this.User.GetUniqueId());
 }
 
+<script src="~/js/Account/requests.js"></script>
+
 <div class="w-100 mt-2">
     <h4 class="text-center">Change profile settings</h4>
     <form enctype="multipart/form-data" method="post" class="w-50 m-auto">
@@ -68,6 +70,13 @@
                 <span class="input-group-text" id="basic-addon3">@SocialMediaConstants.LinkedinUserUrl</span>
             </div>
             <input type="text" class="form-control" id="basic-url" asp-for="AccountUpdate.LinkedInUrl" aria-describedby="basic-addon3" value="@user.LinkedinUrl">
+        </div>
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Api Key</span>
+            </div>
+            <input type="text" class="form-control disabled" value="@user.ApiKey" readonly>
         </div>
         
         <button class="p-1 m-2 btn-primary w-100" type="submit" asp-page-handler="Upload">Update</button>

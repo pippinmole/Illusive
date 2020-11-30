@@ -11,7 +11,7 @@ namespace Illusive.Illusive.Core.User_Management.Extension_Methods {
             return await userManager.IsUserInRole(user, "Admin");
         }
         
-        public static async Task SetInitialRoles(this RoleManager<ApplicationRole> roleManager, IEnumerable<string> roles) {
+        public static async Task SetInitialRolesAsync(this RoleManager<ApplicationRole> roleManager, IEnumerable<string> roles) {
             if ( roleManager == null ) throw new NullReferenceException(nameof(roleManager));
 
             foreach ( var role in roles ) {
