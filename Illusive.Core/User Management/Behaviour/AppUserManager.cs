@@ -4,21 +4,24 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Illusive.Core.User_Management.Extension_Methods;
 using Illusive.Illusive.Core.User_Management.Interfaces;
+using Illusive.Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace Illusive.Illusive.Core.User_Management.Behaviour {
     public class AppUserManager : IAppUserManager {
-        
+        private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public AppUserManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager) {
+        public AppUserManager(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager) {
+            this._configuration = configuration;
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._roleManager = roleManager;
             
-            this._roleManager.SetInitialRoles(new List<string> {
+            this._roleManager.SetInitialRolesAsync(new List<string> {
                 "Admin"
             });
         }
@@ -65,6 +68,15 @@ namespace Illusive.Illusive.Core.User_Management.Behaviour {
 
         public async Task<bool> IsUserInRole(ApplicationUser user, string role) {
             return await this._userManager.IsInRoleAsync(user, role);
+        }
+
+        public async Task<IdentityResult> CreateAsync(ApplicationUser newAccount, string password) {
+            newAccount.GenerateApiKey(this._configuration);
+            return await this._userManager.CreateAsync(newAccount, password);
+        }
+
+        public async Task SignInAsync(ApplicationUser newAccount, bool isPersistent) {
+            await this._signInManager.SignInAsync(newAccount, isPersistent);
         }
     }
 }

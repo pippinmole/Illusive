@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Models;
@@ -23,6 +24,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDbGenericRepository;
 using reCAPTCHA.AspNetCore;
@@ -41,11 +43,25 @@ namespace Illusive {
         public void ConfigureServices(IServiceCollection services) {
             services.AddDataProtection();
 
+            var key = Encoding.UTF8.GetBytes(this._configuration["Jwt:Secret"]);
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {
                     options.LoginPath = new PathString("/Login");
                     options.LogoutPath = new PathString("/Logout");
                     options.AccessDeniedPath = new PathString("/AccessDenied");
+                }).AddJwtBearer(x => {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidIssuers = new[] { this._configuration["Jwt:Issuer"] },
+                        ValidAudiences = new[] { this._configuration["Jwt:Issuer"] },
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = false
+                    };
                 });
             
             services.AddAuthorization(options => {

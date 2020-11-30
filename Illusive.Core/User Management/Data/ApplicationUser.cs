@@ -10,6 +10,8 @@ namespace Illusive {
     [CollectionName("user_info")]
     public class ApplicationUser : MongoIdentityUser<Guid> {
 
+        public string ApiKey { get; set; }
+        
         public uint Age { get; set; }
         public string ProfilePicture { get; set; }
         public string CoverPicture { get; set; }

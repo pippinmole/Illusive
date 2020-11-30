@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Database;
+using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Models;
 using Illusive.Models.Extensions;
 using Illusive.Utility;
@@ -15,19 +16,13 @@ using Microsoft.Extensions.Logging;
 namespace Illusive.Pages {
     public class SignupModel : PageModel {
         private readonly ILogger<SignupModel> _logger;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAppUserManager _userManager;
 
         [BindProperty] public SignupDataForm SignupData { get; set; }
 
-        public SignupModel(ILogger<SignupModel> logger, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
+        public SignupModel(ILogger<SignupModel> logger, IAppUserManager userManager) {
             this._logger = logger;
             this._userManager = userManager;
-            this._signInManager = signInManager;
-        }
-        
-        public void OnGet() {
-            
         }
 
         public async Task<IActionResult> OnPost() {
@@ -47,7 +42,7 @@ namespace Illusive.Pages {
                 userName: username,
                 email: email
             );
-
+            
             var result = await this._userManager.CreateAsync(newAccount, password);
             if ( !result.Succeeded ) {
                 foreach ( var error in result.Errors ) {
@@ -56,11 +51,11 @@ namespace Illusive.Pages {
                 }
 
                 return this.Page();
-            } else {
-                this._logger.LogInformation($"Successfully created account with username {username}");
-
-                await this._signInManager.SignInAsync(newAccount, true);
             }
+
+            this._logger.LogInformation($"Successfully created account with username {username}");
+
+            await this._userManager.SignInAsync(newAccount, true);
 
             return this.RedirectToPage("/Account");
         }
