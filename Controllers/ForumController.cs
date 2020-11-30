@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Illusive.Database;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Models;
@@ -22,12 +23,17 @@ namespace Illusive.Controllers {
             this._userManager = userManager;
         }
 
-        /// <summary>
-        /// Returns the forum post given a valid forum id.
-        /// </summary>
+        /// <summary>Returns the forum post data from a forum id</summary>
         /// <remarks>
+        /// <para>This request can be ran anonymously, but rate limiting obviously applies here.\</para>
+        /// <para><b>Sample Curl usage:</b>
+        /// 
+        ///     curl https://localhost:80/api/v1/forum/{id}
+        ///     
+        /// </para>
         /// </remarks>
-        /// <param name="id">The id of the requested forum post.</param>
+        /// <param name="id">The id of the requested forum post.
+        /// </param>
         /// <returns>A forum post and all attributed data.</returns>
         /// <response code="200">Returns a valid forum post</response>
         /// <response code="400">Returns a null response</response>
@@ -36,22 +42,42 @@ namespace Illusive.Controllers {
             var result = this._forumService.GetForumWhere(x => x.Id == id);
             return result;
         }
+
+        /// <summary>Returns a random forum post</summary>
+        /// <remarks>
+        /// <para>This request can be ran anonymously, but rate limiting obviously applies here.\</para>
+        /// <para><b>Sample Curl usage:</b>
+        /// 
+        ///     curl https://localhost:80/api/v1/forum/getrandom
+        ///     
+        /// </para>
+        /// </remarks>
+        /// <returns>A forum post and all attributed data</returns>
+        /// <response code="200">Returns a valid forum post</response>
+        /// <response code="400">Returns a null response</response>
+        [HttpGet("/getrandom")]
+        public ForumData GetRandomForum() {
+            var random = new Random().Next(0, this._forumService.CollectionSize());
+            var result = this._forumService.GetForumIndex(random);
+            return result;
+        }
         
         /// <summary>
-        /// Creates a forum post.
+        /// Creates a forum post
         /// </summary>
         /// <remarks>
-        ///     Please note: The API will only accept user-controller properties, such as Title, Content and Tags, exactly like what you see through the website.
-        /// </remarks>
-        /// <remarks>
-        ///     You will need to attach your profile API key to the header, in the format 'Authorization': '[api key]'.
-        /// </remarks>
-        /// <param name="forumData">The values for the forum.</param>
-        /// <response code="200">Returns details about the forum post</response>
-        /// <response code="400">Bad Token provided</response>
+        /// <para>You will need to attach your profile API key to the header, in the format 'Authorization': '[api key]'. The API key can be found in the User Account settings.\</para>
+        /// <para><b>Please note: </b>The API will only accept user-controller properties, such as Title, Content and Tags, exactly like what you see through the website;
+        /// properties such as Views, Comments etc will be ignored.\</para></remarks>
+        /// <param name="forumData"></param>
+        /// <response code="200">Successfully created the forum post</response>
+        /// <response code="400">Authorization has been denied for this request</response>
+        /// <response code="400">Bad request</response>
+        /// <returns></returns>
         [HttpGet("createpost")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CreatePost([FromBody] ForumData forumData) {
+            this._logger.LogWarning("post");
             var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
             if ( user == null )
                 return this.BadRequest("Bad Token");
@@ -68,10 +94,7 @@ namespace Illusive.Controllers {
             
             this._logger.LogInformation($"{user.UserName} has created a new forum post through the WebAPI: {forumPost.Title}");
 
-            return new JsonResult(new {
-                State = "Success!"
-                // RedirectToPageResult = this.RedirectToPage("ForumPost", new {forumPost.Id})
-            });
+            return this.Ok();
         }
     }
 }

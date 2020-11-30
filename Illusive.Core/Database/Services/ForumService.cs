@@ -21,6 +21,10 @@ namespace Illusive.Database {
             this._forumData = ctx.GetDatabase("IllusiveDatabase").GetCollection<ForumData>("forum_posts");
         }
 
+        public int CollectionSize() {
+            return (int)this._forumData.EstimatedDocumentCount();
+        }
+
         public async Task AddForumPostAsync(ForumData forumPost) {
             await this._forumData.InsertOneAsync(forumPost);
         }
@@ -29,6 +33,10 @@ namespace Illusive.Database {
             var val = await this._forumData.FindAsync(x => true);
 
             return val.ToList();
+        }
+
+        public ForumData GetForumIndex(int index) {
+            return this._forumData.Find(_ => true).ToList()[index];
         }
 
         public ForumData GetForumById(string id) {
