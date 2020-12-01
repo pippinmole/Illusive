@@ -6,7 +6,7 @@
 
 # Illusive
 
-A forum website made on the [ASP.NET Core framework](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.1) using [Razor pages](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-5.0&tabs=visual-studio) (an alternative to ASP.NET Core's [MVC](https://docs.microsoft.com/en-us/aspnet/core/mvc/overview?view=aspnetcore-5.0) design pattern), which allows for a simpler bridge between back-end and front-end data.  
+A forum website and REST API made on the [ASP.NET Core framework](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.1) using [Razor pages](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-5.0&tabs=visual-studio) and [.NET WebAPI](https://dotnet.microsoft.com/apps/aspnet/apis).
 
 ## Installation
 
@@ -100,6 +100,27 @@ To set up email services:
     ]
   }
 }
+```
+
+## WebAPI
+
+The WebAPI allows for both anonymous and registered users to interact with the forum using GET, POST, DELETE and PUT requests. The [Illusive Public API Documentation](https://forum.ruffles.pw/api/v1/index.html) is automatically generated using [Swagger](https://swagger.io/).
+To easily create requests, you can use tools such as [PostMaster](https://www.postmaster.co.uk/) or [Fiddler](https://www.telerik.com/fiddler).
+
+The API can be seen in action here:
+[![Image from Gyazo](https://i.gyazo.com/782d545c24bef29bd7dfd396ad9784f5.gif)](https://gyazo.com/782d545c24bef29bd7dfd396ad9784f5)
+
+### Authorization
+
+Some of the requests require account authorization. Thankfully, Illusive offers an secret JWT API token which can be used to identify a user.
+If you are using one of the tools suggested above, you can add the authorization header as so:
+
+ [![Image from Gyazo](https://i.gyazo.com/feb34909d5b11f4cae8b008744c3ebe1.gif)](https://gyazo.com/feb34909d5b11f4cae8b008744c3ebe1)
+ 
+ If you need to add your API token as a header elsewhere, simply use the dictionary key-value pair:
+ 
+ ```
+    "Authorization: Bearer <api token>"
 ```
 
 ## Contributing
