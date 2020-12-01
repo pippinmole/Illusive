@@ -55,7 +55,7 @@ namespace Illusive.Controllers {
         /// <returns>A forum post and all attributed data</returns>
         /// <response code="200">Returns a valid forum post</response>
         /// <response code="400">Returns a null response</response>
-        [HttpGet("/getrandom")]
+        [HttpGet("getrandom")]
         public ForumData GetRandomForum() {
             var random = new Random().Next(0, this._forumService.CollectionSize());
             var result = this._forumService.GetForumIndex(random);
