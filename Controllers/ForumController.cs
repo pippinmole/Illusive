@@ -70,8 +70,8 @@ namespace Illusive.Controllers {
         /// <response code="200">Successfully created the forum post</response>
         /// <response code="400">Authorization has been denied for this request</response>
         /// <response code="400">Bad request</response>
-        /// <returns>The resulting forum post result if the format of the post request was properly; Otherwise 'Error 400: Bad Request'</returns>
-        [HttpGet("createpost")]
+        /// <returns></returns>
+        [HttpPost("createpost")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CreatePost([FromBody] ForumData forumData) {
             this._logger.LogWarning("post");
