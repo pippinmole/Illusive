@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Illusive.Data;
+using Illusive.Illusive.Core.User_Management.Extension_Methods;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Utility;
 using Microsoft.AspNetCore.Mvc;
@@ -30,70 +31,33 @@ namespace Illusive.Pages {
 
             var accountId = this.User.GetUniqueId();
             var user = await this._userManager.GetUserByIdAsync(accountId);
-            var accountUpdate = this.AccountUpdate ?? throw new NullReferenceException("Account Change data shouldn't be null!");
+            var newAccount = this.AccountUpdate ?? throw new NullReferenceException("Account Change data shouldn't be null!");
 
-            user.GithubUrl = accountUpdate.GithubUrl;
-            user.LinkedinUrl = accountUpdate.LinkedInUrl;
-            user.RedditUrl = accountUpdate.RedditUrl;
-            user.TwitterUrl = accountUpdate.TwitterUrl;
-            user.SteamUrl = accountUpdate.SteamUrl;
+            user.Bio = newAccount.Bio;
+            user.Location = newAccount.Location;
 
-            await this._userManager.UpdateUserAsync(user);
+            user.GithubUrl = newAccount.GithubUrl;
+            user.LinkedinUrl = newAccount.LinkedInUrl;
+            user.RedditUrl = newAccount.RedditUrl;
+            user.TwitterUrl = newAccount.TwitterUrl;
+            user.SteamUrl = newAccount.SteamUrl;
             
-            var profileBio = accountUpdate.Bio;
-            if ( !string.IsNullOrEmpty(profileBio) ) {
-                user.Bio = accountUpdate.Bio;
-
-                var result = await this._userManager.UpdateUserAsync(user);
-                if ( result.Succeeded ) {
-                    this._logger.LogInformation($"User {accountId} changed profile biography to {profileBio}");
-                } else {
-                    this._logger.LogError($"Uncaught error when trying to update {user}'s bio to {profileBio}: {result.Errors.FirstOrDefault()}");
-                }
-            }
-            
-            var profilePic = accountUpdate.ProfilePicture;
+            var profilePic = newAccount.ProfilePicture;
             if ( profilePic != null && profilePic.Length > 0 ) {
                 await using var stream = System.IO.File.Create(Path.GetTempFileName(), (int) profilePic.Length);
                 await profilePic.CopyToAsync(stream);
 
                 var path = await this._contentService.UploadFileAsync(Path.GetFileName(profilePic.FileName), stream);
                 user.ProfilePicture = path;
-                
-                var result = await this._userManager.UpdateUserAsync(user);
-                if ( result.Succeeded ) {
-                    this._logger.LogInformation($"User {accountId} changed profile picture to {path}");
-                } else {
-                    this._logger.LogError($"Uncaught error when trying to update {user}'s profile picture to {path}: {result.Errors.FirstOrDefault()}");
-                }
-            }
-            
-            var coverPicture = accountUpdate.CoverPicture;
-            if ( coverPicture != null && coverPicture.Length > 0 ) {
-                await using var stream = System.IO.File.Create(Path.GetTempFileName(), (int) coverPicture.Length);
-                await coverPicture.CopyToAsync(stream);
-
-                var path = await this._contentService.UploadFileAsync(Path.GetFileName(coverPicture.FileName), stream);
-                user.CoverPicture = path;
-                
-                var result = await this._userManager.UpdateUserAsync(user);
-                if ( result.Succeeded ) {
-                    this._logger.LogInformation($"User {accountId} changed profile picture to {path}");
-                } else {
-                    this._logger.LogError($"Uncaught error when trying to update {user}'s profile picture to {path}: {result.Errors.FirstOrDefault()}");
-                }
             }
 
-            if ( accountUpdate.Location != user.Location ) {
-                user.Location = accountUpdate.Location;
-                
-                var result = await this._userManager.UpdateUserAsync(user);
-                if ( result.Succeeded ) {
-                    this._logger.LogInformation($"User {accountId} changed their account location.");
-                } else {
-                    this._logger.LogError($"Uncaught error when trying to update {user}'s account location.");
-                }
-            }
+            if ( newAccount.CoverPicture != null )
+                user.CoverPicture = await this._contentService.UploadFileAsync(newAccount.CoverPicture);
+
+            if ( newAccount.ProfilePicture != null )
+                user.ProfilePicture = await this._contentService.UploadFileAsync(newAccount.ProfilePicture);
+
+            await this._userManager.UpdateUserAsync(user);
 
             return this.RedirectToPage("Account");
         }
