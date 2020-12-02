@@ -62,11 +62,8 @@ namespace Illusive.Controllers {
             return result;
         }
         
-        /// <summary>
-        /// Creates a forum post
-        /// </summary>
-        /// <remarks>
-        /// <para>You will need to attach your profile API key to the header, in the format 'Authorization': '[api key]'. The API key can be found in the User Account settings.\</para>
+        /// <summary>Creates a forum post</summary>
+        /// <remarks><para>You will need to attach your profile API key to the header, in the format 'Authorization': '[api key]'. The API key can be found in the User Account settings.\</para>
         /// <para><b>Please note: </b>The API will only accept user-controller properties, such as Title, Content and Tags, exactly like what you see through the website;
         /// properties such as Views, Comments etc will be ignored.\</para></remarks>
         /// <param name="forumData"></param>
