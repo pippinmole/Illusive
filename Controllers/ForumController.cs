@@ -94,7 +94,7 @@ namespace Illusive.Controllers {
             
             this._logger.LogInformation($"{user.UserName} has created a new forum post through the WebAPI: {forumPost.Title}");
 
-            return this.Ok();
+            return new JsonResult(forumPost);
         }
     }
 }
