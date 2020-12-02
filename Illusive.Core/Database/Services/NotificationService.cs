@@ -40,6 +40,16 @@ namespace Illusive.Database {
             return val.ToList();
         }
 
+        public async Task<List<UserNotification>> GetUnreadNotificationsForUserIdAsync(Guid id) {
+            var val = await this._notifications.FindAsync(x => x.TargetUser.Equals(id) && x.Read == false);
+            return val.ToList();
+        }
+        
+        public async Task<List<UserNotification>> GetUnreadNotificationsForUserIdAsync(string id) {
+            var val = await this._notifications.FindAsync(x => x.TargetUser.ToString() == id && x.Read == false);
+            return val.ToList();
+        }
+
         public async Task UpdateNotificationsWhereAsync(Expression<Func<UserNotification, bool>> expression, UpdateDefinition<UserNotification> update) {
             await this._notifications.UpdateManyAsync(expression, update);
         }

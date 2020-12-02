@@ -5,6 +5,7 @@ using System.Text;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Models;
+using AutoMapper;
 using ChristianMihai.AspNetCoreThrottler;
 using Illusive.Database;
 using Illusive.Illusive.Core.Database.Interfaces;
@@ -98,14 +99,13 @@ namespace Illusive {
                 }
             };
 
+            // AutoMapper setup
+            // Injects the service for use in DI
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentity);
             
             services.Configure<MailSenderOptions>(this._configuration.GetSection(MailSenderOptions.Name));
-            services.Configure<IdentityOptions>(options => {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredLength = 5;
-            });
 
             services.Configure<RateLimitOptions>(config => {
                 config.RequestRateMs = 2000;
@@ -165,9 +165,7 @@ namespace Illusive {
             app.UseThrottling();
             
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger(a => {
-                
-            });
+            app.UseSwagger(a => { });
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.

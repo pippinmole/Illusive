@@ -1,12 +1,12 @@
 ﻿@using global::Illusive.Illusive.Core.Database.Interfaces
 @using global::Illusive.Utility
 @using Humanizer
-@model ApplicationUser
+@model SafeApplicationUser
 @inject INotificationService NotificationService
 
 @{
     var user = this.Model;
-    var notifications = await this.NotificationService.GetUnreadNotificationsForUserAsync(user);
+    var notifications = await this.NotificationService.GetUnreadNotificationsForUserIdAsync(user.Id);
 }
 
 <style type="text/css">

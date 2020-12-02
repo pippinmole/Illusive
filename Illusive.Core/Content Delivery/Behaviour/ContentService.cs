@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +28,20 @@ namespace Illusive {
             // // Upload local file
             // blob.Upload(filePath);
         }
-        
+
+        /// <summary>
+        /// Converts the IFormFile into a FileStream, and uploads it to Azure
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="formFile"></param>
+        /// <returns>The URL to the image</returns>
+        public async Task<string> UploadFileAsync(IFormFile formFile) {
+            await using var stream = System.IO.File.Create(Path.GetTempFileName(), (int) formFile.Length);
+            await formFile.CopyToAsync(stream);
+
+            return await this.UploadFileAsync(Path.GetFileName(formFile.FileName), stream);
+        }
+
         public async Task<string> UploadFileAsync(string fileName, FileStream fileStream) {
             fileStream.Position = 0;
             var id = Guid.NewGuid();

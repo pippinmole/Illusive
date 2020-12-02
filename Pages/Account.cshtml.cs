@@ -43,47 +43,6 @@ namespace Illusive.Pages {
             return this.Page();
         }
 
-        public async Task<IActionResult> OnPostUploadAsync() {
-            if ( !this.ModelState.IsValid )
-                return this.Page();
-
-            var accountId = this.User.GetUniqueId();
-            var user = await this._userManager.GetUserByIdAsync(accountId);
-            var accountUpdate = this.AccountUpdate ?? throw new NullReferenceException("Account Change data shouldn't be null!");
-
-            var profileBio = accountUpdate.Bio;
-            if ( !string.IsNullOrEmpty(profileBio) ) {
-                user.Bio = accountUpdate.Bio;
-
-                var result = await this._userManager.UpdateUserAsync(user);
-                if ( result.Succeeded ) {
-                    this._logger.LogInformation($"User {accountId} changed profile biography to {profileBio}");
-                } else {
-                    this._logger.LogError($"Uncaught error when trying to update {user}'s bio to {profileBio}: {result.Errors.FirstOrDefault()}");
-                }
-            }
-            
-            var profilePic = accountUpdate.ProfilePicture;
-            if ( profilePic != null && profilePic.Length > 0 ) {
-                var filePath = Path.GetTempFileName();
-
-                await using var stream = System.IO.File.Create(filePath, (int) profilePic.Length);
-                await profilePic.CopyToAsync(stream);
-
-                var path = await this._contentService.UploadFileAsync(Path.GetFileName(profilePic.FileName), stream);
-
-                user.ProfilePicture = path;
-                var result = await this._userManager.UpdateUserAsync(user);
-                if ( result.Succeeded ) {
-                    this._logger.LogInformation($"User {accountId} changed profile picture to {path}");
-                } else {
-                    this._logger.LogError($"Uncaught error when trying to update {user}'s profile picture to {path}: {result.Errors.FirstOrDefault()}");
-                }
-            }
-
-            return this.Page();
-        }
-
         public class DeleteAccountPost {
             public Guid accountId;
         }

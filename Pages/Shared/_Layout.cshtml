@@ -1,7 +1,9 @@
 ﻿@using global::Illusive.Utility
-@using global::Illusive.Database
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
 @inject IAppUserManager UserManager
+@{
+    var user = await UserManager.GetSafeUserAsync(this.User);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,9 +36,6 @@
 </head>
 <body>
 <header>
-    @{
-        var user = await UserManager.GetUserAsync(this.User);
-    }
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-color border-page-bottom box-shadow-bottom mb-3">
         <div class="container">
             <a class="navbar-title" asp-area="" asp-page="/Index">Illusive</a>

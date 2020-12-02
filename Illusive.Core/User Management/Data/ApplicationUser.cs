@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Security.Claims;
-using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Models;
-using Microsoft.AspNetCore.Identity;
 using MongoDbGenericRepository.Attributes;
 
 namespace Illusive {
