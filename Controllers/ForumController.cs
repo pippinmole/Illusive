@@ -55,25 +55,22 @@ namespace Illusive.Controllers {
         /// <returns>A forum post and all attributed data</returns>
         /// <response code="200">Returns a valid forum post</response>
         /// <response code="400">Returns a null response</response>
-        [HttpGet("/getrandom")]
+        [HttpGet("getrandom")]
         public ForumData GetRandomForum() {
             var random = new Random().Next(0, this._forumService.CollectionSize());
             var result = this._forumService.GetForumIndex(random);
             return result;
         }
         
-        /// <summary>
-        /// Creates a forum post
-        /// </summary>
-        /// <remarks>
-        /// <para>You will need to attach your profile API key to the header, in the format 'Authorization': '[api key]'. The API key can be found in the User Account settings.\</para>
+        /// <summary>Creates a forum post</summary>
+        /// <remarks><para>You will need to attach your profile API key to the header, in the format 'Authorization': '[api key]'. The API key can be found in the User Account settings.\</para>
         /// <para><b>Please note: </b>The API will only accept user-controller properties, such as Title, Content and Tags, exactly like what you see through the website;
         /// properties such as Views, Comments etc will be ignored.\</para></remarks>
         /// <param name="forumData"></param>
         /// <response code="200">Successfully created the forum post</response>
         /// <response code="400">Authorization has been denied for this request</response>
         /// <response code="400">Bad request</response>
-        /// <returns></returns>
+        /// <returns>The resulting forum post result if the format of the post request was properly; Otherwise 'Error 400: Bad Request'</returns>
         [HttpGet("createpost")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CreatePost([FromBody] ForumData forumData) {

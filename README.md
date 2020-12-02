@@ -4,6 +4,8 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/pippinmole/Illusive/Build%20and%20deploy%20ASP.Net%20Core%20app%20to%20Azure%20Web%20App%20-%20illusive)
 ![Twitter Follow](https://img.shields.io/twitter/follow/pippinmole?style=social)
 
+[API Documentation](https://forum.ruffles.pw/api/v1)
+
 # Illusive
 
 A forum website and REST API made on the [ASP.NET Core framework](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.1) using [Razor pages](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-5.0&tabs=visual-studio) and [.NET WebAPI](https://dotnet.microsoft.com/apps/aspnet/apis).
@@ -112,15 +114,16 @@ The API can be seen in action here:
 
 ### Authorization
 
-Some of the requests require account authorization. Thankfully, Illusive offers an secret JWT API token which can be used to identify a user.
+Some of the requests require account authorization. Thankfully, Illusive offers an secret JWT API token which can be used to identify a user. It can be found under the Account section of the forum.
 If you are using one of the tools suggested above, you can add the authorization header as so:
 
  [![Image from Gyazo](https://i.gyazo.com/feb34909d5b11f4cae8b008744c3ebe1.gif)](https://gyazo.com/feb34909d5b11f4cae8b008744c3ebe1)
  
- If you need to add your API token as a header elsewhere, simply use the dictionary key-value pair:
+If you are using the API token elsewhere, simply use the dictionary key-value pair in your header (you may be required to explicitly state the request format is in JSON):
  
  ```
-    "Authorization: Bearer <api token>"
+    "Authorization: Bearer <api token>",
+    "Content-Type: application/json"
 ```
 
 ## Contributing
