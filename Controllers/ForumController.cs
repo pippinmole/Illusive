@@ -101,8 +101,6 @@ namespace Illusive.Controllers {
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> EditPost([FromBody] ForumData forumData) {
             
-            this._logger.LogInformation("Editing post.");
-            
             var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
             if ( user == null )
                 return this.BadRequest("Bad Token");
@@ -111,6 +109,11 @@ namespace Illusive.Controllers {
             if ( post == null )
                 return this.NotFound();
 
+            if ( user.Id != post.OwnerId ) {
+                this._logger.LogWarning($"Unauthorized user is trying to edit {post.Id}");
+                return this.StatusCode(403);
+            }
+            
             post.Title = forumData.Title;
             post.Content = forumData.Content;
             post.Tags = forumData.Tags;
@@ -121,6 +124,27 @@ namespace Illusive.Controllers {
             await this._forumService.UpdateForumAsync(forumData.Id, builder);
             
             return new JsonResult(post);
+        }
+        
+        [HttpPost("deletepost/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeletePost(string id) {
+            
+            var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
+            if ( user == null )
+                return this.BadRequest("Bad Token");
+
+            var post = this._forumService.GetForumById(id);
+            if ( post == null )
+                return this.NotFound();
+
+            if ( user.Id != post.OwnerId ) {
+                this._logger.LogWarning($"Unauthorized user is trying to delete {post.Id}");
+                return this.StatusCode(403);
+            }
+
+            this._forumService.DeleteForum(x => x.Id == id);
+            return this.Ok();
         }
     }
 }

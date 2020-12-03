@@ -63,6 +63,7 @@ namespace Illusive {
                         ValidateAudience = true,
                         ValidateLifetime = false
                     };
+                    x.ForwardForbid = new PathString("/AccessDenied");
                 });
             
             services.AddAuthorization(options => {
