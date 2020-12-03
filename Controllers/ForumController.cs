@@ -3,11 +3,14 @@ using System.Threading.Tasks;
 using Illusive.Database;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Models;
+using Illusive.Models.Extensions;
 using Illusive.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
+using Newtonsoft.Json;
 
 namespace Illusive.Controllers {
     [ApiController]
@@ -74,7 +77,7 @@ namespace Illusive.Controllers {
         [HttpPost("createpost")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CreatePost([FromBody] ForumData forumData) {
-            this._logger.LogWarning("post");
+            
             var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
             if ( user == null )
                 return this.BadRequest("Bad Token");
@@ -92,6 +95,32 @@ namespace Illusive.Controllers {
             this._logger.LogInformation($"{user.UserName} has created a new forum post through the WebAPI: {forumPost.Title}");
 
             return new JsonResult(forumPost);
+        }
+
+        [HttpPost("editpost")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> EditPost([FromBody] ForumData forumData) {
+            
+            this._logger.LogInformation("Editing post.");
+            
+            var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
+            if ( user == null )
+                return this.BadRequest("Bad Token");
+
+            var post = this._forumService.GetForumById(forumData.Id);
+            if ( post == null )
+                return this.NotFound();
+
+            post.Title = forumData.Title;
+            post.Content = forumData.Content;
+            post.Tags = forumData.Tags;
+
+            var builder = Builders<ForumData>.Update.Set(x => x.Title, post.Title)
+                .Set(x => x.Content, post.Content)
+                .Set(x => x.Tags, post.Tags);
+            await this._forumService.UpdateForumAsync(forumData.Id, builder);
+            
+            return new JsonResult(post);
         }
     }
 }
