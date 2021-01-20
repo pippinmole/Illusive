@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Illusive.Database;
 using Illusive.Illusive.Core.User_Management.Interfaces;
@@ -96,11 +97,11 @@ namespace Illusive.Controllers {
 
             return new JsonResult(forumPost);
         }
-
+        
         [HttpPost("editpost")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> EditPost([FromBody] ForumData forumData) {
-            
+
             var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
             if ( user == null )
                 return this.BadRequest("Bad Token");
@@ -122,7 +123,7 @@ namespace Illusive.Controllers {
                 .Set(x => x.Content, post.Content)
                 .Set(x => x.Tags, post.Tags);
             await this._forumService.UpdateForumAsync(forumData.Id, builder);
-            
+
             return new JsonResult(post);
         }
         
