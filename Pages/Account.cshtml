@@ -8,8 +8,11 @@
 @using Microsoft.AspNetCore.Html
 @model AccountModel
 @{
-    ViewData["Title"] = "Account";
-    ViewData["Description"] = "Account";
+    var accountId = (string) this.HttpContext.Request.RouteValues["id"];
+    var user = await UserManager.GetSafeUserByIdAsync(accountId);
+
+    ViewData["Title"] = $"{user.UserName}";
+    ViewData["Description"] = $"{user.Bio}";
 }
 
 <!DOCTYPE html>
@@ -218,11 +221,6 @@
     </style>
 </head>
 <body>
-
-@{ 
-    var accountId = (string)this.HttpContext.Request.RouteValues["id"];
-    var user = await UserManager.GetSafeUserByIdAsync(accountId);
-}
 
 @functions {
 
