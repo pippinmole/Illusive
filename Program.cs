@@ -23,17 +23,15 @@ namespace Illusive {
 
             if ( ddOptions != null ) {
                 config.WriteTo.DatadogLogs(
-                    ddOptions.ApiKey,
+                    apiKey: ddOptions.ApiKey,
                     source: ".NET",
                     service: ddOptions.ServiceName ?? "Illusive",
                     host: ddOptions.HostName ?? Environment.MachineName,
-                    new string[] {
-                        $"env:{(ddOptions.EnvironmentName ?? context.HostingEnvironment.EnvironmentName)}",
-                        $"assembly:{(ddOptions.AssemblyName ?? context.HostingEnvironment.ApplicationName)}"
+                    tags: new[] {
+                        $"env:{ddOptions.EnvironmentName ?? context.HostingEnvironment.EnvironmentName}",
+                        $"assembly:{ddOptions.AssemblyName ?? context.HostingEnvironment.ApplicationName}"
                     },
-                    ddOptions.ToDatadogConfiguration(),
-
-                    // no need for debug logs in datadag
+                    configuration: ddOptions.ToDatadogConfiguration(),
                     logLevel: ddOptions.OverrideLogLevel ?? LogEventLevel.Verbose
                 );
             }

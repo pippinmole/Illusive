@@ -1,10 +1,6 @@
 ﻿#nullable enable
 using System;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using AspNetCore.Identity.MongoDbCore.Extensions;
 using Illusive.Data;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Utility;

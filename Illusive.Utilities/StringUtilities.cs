@@ -12,7 +12,7 @@ namespace Illusive.Utility {
         }
 
         public static string SafeSubstring(this string value, int startIndex, int length) {
-            return new string((value ?? string.Empty).Skip(startIndex).Take(length).ToArray());
+            return new((value ?? string.Empty).Skip(startIndex).Take(length).ToArray());
         }
     }
 }

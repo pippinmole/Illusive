@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Illusive {
     public class SafeApplicationUser {
@@ -15,5 +16,8 @@ namespace Illusive {
         public string SteamUrl { get; set; }
         public string LinkedinUrl { get; set; }
         public string Location { get; set; }
+        
+        public List<string> Followers { get; set; }
+        public List<string> Following { get; set; }
     }
 }

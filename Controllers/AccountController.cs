@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using Illusive.Illusive.Core.User_Management.Interfaces;
+using Illusive.Pages;
+using Illusive.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -40,6 +42,40 @@ namespace Illusive.Controllers {
                 return this.NoContent();
 
             return new JsonResult(user);
+        }
+        
+        /// <summary>
+        /// Follows the user given a unique user id
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FollowUserAsync(string id) {
+            this._logger.LogError(this.User.GetUniqueId().ToString());
+            
+            var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
+            if ( user == null )
+                return this.BadRequest("Bad Token");
+            
+            var targetUser = await this._userManager.GetUserByIdAsync(id);
+            if ( targetUser == null )
+                return this.BadRequest("Invalid target user");
+
+            if ( targetUser.Followers.Contains(user.Id.ToString()) ) {
+                this._logger.LogDebug($"{user.UserName} is now following {targetUser.UserName}");
+                targetUser.Followers.Remove(user.Id.ToString());
+                user.Following.Add(targetUser.Id.ToString());
+            } else {
+                this._logger.LogDebug($"{user.UserName} is now unfollowing {targetUser.UserName}");
+                targetUser.Followers.Add(user.Id.ToString());
+                user.Following.Remove(targetUser.Id.ToString());
+            }
+
+            await this._userManager.UpdateUserAsync(targetUser);
+            await this._userManager.UpdateUserAsync(user);
+
+            this._logger.LogDebug($"{targetUser.UserName} has followers: {string.Concat(targetUser.Followers)}");
+            return this.Redirect($"/Account/{id}");
         }
     }
 }

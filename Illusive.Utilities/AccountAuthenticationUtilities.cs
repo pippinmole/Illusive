@@ -12,9 +12,7 @@ namespace Illusive.Utility {
 
         public static Guid GetUniqueId(this ClaimsPrincipal principal) {
             var name = principal.FindFirst(ClaimTypes.NameIdentifier);
-            if ( name == null ) return Guid.Empty;
-            
-            return new Guid(name.Value);
+            return name == null ? Guid.Empty : new Guid(name.Value);
         }
         
         public static string GetDisplayName(this ClaimsPrincipal principal) {

@@ -1,11 +1,14 @@
 ﻿@page "/Account/{id?}"
 @inject IForumService ForumService
 @inject IAppUserManager UserManager
+@inject ILogger<AccountModel> Logger
 @using global::Illusive.Database
+@using global::Illusive.Illusive.Core.User_Management.Extension_Methods
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
 @using global::Illusive.Utility
 @using Humanizer
 @using Microsoft.AspNetCore.Html
+@using Microsoft.Extensions.Logging
 @model AccountModel
 @{
     var accountId = (string) this.HttpContext.Request.RouteValues["id"];
@@ -19,6 +22,9 @@
 
 <html>
 <head>
+    
+    <script src="~/js/Account/requests.js"></script>
+    
     <style type="text/css">
         .cover-sec {
             width: 100%;
@@ -254,12 +260,12 @@
                     <ul class="follow-status">
                         <li>
                             <span>Following</span>
-                            <b>999</b>
+                            <b>@user.Following.Count</b>
                         </li>
                                     
                         <li>
                             <span>Followers</span>
-                            <b>999</b>
+                            <b>@user.Followers.Count</b>
                         </li>
                     </ul>
                     <ul class="other-stats">
@@ -271,6 +277,19 @@
                         }
                     </ul>
                 </div>
+                
+                @if ( this.User.IsLoggedIn() ) {
+                    <div class="user-functions">
+                        <form method="post" asp-controller="Account" asp-action="FollowUser" asp-route-id="@user.Id" class="w-50 m-auto">
+                            @Html.AntiForgeryToken()
+                            @if ( user.HasFollower(this.User) ) {
+                                <button class="w-100" type="submit">Unfollow</button>
+                            } else {
+                                <button class="w-100" type="submit">Follow</button>
+                            }
+                        </form>
+                    </div>
+                }
                 
                 <ul class="user-social-links">
                     @SocialLinkFor(SocialMediaConstants.TwitterUserUrl, user?.TwitterUrl, "fa fa-twitter text-decoration-none", "#1da1f2")

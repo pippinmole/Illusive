@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AspNetCore.Identity.MongoDbCore.Models;
 using MongoDbGenericRepository.Attributes;
 
@@ -20,6 +21,9 @@ namespace Illusive {
         public string SteamUrl { get; set; }
         public string LinkedinUrl { get; set; }
         public string Location { get; set; }
+        
+        public List<string> Followers { get; set; }
+        public List<string> Following { get; set; }
 
         public ApplicationUser() : base() {
             this.Age = 17;
@@ -28,6 +32,8 @@ namespace Illusive {
             this.CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
             this.Bio = "I'm new here!";
             this.Location = "";
+            this.Followers = new List<string>();
+            this.Following = new List<string>();
         }
 
         public ApplicationUser(string userName, string email) : base(userName, email) {
@@ -37,6 +43,8 @@ namespace Illusive {
             this.CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
             this.Bio = "I'm new here!";
             this.Location = "";
+            this.Followers = new List<string>();
+            this.Following = new List<string>();
         }
 
         public static readonly ApplicationUser NoUser = new ApplicationUser("Deleted User", "unknown@unknown.com");
