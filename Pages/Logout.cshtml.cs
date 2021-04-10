@@ -26,7 +26,7 @@ namespace Illusive.Pages {
                 this._logger.LogInformation($"{this.User.GetDisplayName()} has logged out.");
             }
 
-            return this.RedirectToPage("/Index");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }
