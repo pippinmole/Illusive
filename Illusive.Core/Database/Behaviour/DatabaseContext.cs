@@ -1,5 +1,4 @@
-﻿using System;
-using Illusive.Illusive.Database.Interfaces;
+﻿using Illusive.Illusive.Database.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;

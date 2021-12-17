@@ -18,7 +18,7 @@
     "Illusive": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:80;http://localhost:443",
+      "applicationUrl": "https://localhost:81;http://localhost:444",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
-using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using Illusive.Illusive.Core.Mail.Interfaces;
@@ -17,7 +15,6 @@ namespace Illusive.Illusive.Core.Mail.Behaviour {
 
         public MailSender(ILogger<MailSender> logger) {
             this._logger = logger;
-            
         }
         
         public MailSender(ILogger<MailSender> logger, IOptionsMonitor<MailSenderOptions> options) {

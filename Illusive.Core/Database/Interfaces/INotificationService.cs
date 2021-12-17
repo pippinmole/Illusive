@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Illusive.Data;
-using Illusive.Models;
 using MongoDB.Driver;
 
 namespace Illusive.Illusive.Core.Database.Interfaces {

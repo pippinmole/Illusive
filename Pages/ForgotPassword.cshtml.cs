@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Web;
-using Illusive.Database;
 using Illusive.Illusive.Core.Mail.Interfaces;
 using Illusive.Illusive.Core.User_Management.Interfaces;
-using Illusive.Models;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Westwind.AspnetCore.Markdown.Utilities;
 
 namespace Illusive.Pages {
     public class ForgotPasswordModel : PageModel {
@@ -45,10 +38,13 @@ namespace Illusive.Pages {
                     email = form.Email
                 });
 
-                await this._mailSender.SendEmailAsync(new List<string> {
+                await this._mailSender.SendEmailAsync(
+                    new List<string> {
                         form.Email
-                    }, "Account Password Recovery",
-                    $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}{callback}", null);
+                    },
+                    "Account Password Recovery",
+                    $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}{callback}", 
+                    null);
 
                 this._logger.LogInformation($"{form.Email} is trying to reset their password.");
 

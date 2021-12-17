@@ -17,6 +17,6 @@ namespace Illusive.Logging {
         public LogEventLevel? OverrideLogLevel { get; set; }
 
         public DatadogConfiguration ToDatadogConfiguration()
-            => new DatadogConfiguration(URL, Port, UseSSL, UseTCP);
+            => new(URL, Port, UseSSL, UseTCP);
     }
 }

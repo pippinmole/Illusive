@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Illusive.Database;
 using Illusive.Utility;
 using MongoDB.Driver;

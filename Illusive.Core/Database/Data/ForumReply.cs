@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Illusive.Attributes;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Illusive.Models {

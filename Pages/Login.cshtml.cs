@@ -1,23 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Illusive.Attributes;
-using Illusive.Database;
-using Illusive.Models;
-using Illusive.Models.Extensions;
 using Illusive.Utility;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using reCAPTCHA.AspNetCore;
-using reCAPTCHA.AspNetCore.Attributes;
-using reCAPTCHA.AspNetCore.Templates;
 
 namespace Illusive.Pages {
     public class LoginModel : PageModel {

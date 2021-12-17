@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Illusive.Data;
-using Illusive.Illusive.Core.User_Management.Extension_Methods;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Utility;
 using Microsoft.AspNetCore.Mvc;

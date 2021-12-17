@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Text;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
-using AspNetCore.Identity.MongoDbCore.Models;
 using AutoMapper;
 using ChristianMihai.AspNetCoreThrottler;
 using Illusive.Database;
@@ -13,21 +12,18 @@ using Illusive.Illusive.Core.Mail.Behaviour;
 using Illusive.Illusive.Core.Mail.Interfaces;
 using Illusive.Illusive.Core.Mail.Options;
 using Illusive.Illusive.Core.User_Management.Behaviour;
-using Illusive.Illusive.Core.User_Management.Extension_Methods;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Illusive.Database.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MongoDbGenericRepository;
 using reCAPTCHA.AspNetCore;
 using Westwind.AspNetCore.Markdown;
 
@@ -166,7 +162,7 @@ namespace Illusive {
             app.UseThrottling();
             
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger(a => { });
+            app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.

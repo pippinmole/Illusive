@@ -1,7 +1,7 @@
 ﻿@page "/Account/{id?}"
-@inject IForumService ForumService
-@inject IAppUserManager UserManager
-@inject ILogger<AccountModel> Logger
+@inject IForumService _forumService
+@inject IAppUserManager _userManager
+@inject ILogger<AccountModel> _logger
 @using global::Illusive.Database
 @using global::Illusive.Illusive.Core.User_Management.Extension_Methods
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
@@ -12,7 +12,7 @@
 @model AccountModel
 @{
     var accountId = (string) this.HttpContext.Request.RouteValues["id"];
-    var user = await UserManager.GetSafeUserByIdAsync(accountId);
+    var user = await _userManager.GetSafeUserByIdAsync(accountId);
 
     ViewData["Title"] = $"{user.UserName}";
     ViewData["Description"] = $"{user.Bio}";
@@ -22,7 +22,6 @@
 
 <html>
 <head>
-    
     <script src="~/js/Account/requests.js"></script>
     
     <style type="text/css">
@@ -312,12 +311,12 @@
             </div>
 
             <div class="user-feed">
-                @foreach ( var post in ForumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
+                @foreach ( var post in _forumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
                     if ( post.OwnerId == Guid.Empty ) {
                         continue;
                     }
                     
-                    var postOwner = await UserManager.GetUserByIdAsync(post.OwnerId) ?? ApplicationUser.NoUser;
+                    var postOwner = await _userManager.GetUserByIdAsync(post.OwnerId) ?? ApplicationUser.NoUser;
                     
                     <div class="user-post">
                         <div class="user-post-top">

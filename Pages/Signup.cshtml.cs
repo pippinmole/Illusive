@@ -1,14 +1,7 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Illusive.Database;
+﻿using System.Threading.Tasks;
 using Illusive.Illusive.Core.User_Management.Interfaces;
 using Illusive.Models;
-using Illusive.Models.Extensions;
 using Illusive.Utility;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -38,10 +31,7 @@ namespace Illusive.Pages {
                 return this.Page();
             }
 
-            var newAccount = new ApplicationUser(
-                userName: username,
-                email: email
-            );
+            var newAccount = new ApplicationUser(username, email);
             
             var result = await this._userManager.CreateAsync(newAccount, password);
             if ( !result.Succeeded ) {

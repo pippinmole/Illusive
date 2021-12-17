@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using Illusive.Illusive.Core.User_Management.Interfaces;
-using Illusive.Pages;
 using Illusive.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
