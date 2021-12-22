@@ -11,16 +11,16 @@ namespace Illusive.Database {
         public string ConnectionString { get; }
         
         public DatabaseContext(IConfiguration configuration, ILogger<DatabaseContext> logger) {
-            this._logger = logger;
+            _logger = logger;
             
-            this._logger.LogInformation("Connecting to database...");
+            _logger.LogInformation("Connecting to database...");
             
-            this.ConnectionString = configuration.GetConnectionString("DatabaseConnectionString");
-            this.Client = new MongoClient(this.ConnectionString);
+            ConnectionString = configuration.GetConnectionString("DatabaseConnectionString");
+            Client = new MongoClient(ConnectionString);
 
-            this._logger.LogInformation("Connected to database...");
+            _logger.LogInformation("Connected to database...");
         }
         
-        public IMongoDatabase GetDatabase(string name) => this.Client.GetDatabase(name);
+        public IMongoDatabase GetDatabase(string name) => Client.GetDatabase(name);
     }
 }

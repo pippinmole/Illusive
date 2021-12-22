@@ -30,11 +30,11 @@ namespace Illusive.Models {
         public bool IsLocked { get; set; }
 
         public ForumData() {
-            this.Id = Guid.NewGuid().ToString();
-            this.Replies = new List<ForumReply>();
-            this.TimeCreated = DateTime.Now;
-            this.Views = 0;
-            this.Likes = new List<Guid>();
+            Id = Guid.NewGuid().ToString();
+            Replies = new List<ForumReply>();
+            TimeCreated = DateTime.Now;
+            Views = 0;
+            Likes = new List<Guid>();
         }
     }
 }

@@ -11,14 +11,14 @@ namespace Illusive.Pages {
         private readonly IAppUserManager _userManager;
 
         public LogoutModel(ILogger<LogoutModel> logger, IAppUserManager userManager) {
-            this._logger = logger;
-            this._userManager = userManager;
+            _logger = logger;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> OnGet() {
-            if ( this.User.IsLoggedIn() ) {
-                await this._userManager.SignOutAsync();
-                this._logger.LogInformation($"{this.User.GetDisplayName()} has logged out.");
+            if ( User.IsLoggedIn() ) {
+                await _userManager.SignOutAsync();
+                _logger.LogInformation($"{User.GetDisplayName()} has logged out.");
             }
 
             return Redirect(Request.Headers["Referer"].ToString());

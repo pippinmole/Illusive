@@ -8,11 +8,11 @@ namespace Illusive.Pages {
         private readonly ILogger<IndexModel> _logger;
 
         public IndexModel(ILogger<IndexModel> logger) {
-            this._logger = logger;
+            _logger = logger;
         }
 
         public IActionResult OnGet() {
-            return this.LocalRedirect("/Forum");
+            return LocalRedirect("/Forum");
         }
     }
 }

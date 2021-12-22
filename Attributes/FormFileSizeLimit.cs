@@ -8,15 +8,15 @@ namespace Illusive.Attributes {
         private readonly long _maxSize;
 
         public FormFileSizeLimitAttribute(long maxSize) {
-            this._maxSize = maxSize;
+            _maxSize = maxSize;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
             if ( value is IFormFile file ) {
                 var fileName = file.FileName;
-                if ( file.Length > this._maxSize ) {
+                if ( file.Length > _maxSize ) {
                     return new ValidationResult(
-                        $"The file provided exceeds the maximum size of {this._maxSize / 1000 / 1000}MB!");
+                        $"The file provided exceeds the maximum size of {_maxSize / 1000 / 1000}MB!");
                 }
             }
 

@@ -18,14 +18,14 @@ namespace Illusive.Data {
         public string TriggerId { get; set; }
         
         public UserNotification(Guid target, string content, string imageUrl, string triggerId, string? link = null) {
-            this.Id = Guid.NewGuid().ToString();
-            this.TargetUser = target;
-            this.Read = false;
-            this.Content = content;
-            this.TimeCreated = DateTime.Now;
-            this.ImageUrl = imageUrl;
-            this.Link = link;
-            this.TriggerId = triggerId;
+            Id = Guid.NewGuid().ToString();
+            TargetUser = target;
+            Read = false;
+            Content = content;
+            TimeCreated = DateTime.Now;
+            ImageUrl = imageUrl;
+            Link = link;
+            TriggerId = triggerId;
         }
     }
 }

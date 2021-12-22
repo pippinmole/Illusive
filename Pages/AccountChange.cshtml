@@ -1,4 +1,4 @@
-﻿@page "/profile/change"
+﻿@page "/user/change"
 @using global::Illusive.Utility
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
 @inject IAppUserManager UserManager
@@ -7,7 +7,7 @@
     ViewData["Title"] = "Homepage";
     ViewData["Description"] = "Home Page";
 
-    var user = await UserManager.GetUserByIdAsync(this.User.GetUniqueId());
+    var user = await UserManager.GetUserByIdAsync(User.GetUniqueId());
 }
 
 <script src="~/js/Account/requests.js"></script>

@@ -14,16 +14,16 @@ namespace Illusive.Illusive.Core.Mail.Behaviour {
         private readonly IOptionsMonitor<MailSenderOptions> _options;
 
         public MailSender(ILogger<MailSender> logger) {
-            this._logger = logger;
+            _logger = logger;
         }
         
         public MailSender(ILogger<MailSender> logger, IOptionsMonitor<MailSenderOptions> options) {
-            this._logger = logger;
-            this._options = options;
+            _logger = logger;
+            _options = options;
         }
 
         public async Task SendEmailAsync(IEnumerable<string> recipients, string subject, string body, string sender) {
-            var options = this._options.CurrentValue;
+            var options = _options.CurrentValue;
 
             var msg = new MailMessage {
                 Subject = subject, 

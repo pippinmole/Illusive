@@ -15,38 +15,38 @@ namespace Illusive.Database {
         private readonly IMongoCollection<UserNotification> _notifications;
 
         public NotificationService(ILogger<NotificationService> logger, IDatabaseContext ctx) {
-            this._logger = logger;
-            this._notifications = ctx.GetDatabase("IllusiveDatabase").GetCollection<UserNotification>("user_notifications");
+            _logger = logger;
+            _notifications = ctx.GetDatabase("IllusiveDatabase").GetCollection<UserNotification>("user_notifications");
         }
         
         public async Task AddNotificationAsync(UserNotification notification) {
-            await this._notifications.InsertOneAsync(notification);
+            await _notifications.InsertOneAsync(notification);
         }
         
         public async Task<List<UserNotification>> GetNotificationsWhereAsync(Expression<Func<UserNotification, bool>> expression) {
-            var val = await this._notifications.FindAsync(expression);
+            var val = await _notifications.FindAsync(expression);
             return val.ToList();
         }
 
         public async Task<List<UserNotification>> GetUnreadNotificationsForUserAsync(ApplicationUser user) {
             if ( user == null ) return null;
             
-            var val = await this._notifications.FindAsync(x => x.TargetUser.Equals(user.Id) && x.Read == false);
+            var val = await _notifications.FindAsync(x => x.TargetUser.Equals(user.Id) && x.Read == false);
             return val.ToList();
         }
 
         public async Task<List<UserNotification>> GetUnreadNotificationsForUserIdAsync(Guid id) {
-            var val = await this._notifications.FindAsync(x => x.TargetUser.Equals(id) && x.Read == false);
+            var val = await _notifications.FindAsync(x => x.TargetUser.Equals(id) && x.Read == false);
             return val.ToList();
         }
         
         public async Task<List<UserNotification>> GetUnreadNotificationsForUserIdAsync(string id) {
-            var val = await this._notifications.FindAsync(x => x.TargetUser.ToString() == id && x.Read == false);
+            var val = await _notifications.FindAsync(x => x.TargetUser.ToString() == id && x.Read == false);
             return val.ToList();
         }
 
         public async Task UpdateNotificationsWhereAsync(Expression<Func<UserNotification, bool>> expression, UpdateDefinition<UserNotification> update) {
-            await this._notifications.UpdateManyAsync(expression, update);
+            await _notifications.UpdateManyAsync(expression, update);
         }
     }
 }

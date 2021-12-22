@@ -1,4 +1,4 @@
-﻿@page "/Account/{id?}"
+﻿@page "/user/{id?}"
 @inject IForumService _forumService
 @inject IAppUserManager _userManager
 @inject ILogger<AccountModel> _logger
@@ -11,7 +11,7 @@
 @using Microsoft.Extensions.Logging
 @model AccountModel
 @{
-    var accountId = (string) this.HttpContext.Request.RouteValues["id"];
+    var accountId = (string) HttpContext.Request.RouteValues["id"];
     var user = await _userManager.GetSafeUserByIdAsync(accountId);
 
     ViewData["Title"] = $"{user.UserName}";
@@ -41,6 +41,7 @@
             border-bottom: 2px solid var(--container-colour-primary-border);
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
+            padding: 0px 15px 15px;
         }
         
         .follow-status {
@@ -70,24 +71,33 @@
             padding: 0 15px;
         }
         
-        .user-stats {
+        .up-stats {
             width: 100%;
         }
         
-        .user-profile-image {
+        .up-image {
             text-align: center;
             position: relative;
             margin-bottom: 15px;
             margin-top: -95px;
         }
         
-        .user-profile-image img {
+        .up-username {
+            text-align: center;
+        }
+        
+        .up-username h2 {
+        	font-size: 1.5rem;
+        	font-weight: bold;
+        }
+        
+        .up-image img {
             border-radius: 999px;
             height: 150px;
             width: 150px;
         }
         
-        .user-social-links {
+        .up-socials {
             float: left;
             width: 100%;
             text-align: left;
@@ -95,7 +105,7 @@
             font-size: 0.8rem;
         }
         
-        .user-social-links li {
+        .up-socials li {
             float: left;
             width: 100%;
             padding: 10px 15px;
@@ -103,14 +113,6 @@
             font-weight: 700;
             
             list-style: none;
-        }
-        
-        .user-overview {
-            
-        }
-        
-        .user-feed {
-            margin-top: 30px;
         }
         
         .user-post {
@@ -127,10 +129,6 @@
             float: left;
             width: 100%;
             position: relative;
-        }
-        
-        .user-post-content {
-        
         }
         
         .user-post-content h3 {
@@ -205,10 +203,6 @@
             font-size: 0.7rem;
         }
         
-        .user-tab {
-        
-        }
-        
         .user-tab ul {
             float: left;
             width: 100%;
@@ -247,15 +241,19 @@
 </section>
 
 <main>
-    <div class="container row">
+    <div class="container row m-auto">
         <div class="col-lg-3">
             
             <div class="user-profile">
-                <div class="user-profile-image">
+                <div class="up-image">
                     <img src="@user?.ProfilePicture" alt=""/>
                 </div>
                 
-                <div class="user-stats">
+                <div class="up-username">
+                    <h2>@user?.UserName</h2>
+                </div>
+                
+                <div class="up-stats">
                     <ul class="follow-status">
                         <li>
                             <span>Following</span>
@@ -268,6 +266,8 @@
                         </li>
                     </ul>
                     <ul class="other-stats">
+                        @user?.Bio
+                        
                         @if ( !string.IsNullOrEmpty(user?.Location) ) {
                             <div>
                                 <i class="fa fa-map-marker"></i>
@@ -277,11 +277,11 @@
                     </ul>
                 </div>
                 
-                @if ( this.User.IsLoggedIn() ) {
+                @if ( User.IsLoggedIn() ) {
                     <div class="user-functions">
                         <form method="post" asp-controller="Account" asp-action="FollowUser" asp-route-id="@user.Id" class="w-50 m-auto">
                             @Html.AntiForgeryToken()
-                            @if ( user.HasFollower(this.User) ) {
+                            @if ( user.HasFollower(User) ) {
                                 <button class="w-100" type="submit">Unfollow</button>
                             } else {
                                 <button class="w-100" type="submit">Follow</button>
@@ -290,7 +290,7 @@
                     </div>
                 }
                 
-                <ul class="user-social-links">
+                <ul class="up-socials">
                     @SocialLinkFor(SocialMediaConstants.TwitterUserUrl, user?.TwitterUrl, "fa fa-twitter text-decoration-none", "#1da1f2")
                     @SocialLinkFor(SocialMediaConstants.LinkedinUserUrl, user?.LinkedinUrl, "fa fa-linkedin text-decoration-none", "#2867b2")
                     @SocialLinkFor(SocialMediaConstants.RedditUserUrl, user?.RedditUrl, "fa fa-reddit text-decoration-none", "#1da1f2")
@@ -301,50 +301,41 @@
         </div>
         
         <div class="col-lg-6 pt-4">
-            <div class="user-overview">
-                <h3>
-                    @user?.UserName
-                </h3>
-                <div class="user-description">
-                    <span>@user?.Bio</span>
-                </div>
-            </div>
+            <h2>Feed</h2>
+                
+            @foreach ( var post in _forumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
+                if ( post.OwnerId == Guid.Empty ) {
+                    continue;
+                }
 
-            <div class="user-feed">
-                @foreach ( var post in _forumService.GetForumsWhere(x => x.OwnerId == user.Id) ) {
-                    if ( post.OwnerId == Guid.Empty ) {
-                        continue;
-                    }
-                    
-                    var postOwner = await _userManager.GetUserByIdAsync(post.OwnerId) ?? ApplicationUser.NoUser;
-                    
-                    <div class="user-post">
-                        <div class="user-post-top">
-                            <div class="user-post-top-details">
-                                <img src="@postOwner?.ProfilePicture" alt="">
-                                <div class="pl-2">
-                                    <h3>@postOwner?.UserName</h3>
-                                    <span><i class="fa fa-clock-o"></i> @post.TimeCreated.TimeSince().Humanize() ago</span>
-                                </div>
+                var postOwner = await _userManager.GetUserByIdAsync(post.OwnerId) ?? ApplicationUser.NoUser;
+
+                <div class="user-post">
+                    <div class="user-post-top">
+                        <div class="user-post-top-details">
+                            <img src="@postOwner?.ProfilePicture" alt="">
+                            <div class="pl-2">
+                                <h3>@postOwner?.UserName</h3>
+                                <span><i class="fa fa-clock-o"></i> @post.TimeCreated.TimeSince().Humanize() ago</span>
                             </div>
                         </div>
-
-                        <div class="user-post-content">
-                            <h3>@post?.Title</h3>
-                            <p>
-                                @post?.Content.SafeSubstring(0, 225)
-                                <a asp-page="/ForumPost" asp-route-id="@post?.Id">Read more</a>
-                            </p>
-                        </div>
                     </div>
-                }
-            </div>
+
+                    <div class="user-post-content">
+                        <h3>@post?.Title</h3>
+                        <p>
+                            @post?.Content.SafeSubstring(0, 225)
+                            <a asp-page="/ForumPost" asp-route-id="@post?.Id">Read more</a>
+                        </p>
+                    </div>
+                </div>
+            }
         </div>
         
         <div class="col-lg-3">
-            @if ( user?.Id == this.User.GetUniqueId() ) {
+            @if ( user?.Id == User.GetUniqueId() ) {
                 <a asp-page="/AccountChange" class="settings-btn">
-                    <button class="btn btn-info">
+                    <button class="btn btn-outline-dark">
                         <i class="fa fa-cogs"></i>
                         Profile Settings
                     </button>

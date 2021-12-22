@@ -26,25 +26,25 @@ namespace Illusive {
         public List<string> Following { get; set; }
 
         public ApplicationUser() : base() {
-            this.Age = 17;
-            this.ProfilePicture =
+            Age = 17;
+            ProfilePicture =
                 "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
-            this.CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
-            this.Bio = "I'm new here!";
-            this.Location = "";
-            this.Followers = new List<string>();
-            this.Following = new List<string>();
+            CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
+            Bio = "I'm new here!";
+            Location = "";
+            Followers = new List<string>();
+            Following = new List<string>();
         }
 
         public ApplicationUser(string userName, string email) : base(userName, email) {
-            this.Age = 17;
-            this.ProfilePicture =
+            Age = 17;
+            ProfilePicture =
                 "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
-            this.CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
-            this.Bio = "I'm new here!";
-            this.Location = "";
-            this.Followers = new List<string>();
-            this.Following = new List<string>();
+            CoverPicture = "https://illusivecdn.blob.core.windows.net/container-1/default-cover-photo.png";
+            Bio = "I'm new here!";
+            Location = "";
+            Followers = new List<string>();
+            Following = new List<string>();
         }
 
         public static readonly ApplicationUser NoUser = new ApplicationUser("Deleted User", "unknown@unknown.com");

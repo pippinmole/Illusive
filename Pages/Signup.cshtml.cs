@@ -14,40 +14,40 @@ namespace Illusive.Pages {
         [BindProperty] public SignupDataForm SignupData { get; set; }
 
         public SignupModel(ILogger<SignupModel> logger, IAppUserManager userManager) {
-            this._logger = logger;
-            this._userManager = userManager;
+            _logger = logger;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> OnPost() {
-            if ( !this.ModelState.IsValid )
-                return this.Page();
+            if ( !ModelState.IsValid )
+                return Page();
 
-            var username = this.SignupData.Username.Trim();
-            var email = this.SignupData.Email.Trim();
-            var password = this.SignupData.Password.Trim();
+            var username = SignupData.Username.Trim();
+            var email = SignupData.Email.Trim();
+            var password = SignupData.Password.Trim();
 
             if ( !email.IsEmail() ) {
-                this.ModelState.AddModelError("", "The email you entered is not valid!");
-                return this.Page();
+                ModelState.AddModelError("", "The email you entered is not valid!");
+                return Page();
             }
 
             var newAccount = new ApplicationUser(username, email);
             
-            var result = await this._userManager.CreateAsync(newAccount, password);
+            var result = await _userManager.CreateAsync(newAccount, password);
             if ( !result.Succeeded ) {
                 foreach ( var error in result.Errors ) {
-                    this.ModelState.AddModelError(error.Code, error.Description);
-                    this._logger.LogWarning($"Error creating user account: {error.Description}");
+                    ModelState.AddModelError(error.Code, error.Description);
+                    _logger.LogWarning($"Error creating user account: {error.Description}");
                 }
 
-                return this.Page();
+                return Page();
             }
 
-            this._logger.LogInformation($"Successfully created account with username {username}");
+            _logger.LogInformation($"Successfully created account with username {username}");
 
-            await this._userManager.SignInAsync(newAccount, true);
+            await _userManager.SignInAsync(newAccount, true);
 
-            return this.RedirectToPage("/Account");
+            return RedirectToPage("/Account");
         }
     }
 }

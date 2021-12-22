@@ -2,10 +2,10 @@
 @model SafeApplicationUser
 
 @{
-    var user = this.Model;
+    var user = Model;
 }
 
-@if ( this.User.IsLoggedIn() ) {
+@if ( User.IsLoggedIn() ) {
     <div class="dropdown">
         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span style="display: inline-block; height: 25px; width: 25px; position: relative;">

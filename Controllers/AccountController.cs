@@ -14,9 +14,9 @@ namespace Illusive.Controllers {
         private readonly IMapper _mapper;
 
         public AccountController(ILogger<AccountController> logger, IAppUserManager userManager, IMapper mapper) {
-            this._logger = logger;
-            this._userManager = userManager;
-            this._mapper = mapper;
+            _logger = logger;
+            _userManager = userManager;
+            _mapper = mapper;
         }
 
         /// <summary>Gets account information given a user id</summary>
@@ -34,11 +34,11 @@ namespace Illusive.Controllers {
         /// <response code="204">No user found with provided id</response>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserAsync(string id) {
-            this._logger.LogInformation($"Getting account information for id {id}");
+            _logger.LogInformation($"Getting account information for id {id}");
 
-            var user = await this._userManager.GetSafeUserByIdAsync(id);
+            var user = await _userManager.GetSafeUserByIdAsync(id);
             if ( user == null )
-                return this.NoContent();
+                return NoContent();
 
             return new JsonResult(user);
         }
@@ -50,31 +50,28 @@ namespace Illusive.Controllers {
         [HttpPost("{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> FollowUserAsync(string id) {
-            this._logger.LogError(this.User.GetUniqueId().ToString());
-            
-            var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
+            var user = await _userManager.GetUserByIdAsync(User.GetUniqueId());
             if ( user == null )
-                return this.BadRequest("Bad Token");
+                return BadRequest("Bad Token");
             
-            var targetUser = await this._userManager.GetUserByIdAsync(id);
+            var targetUser = await _userManager.GetUserByIdAsync(id);
             if ( targetUser == null )
-                return this.BadRequest("Invalid target user");
+                return BadRequest("Invalid target user");
 
             if ( targetUser.Followers.Contains(user.Id.ToString()) ) {
-                this._logger.LogDebug($"{user.UserName} is now following {targetUser.UserName}");
+                _logger.LogDebug($"{user.UserName} is now following {targetUser.UserName}");
                 targetUser.Followers.Remove(user.Id.ToString());
                 user.Following.Add(targetUser.Id.ToString());
             } else {
-                this._logger.LogDebug($"{user.UserName} is now unfollowing {targetUser.UserName}");
+                _logger.LogDebug($"{user.UserName} is now unfollowing {targetUser.UserName}");
                 targetUser.Followers.Add(user.Id.ToString());
                 user.Following.Remove(targetUser.Id.ToString());
             }
 
-            await this._userManager.UpdateUserAsync(targetUser);
-            await this._userManager.UpdateUserAsync(user);
+            await _userManager.UpdateUserAsync(targetUser);
+            await _userManager.UpdateUserAsync(user);
 
-            this._logger.LogDebug($"{targetUser.UserName} has followers: {string.Concat(targetUser.Followers)}");
-            return this.Redirect($"/Account/{id}");
+            return Redirect($"/Account/{id}");
         }
     }
 }

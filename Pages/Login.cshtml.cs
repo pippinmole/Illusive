@@ -18,52 +18,52 @@ namespace Illusive.Pages {
         private readonly SignInManager<ApplicationUser> _signInManager;
         
         public LoginModel(ILogger<LoginModel> logger, IRecaptchaService recaptchaService, SignInManager<ApplicationUser> signInManager) {
-            this._logger = logger;
-            this._recaptchaService = recaptchaService;
-            this._signInManager = signInManager;
+            _logger = logger;
+            _recaptchaService = recaptchaService;
+            _signInManager = signInManager;
         }
         
         public IActionResult OnGet() {
             try {
-                if ( this.User.IsLoggedIn() ) {
-                    return this.RedirectToPage("/Index");
+                if ( User.IsLoggedIn() ) {
+                    return RedirectToPage("/Index");
                 }
             } catch ( Exception ex ) {
                 Console.Write(ex);
             }
 
-            return this.Page();
+            return Page();
         }
         
         public async Task<IActionResult> OnPostAsync(string returnUrl) {
-            if ( !this.ModelState.IsValid )
-                return this.Page();
+            if ( !ModelState.IsValid )
+                return Page();
 
-            var result = await this._recaptchaService.Validate(this.Request);
+            var result = await _recaptchaService.Validate(Request);
             if ( !result.success ) {
-                this.ModelState.AddModelError("", "Recaptcha failed.");
-                return this.Page();
+                ModelState.AddModelError("", "Recaptcha failed.");
+                return Page();
             }
             
-            var username = this.loginData.Username;
-            var password = this.loginData.Password;
-            var isPersistent = this.loginData.RememberMe;
+            var username = loginData.Username;
+            var password = loginData.Password;
+            var isPersistent = loginData.RememberMe;
             
-            var signInResult = await this._signInManager.PasswordSignInAsync(username, password, isPersistent, false);
+            var signInResult = await _signInManager.PasswordSignInAsync(username, password, isPersistent, false);
 
             if ( signInResult.Succeeded ) {
-                this._logger.LogInformation($"{username} has logged in.");
+                _logger.LogInformation($"{username} has logged in.");
             } else {
-                this._logger.LogWarning("Login attempt failed");
-                this.ModelState.AddModelError("", "Login failed");
-                return this.Page();
+                _logger.LogWarning("Login attempt failed");
+                ModelState.AddModelError("", "Login failed");
+                return Page();
             }
             
             if ( !string.IsNullOrEmpty(returnUrl) ) {
-                return this.LocalRedirect(returnUrl);
+                return LocalRedirect(returnUrl);
             }
 
-            return this.RedirectToPage("/Index");
+            return RedirectToPage("/Index");
         }
 
         public class LoginPost {

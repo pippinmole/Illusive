@@ -14,51 +14,51 @@ namespace Illusive.Database {
         private readonly IMongoCollection<ForumData> _forumData;
 
         public ForumService(ILogger<ForumService> logger, IDatabaseContext ctx) {
-            this._logger = logger;
-            this._forumData = ctx.GetDatabase("IllusiveDatabase").GetCollection<ForumData>("forum_posts");
+            _logger = logger;
+            _forumData = ctx.GetDatabase("IllusiveDatabase").GetCollection<ForumData>("forum_posts");
         }
 
         public int CollectionSize() {
-            return (int)this._forumData.EstimatedDocumentCount();
+            return (int)_forumData.EstimatedDocumentCount();
         }
 
         public async Task AddForumPostAsync(ForumData forumPost) {
-            await this._forumData.InsertOneAsync(forumPost);
+            await _forumData.InsertOneAsync(forumPost);
         }
 
         public async Task<List<ForumData>> GetForumDataAsync() {
-            var val = await this._forumData.FindAsync(x => true);
+            var val = await _forumData.FindAsync(x => true);
 
             return val.ToList();
         }
 
         public ForumData GetForumIndex(int index) {
-            return this._forumData.Find(_ => true).ToList()[index];
+            return _forumData.Find(_ => true).ToList()[index];
         }
 
         public ForumData GetForumById(string id) {
-            var result = this._forumData.Find(x => x.Id == id);
+            var result = _forumData.Find(x => x.Id == id);
             return result.FirstOrDefault();
         }
         
         public ForumData GetForumWhere(Expression<Func<ForumData, bool>> expression) {
-            return this._forumData.Find(expression).FirstOrDefault();
+            return _forumData.Find(expression).FirstOrDefault();
         }
 
         public IReadOnlyList<ForumData> GetForumsWhere(Expression<Func<ForumData, bool>> expression) {
-            return this._forumData.Find(expression).ToList();
+            return _forumData.Find(expression).ToList();
         }
 
         public void UpdateForum(string id, UpdateDefinition<ForumData> update) {
-            this._forumData.UpdateOne(x => x.Id == id, update);
+            _forumData.UpdateOne(x => x.Id == id, update);
         }
 
         public async Task UpdateForumAsync(string id, UpdateDefinition<ForumData> update) {
-            await this._forumData.UpdateOneAsync(x => x.Id == id, update);
+            await _forumData.UpdateOneAsync(x => x.Id == id, update);
         }
 
         public void DeleteForum(Expression<Func<ForumData, bool>> expression) {
-            this._forumData.DeleteMany(expression);
+            _forumData.DeleteMany(expression);
         }
     }
 }

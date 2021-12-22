@@ -89,14 +89,14 @@
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
 
-    @if ( !this.User.IsLoggedIn() ) {
+    @if ( !User.IsLoggedIn() ) {
         <div><a href="/Login">Login</a> or <a href="/Signup">Sign up</a> to create a post!</div>
     } else {
         <div><a href="/CreatePost">Create a post!</a></div>
     }
 </div>
 
-<select class="order-by" style="margin: auto; background-color: var(--container-colour-secondary); padding: 5px; border: none; border-radius: 5px; color: inherit">
+<select class="order-by" style="margin: auto; background-color: var(--container-colour-primary); padding: 5px; border: none; border-radius: 5px; color: inherit">
     <option value="views-asc">Order by views (Ascending)</option>
     <option value="views-desc">Order by views (Descending)</option>
     <option value="likes-asc">Order by likes (Ascending)</option>
@@ -106,17 +106,17 @@
 </select>
 
 <div style="margin-top: 15px">
-    @if ( this.Model.Forums.Page != 1 ) {
+    @if ( Model.Forums.Page != 1 ) {
         <span class="button previous" onclick="DecrementPageCount()">&laquo; Previous</span>
     }
-    @if ( this.Model.Forums.Page < this.Model.Forums.PageCount ) {
+    @if ( Model.Forums.Page < Model.Forums.PageCount ) {
         <span class="button next" onclick="IncrementPageCount()">Next &raquo;</span>
     }
 </div>
 
 <div>
     @{
-        var postResults = this.Model.Forums;
+        var postResults = Model.Forums;
         foreach ( var forum in postResults.Posts ) {
             @await Html.PartialAsync("Partials/_ForumPostComponent", model: forum)
         }
@@ -124,10 +124,10 @@
         <h5>Page @postResults.Page of @postResults.PageCount</h5>
 
         <div style="margin-top: 15px">
-            @if ( this.Model.Forums.Page != 1 ) {
+            @if ( Model.Forums.Page != 1 ) {
                 <span class="button previous" onclick="DecrementPageCount()">&laquo; Previous</span>
             }
-            @if ( this.Model.Forums.Page < this.Model.Forums.PageCount ) {
+            @if ( Model.Forums.Page < Model.Forums.PageCount ) {
                 <span class="button next" onclick="IncrementPageCount()">Next &raquo;</span>
             }
         </div>

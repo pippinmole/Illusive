@@ -18,18 +18,18 @@ namespace Illusive.Pages {
         private readonly IContentService _contentService;
         
         public AccountChangeModel(ILogger<AccountChangeModel> logger, IAppUserManager userManager, IContentService contentService) {
-            this._logger = logger;
-            this._userManager = userManager;
-            this._contentService = contentService;
+            _logger = logger;
+            _userManager = userManager;
+            _contentService = contentService;
         }
         
         public async Task<IActionResult> OnPostUploadAsync() {
-            if ( !this.ModelState.IsValid )
-                return this.Page();
+            if ( !ModelState.IsValid )
+                return Page();
 
-            var accountId = this.User.GetUniqueId();
-            var user = await this._userManager.GetUserByIdAsync(accountId);
-            var newAccount = this.AccountUpdate ?? throw new NullReferenceException("Account Change data shouldn't be null!");
+            var accountId = User.GetUniqueId();
+            var user = await _userManager.GetUserByIdAsync(accountId);
+            var newAccount = AccountUpdate ?? throw new NullReferenceException("Account Change data shouldn't be null!");
 
             user.Bio = newAccount.Bio;
             user.Location = newAccount.Location;
@@ -45,19 +45,19 @@ namespace Illusive.Pages {
                 await using var stream = System.IO.File.Create(Path.GetTempFileName(), (int) profilePic.Length);
                 await profilePic.CopyToAsync(stream);
 
-                var path = await this._contentService.UploadFileAsync(Path.GetFileName(profilePic.FileName), stream);
+                var path = await _contentService.UploadFileAsync(Path.GetFileName(profilePic.FileName), stream);
                 user.ProfilePicture = path;
             }
 
             if ( newAccount.CoverPicture != null )
-                user.CoverPicture = await this._contentService.UploadFileAsync(newAccount.CoverPicture);
+                user.CoverPicture = await _contentService.UploadFileAsync(newAccount.CoverPicture);
 
             if ( newAccount.ProfilePicture != null )
-                user.ProfilePicture = await this._contentService.UploadFileAsync(newAccount.ProfilePicture);
+                user.ProfilePicture = await _contentService.UploadFileAsync(newAccount.ProfilePicture);
 
-            await this._userManager.UpdateUserAsync(user);
+            await _userManager.UpdateUserAsync(user);
 
-            return this.RedirectToPage("Account");
+            return RedirectToPage("Account");
         }
     }
 }

@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,14 +32,14 @@ namespace Illusive {
         private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration) {
-            this._configuration = configuration;
+            _configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddDataProtection();
 
-            var key = Encoding.UTF8.GetBytes(this._configuration["Jwt:Secret"]);
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]);
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {
@@ -53,8 +52,8 @@ namespace Illusive {
                     x.TokenValidationParameters = new TokenValidationParameters {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidIssuers = new[] { this._configuration["Jwt:Issuer"] },
-                        ValidAudiences = new[] { this._configuration["Jwt:Issuer"] },
+                        ValidIssuers = new[] { _configuration["Jwt:Issuer"] },
+                        ValidAudiences = new[] { _configuration["Jwt:Issuer"] },
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = false
@@ -66,16 +65,17 @@ namespace Illusive {
                 options.AddPolicy("UserPolicy", policy => policy.RequireRole("IsAdmin"));
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest).AddNewtonsoftJson();
+            services.AddMvc()
+                .AddNewtonsoftJson();
 
-            services.AddRecaptcha(this._configuration.GetSection("RecaptchaSettings"));
+            services.AddRecaptcha(_configuration.GetSection("RecaptchaSettings"));
             services.AddAntiforgery(options => {
                 options.HeaderName = "XSRF-TOKEN";
             });
 
             var mongoDbIdentity = new MongoDbIdentityConfiguration {
                 MongoDbSettings = new MongoDbSettings {
-                    ConnectionString = this._configuration.GetConnectionString("DatabaseConnectionString"),
+                    ConnectionString = _configuration.GetConnectionString("DatabaseConnectionString"),
                     DatabaseName = "IllusiveDatabase"
                 },
                 IdentityOptionsAction = options => {
@@ -102,7 +102,7 @@ namespace Illusive {
             
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentity);
             
-            services.Configure<MailSenderOptions>(this._configuration.GetSection(MailSenderOptions.Name));
+            services.Configure<MailSenderOptions>(_configuration.GetSection(MailSenderOptions.Name));
 
             services.Configure<RateLimitOptions>(config => {
                 config.RequestRateMs = 2000;

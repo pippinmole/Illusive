@@ -5,7 +5,7 @@
 @inject IAppUserManager UserManager
 
 @{
-    var forum = this.Model;
+    var forum = Model;
     var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId) ?? ApplicationUser.NoUser;
 }
 
@@ -27,10 +27,10 @@
         </div>
     </span>
       
-    <div class="image"><a asp-page="Account" asp-route-id="@forumOwner?.Id"><img src="@forumOwner?.ProfilePicture" style="height: 25px; max-width: 25px;" alt=""/></a></div>
+    <div class="image"><a asp-page="Account" asp-route-id="@forumOwner?.Id"><img src="@forumOwner?.ProfilePicture" style="height: 50px; max-width: 50px;" alt=""/></a></div>
     <div class="additionalInfo">Created @forum.TimeCreated.ToString("MMMM dd, yyyy") (@forum.TimeCreated.TimeSince().Humanize() ago)</div>
     <div class="user"><a asp-page="Account" asp-route-id="@forumOwner?.Id">[@forumOwner?.UserName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
-    @if ( forum.Tags != null ) {
+    @if ( forum.Tags != null  && !string.IsNullOrEmpty(forum.Tags)) {
         foreach ( var tag in forum.Tags.Split(',') ) {
             <div class="forumTag noselect">@tag</div>
         }

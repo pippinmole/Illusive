@@ -2,7 +2,7 @@
 @using global::Illusive.Illusive.Core.User_Management.Interfaces
 @inject IAppUserManager UserManager
 @{
-    var user = await UserManager.GetSafeUserAsync(this.User);
+    var user = await UserManager.GetSafeUserAsync(User);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +53,7 @@
             
             @await Html.PartialAsync("Partials/_AccountDropdown", model: user)
             
-            @if ( this.User.IsLoggedIn() ) {
+            @if ( User.IsLoggedIn() ) {
                 @await Html.PartialAsync("Partials/_NotificationDropdown", model: user)
             }
             

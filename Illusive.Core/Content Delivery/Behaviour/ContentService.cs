@@ -16,11 +16,11 @@ namespace Illusive {
         private readonly string _containerName = "container-1";
         
         public ContentService(ILogger<ContentService> logger, IConfiguration configuration) {
-            this._logger = logger;
-            this.ConnectionString = configuration.GetConnectionString("CdnConnectionString");
+            _logger = logger;
+            ConnectionString = configuration.GetConnectionString("CdnConnectionString");
             
             // Get a reference to a container named "container-1" and then create it
-            this.Client = new BlobContainerClient(this.ConnectionString, "container-1");
+            Client = new BlobContainerClient(ConnectionString, "container-1");
 
             // // Get a reference to a blob named "sample-file" in a container named "sample-container"
             // var blob = container.GetBlobClient(blobName);
@@ -36,18 +36,18 @@ namespace Illusive {
         /// <param name="formFile"></param>
         /// <returns>The URL to the image</returns>
         public async Task<string> UploadFileAsync(IFormFile formFile) {
-            await using var stream = System.IO.File.Create(Path.GetTempFileName(), (int) formFile.Length);
+            await using var stream = File.Create(Path.GetTempFileName(), (int) formFile.Length);
             await formFile.CopyToAsync(stream);
 
-            return await this.UploadFileAsync(Path.GetFileName(formFile.FileName), stream);
+            return await UploadFileAsync(Path.GetFileName(formFile.FileName), stream);
         }
 
         public async Task<string> UploadFileAsync(string fileName, FileStream fileStream) {
             fileStream.Position = 0;
             var id = Guid.NewGuid();
-            await this.Client.UploadBlobAsync($"{id}{fileName}", fileStream);
+            await Client.UploadBlobAsync($"{id}{fileName}", fileStream);
 
-            return $"https://illusivecdn.blob.core.windows.net/{this._containerName}/{id}{fileName}";
+            return $"https://illusivecdn.blob.core.windows.net/{_containerName}/{id}{fileName}";
         }
     }
 }

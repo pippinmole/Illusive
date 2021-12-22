@@ -17,45 +17,45 @@ namespace Illusive.Pages {
         [BindProperty] public ForgotPasswordForm Form { get; set; }
 
         public ForgotPasswordModel(ILogger<ForgotPasswordModel> logger, IMailSender mailSender, IAppUserManager userManager) {
-            this._logger = logger;
-            this._mailSender = mailSender;
-            this._userManager = userManager;
+            _logger = logger;
+            _mailSender = mailSender;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> OnPostAsync() {
-            var form = this.Form;
+            var form = Form;
 
             if ( !string.IsNullOrEmpty(form.Email) ) {
-                var account = await this._userManager.GetUserByEmailAsync(form.Email);
+                var account = await _userManager.GetUserByEmailAsync(form.Email);
                 if ( account == null ) {
-                    this._logger.LogWarning($"An account with email {form.Email} does not exist!");
-                    return this.Page();
+                    _logger.LogWarning($"An account with email {form.Email} does not exist!");
+                    return Page();
                 }
 
-                var token = HttpUtility.UrlEncode(await this._userManager.GeneratePasswordResetTokenAsync(account));
-                var callback = this.Url.Page("ResetPassword", new {
+                var token = HttpUtility.UrlEncode(await _userManager.GeneratePasswordResetTokenAsync(account));
+                var callback = Url.Page("ResetPassword", new {
                     token,
                     email = form.Email
                 });
 
-                await this._mailSender.SendEmailAsync(
+                await _mailSender.SendEmailAsync(
                     new List<string> {
                         form.Email
                     },
                     "Account Password Recovery",
-                    $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}{callback}", 
+                    $"{Request.Scheme}://{Request.Host}{Request.PathBase}{callback}", 
                     null);
 
-                this._logger.LogInformation($"{form.Email} is trying to reset their password.");
+                _logger.LogInformation($"{form.Email} is trying to reset their password.");
 
-                return this.LocalRedirect("/");
+                return LocalRedirect("/");
             }
 
-            return this.Page();
+            return Page();
         }
 
         public IActionResult OnGet(string email, string token) {
-            return this.Page();
+            return Page();
         }
         
         public class ForgotPasswordForm {

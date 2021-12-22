@@ -24,55 +24,55 @@ namespace Illusive.Pages {
 
         public ForumPost(ILogger<ForumPost> logger, IForumService forumService,
             INotificationService notificationService) {
-            this._logger = logger;
-            this._forumService = forumService;
-            this._notificationService = notificationService;
+            _logger = logger;
+            _forumService = forumService;
+            _notificationService = notificationService;
         }
 
         public async Task<IActionResult> OnGetAsync(string id) {
-            this.ForumData = this._forumService.GetForumById(id);
+            ForumData = _forumService.GetForumById(id);
 
-            if ( this.ForumData == null )
-                return this.LocalRedirect("/Index");
+            if ( ForumData == null )
+                return LocalRedirect("/Index");
 
-            this._forumService.AddViewToForum(this.ForumData);
-            await this._notificationService.ReadNotificationsForUserAsync(this.User, this.ForumData.Id);
+            _forumService.AddViewToForum(ForumData);
+            await _notificationService.ReadNotificationsForUserAsync(User, ForumData.Id);
 
-            return this.Page();
+            return Page();
         }
 
         public async Task<IActionResult> OnPost(string id) {
-            this.ForumData = this._forumService.GetForumById(id);
+            ForumData = _forumService.GetForumById(id);
 
-            if ( !this.ModelState.IsValid )
-                return this.Page();
+            if ( !ModelState.IsValid )
+                return Page();
 
-            var forum = this._forumService.GetForumById(id);
-            var reply = this.ForumReply;
-            reply.AuthorId = this.User.GetUniqueId();
+            var forum = _forumService.GetForumById(id);
+            var reply = ForumReply;
+            reply.AuthorId = User.GetUniqueId();
 
             if ( forum.IsLocked ) {
-                this._logger.LogError($"{this.User.GetDisplayName()} tried to reply to a locked forum! This shouldn't be possible.");
-                return this.Forbid();
+                _logger.LogError($"{User.GetDisplayName()} tried to reply to a locked forum! This shouldn't be possible.");
+                return Forbid();
             }
             
-            this._forumService.AddReplyToForum(forum, reply);
+            _forumService.AddReplyToForum(forum, reply);
 
             // Don't notify the owner of their own comments!
             if ( reply.AuthorId != forum.OwnerId ) {
-                await this._notificationService.AddNotificationAsync(new UserNotification(
+                await _notificationService.AddNotificationAsync(new UserNotification(
                     target: forum.OwnerId,
                     content:
-                    $"{this.User.GetDisplayName()} has commented to your post: {reply.Content.SafeSubstring(0, 25)}...",
+                    $"{User.GetDisplayName()} has commented to your post: {reply.Content.SafeSubstring(0, 25)}...",
                     imageUrl: "",
-                    link: this.Request.Path + this.Request.QueryString,
+                    link: Request.Path + Request.QueryString,
                     triggerId: forum.Id
                 ));
             }
 
-            this._logger.LogInformation($"{this.User.GetUniqueId()} has replied to forum post {forum.Id}");
+            _logger.LogInformation($"{User.GetUniqueId()} has replied to forum post {forum.Id}");
 
-            return this.Redirect($"/ForumPost?id={id}");
+            return Redirect($"/ForumPost?id={id}");
         }
 
         public class ForumLike {
@@ -94,25 +94,25 @@ namespace Illusive.Pages {
 
         // POST: DeletePost?handler={json}
         public ActionResult OnPostDeletePost([FromBody] ForumDelete body) {
-            if ( !this.User.IsLoggedIn() )
-                this._logger.LogWarning("User attempting to delete a forum without being authenticated!");
+            if ( !User.IsLoggedIn() )
+                _logger.LogWarning("User attempting to delete a forum without being authenticated!");
 
-            var forum = this._forumService.GetForumById(body.forumId);
-            var user = this.User;
+            var forum = _forumService.GetForumById(body.forumId);
+            var user = User;
 
             if ( forum == null ) {
-                this._logger.LogWarning(
-                    $"{this.User.GetUniqueId()} is trying to delete an invalid forum ({body.forumId})");
-                return this.BadRequest();
+                _logger.LogWarning(
+                    $"{User.GetUniqueId()} is trying to delete an invalid forum ({body.forumId})");
+                return BadRequest();
             }
 
             if ( user.CanDeletePost(forum) || user.IsAdminAccount() ) {
-                this._forumService.DeleteForum(x => x.Id == forum.Id);
-                this._logger.LogInformation(
-                    $"{this.User.GetDisplayName()} has successfully deleted forum with id {forum.Id}!");
+                _forumService.DeleteForum(x => x.Id == forum.Id);
+                _logger.LogInformation(
+                    $"{User.GetDisplayName()} has successfully deleted forum with id {forum.Id}!");
             } else {
-                this._logger.LogWarning(
-                    $"{this.User.GetDisplayName()} is attempting to delete a forum without being authenticated!");
+                _logger.LogWarning(
+                    $"{User.GetDisplayName()} is attempting to delete a forum without being authenticated!");
             }
 
             return new JsonResult(new {
@@ -122,19 +122,19 @@ namespace Illusive.Pages {
 
         // POST: LikePost?handler={json}
         public ActionResult OnPostLikePost([FromBody] ForumLike body) {
-            if ( !this.User.IsLoggedIn() )
+            if ( !User.IsLoggedIn() )
                 throw new Exception("User attempting to like a forum without being authenticated!");
 
-            var forum = this._forumService.GetForumById(body.forumId);
-            var user = this.User;
+            var forum = _forumService.GetForumById(body.forumId);
+            var user = User;
 
             var isLiked = forum.Likes.Contains(user.GetUniqueId());
             if ( isLiked ) {
-                this._logger.LogInformation($"{user.GetUniqueId()} is unliking post {body.ToJson()})");
-                this._forumService.RemoveLikeFromForum(forum, user);
+                _logger.LogInformation($"{user.GetUniqueId()} is unliking post {body.ToJson()})");
+                _forumService.RemoveLikeFromForum(forum, user);
             } else {
-                this._logger.LogInformation($"{user.GetUniqueId()} is liking post {body.ToJson()})");
-                this._forumService.AddLikeToForum(forum, user);
+                _logger.LogInformation($"{user.GetUniqueId()} is liking post {body.ToJson()})");
+                _forumService.AddLikeToForum(forum, user);
             }
 
             return new JsonResult(new {
@@ -145,24 +145,24 @@ namespace Illusive.Pages {
 
         // POST: DeleteReply?handler={json}
         public ActionResult OnPostDeleteReply([FromBody] ForumReplyDelete body) {
-            if ( !this.User.IsLoggedIn() )
-                this._logger.LogWarning("User attempting to delete a forum without being authenticated!");
+            if ( !User.IsLoggedIn() )
+                _logger.LogWarning("User attempting to delete a forum without being authenticated!");
 
-            var forum = this._forumService.GetForumById(body.forumId);
+            var forum = _forumService.GetForumById(body.forumId);
             var reply = forum.Replies.FirstOrDefault(x => x.Id == body.replyId);
-            var user = this.User;
+            var user = User;
 
             if ( reply == null ) {
                 return new JsonResult(new {Error = "TRUE"});
             }
 
             if ( user.CanDeleteReply(reply) || user.IsAdminAccount() ) {
-                this._forumService.RemoveReplyFromForum(forum, reply.Id);
-                this._logger.LogInformation(
-                    $"{this.User.GetDisplayName()} has successfully deleted forum reply with id {reply.Id}!");
+                _forumService.RemoveReplyFromForum(forum, reply.Id);
+                _logger.LogInformation(
+                    $"{User.GetDisplayName()} has successfully deleted forum reply with id {reply.Id}!");
             } else {
-                this._logger.LogWarning(
-                    $"{this.User.GetDisplayName()} is attempting to delete a forum reply without being authenticated!");
+                _logger.LogWarning(
+                    $"{User.GetDisplayName()} is attempting to delete a forum reply without being authenticated!");
             }
 
             return new JsonResult(new {
@@ -172,24 +172,24 @@ namespace Illusive.Pages {
 
         // POST: LockPost?handler={json}
         public ActionResult OnPostLockPost([FromBody] ForumLock body) {
-            if ( !this.User.IsLoggedIn() )
-                this._logger.LogWarning("User attempting to delete a forum without being authenticated!");
+            if ( !User.IsLoggedIn() )
+                _logger.LogWarning("User attempting to delete a forum without being authenticated!");
 
-            var forum = this._forumService.GetForumById(body.forumId);
-            var user = this.User;
+            var forum = _forumService.GetForumById(body.forumId);
+            var user = User;
 
-            this._logger.LogWarning("OnLockPost");
+            _logger.LogWarning("OnLockPost");
             
             if ( user.CanLockPost(forum) || user.IsAdminAccount() ) {
-                this._forumService.ToggleLockState(forum);
+                _forumService.ToggleLockState(forum);
 
-                this._logger.LogInformation(
+                _logger.LogInformation(
                     forum.IsLocked
-                        ? $"{this.User.GetDisplayName()} has successfully unlocked forum reply with id {forum.Id}!"
-                        : $"{this.User.GetDisplayName()} has successfully locked forum reply with id {forum.Id}!");
+                        ? $"{User.GetDisplayName()} has successfully unlocked forum reply with id {forum.Id}!"
+                        : $"{User.GetDisplayName()} has successfully locked forum reply with id {forum.Id}!");
             } else {
-                this._logger.LogWarning(
-                    $"{this.User.GetDisplayName()} is attempting to lock a forum without being authenticated!");
+                _logger.LogWarning(
+                    $"{User.GetDisplayName()} is attempting to lock a forum without being authenticated!");
             }
 
             return new JsonResult(new {

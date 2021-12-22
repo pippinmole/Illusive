@@ -18,25 +18,25 @@ namespace Illusive.Pages {
         [BindProperty] public AccountChangeData AccountUpdate { get; set; }
         
         public AccountModel(ILogger<AccountModel> logger, IAppUserManager userManager, IContentService contentService) {
-            this._logger = logger;
-            this._userManager = userManager ?? throw new NullReferenceException("AccountService needs to be setup!");
-            this._contentService = contentService;
+            _logger = logger;
+            _userManager = userManager ?? throw new NullReferenceException("AccountService needs to be setup!");
+            _contentService = contentService;
         }
 
         public async Task<IActionResult> OnGetAsync(string? id) {
             if ( id == null || !Guid.TryParse(id, out var guid) ) {
-                this._logger.LogInformation($"User attempted to access invalid user id - redirecting...");
+                _logger.LogInformation($"User attempted to access invalid user id - redirecting...");
                 
-                if ( this.User.IsLoggedIn() )
-                    return this.Redirect($"/Account/{this.User.GetUniqueId()}");
+                if ( User.IsLoggedIn() )
+                    return Redirect($"/Account/{User.GetUniqueId()}");
 
-                return this.LocalRedirect("/");
+                return LocalRedirect("/");
             }
 
-            var account = await this._userManager.GetUserByIdAsync(guid);
-            if ( account == null ) return this.Redirect("/");
+            var account = await _userManager.GetUserByIdAsync(guid);
+            if ( account == null ) return Redirect("/");
 
-            return this.Page();
+            return Page();
         }
 
         public class DeleteAccountPost {
@@ -44,24 +44,24 @@ namespace Illusive.Pages {
         }
         
         public async Task<IActionResult> OnPostDeleteAccountAsync([FromBody] DeleteAccountPost post) {
-            if ( !this.ModelState.IsValid )
-                return this.Page();
+            if ( !ModelState.IsValid )
+                return Page();
 
             var reqAccountId = post.accountId;
-            if ( this.User.GetUniqueId() != reqAccountId ) {
-                this._logger.LogWarning($"{this.User.GetUniqueId()} tried to delete account of id {reqAccountId}!");
-                return this.Forbid();
+            if ( User.GetUniqueId() != reqAccountId ) {
+                _logger.LogWarning($"{User.GetUniqueId()} tried to delete account of id {reqAccountId}!");
+                return Forbid();
             }
 
-            var user = await this._userManager.GetUserByIdAsync(reqAccountId);
-            var result = await this._userManager.RemoveUserAsync(user);
+            var user = await _userManager.GetUserByIdAsync(reqAccountId);
+            var result = await _userManager.RemoveUserAsync(user);
             
             if ( result.Succeeded ) {
-                this._logger.LogInformation($"{user.UserName} has been deleted");
+                _logger.LogInformation($"{user.UserName} has been deleted");
 
-                await this._userManager.SignOutAsync();
+                await _userManager.SignOutAsync();
             } else {
-                this._logger.LogError($"Error when trying to delete user {user.UserName}.");
+                _logger.LogError($"Error when trying to delete user {user.UserName}.");
             }
 
             return new JsonResult(new {

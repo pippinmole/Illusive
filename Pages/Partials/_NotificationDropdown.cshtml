@@ -5,8 +5,8 @@
 @inject INotificationService NotificationService
 
 @{
-    var user = this.Model;
-    var notifications = await this.NotificationService.GetUnreadNotificationsForUserIdAsync(user.Id);
+    var user = Model;
+    var notifications = await NotificationService.GetUnreadNotificationsForUserIdAsync(user.Id);
 }
 
 <style type="text/css">

@@ -41,7 +41,7 @@
 </div>
 
 @{
-    if ( this.User.IsLoggedIn() ) {
+    if ( User.IsLoggedIn() ) {
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input class="input-field" id="forum-title-input" asp-for="NewForumData.Title" placeholder="Forum Title"/><br/>

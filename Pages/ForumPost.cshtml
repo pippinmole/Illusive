@@ -8,15 +8,15 @@
 @inject IAppUserManager UserManager
 @model ForumPost
 @{
-    var content = this.Model.ForumData.Content;
+    var content = Model.ForumData.Content;
     
-    var initialLiked = this.Model.ForumData.HasLikeFrom(this.User);
-    var likeCount = this.Model.ForumData.Likes.Count;
+    var initialLiked = Model.ForumData.HasLikeFrom(User);
+    var likeCount = Model.ForumData.Likes.Count;
     
-    ViewData["Title"] = this.Model.ForumData.Title;
+    ViewData["Title"] = Model.ForumData.Title;
     ViewData["Description"] = content.Length < 20 ? content : content.Substring(0, 20);
     
-    var forum = this.Model.ForumData;
+    var forum = Model.ForumData;
     var forumOwner = await UserManager.GetUserByIdAsync(forum.OwnerId) ?? ApplicationUser.NoUser;
     @Html.AntiForgeryToken()
 }
@@ -25,10 +25,10 @@
 
 <html>
 <head>
-    <title>@this.Model.ForumData.Title</title>
+    <title>@Model.ForumData.Title</title>
     
-    <meta property="og:title" content="@this.Model.ForumData.Title"/>
-    <meta property="og:description" content="Created @this.Model.ForumData.TimeCreated.Humanize()"/>
+    <meta property="og:title" content="@Model.ForumData.Title"/>
+    <meta property="og:description" content="Created @Model.ForumData.TimeCreated.Humanize()"/>
     
     <script src="~/js/party.js"></script>
     <script src="js/ForumPost/requests.js"></script>
@@ -54,7 +54,7 @@
             padding: 10px;
             margin: 10px 0;
             border: none;
-            background-color: var(--container-colour-secondary);
+            background-color: var(--container-colour-primary);
             border-radius: 5px;
             color: inherit;
         }
@@ -64,11 +64,11 @@
         }
         
         .forumContent {
-            background-color: var(--container-colour-secondary);
+            background-color: var(--container-colour-primary);
             border-bottom-left-radius: 7px;
             border-bottom-right-radius: 7px;
             padding: 15px;
-            box-shadow: 0 1rem 1rem rgba(0, 0, 0, .1);
+            /*box-shadow: 0 1rem 1rem rgba(0, 0, 0, .1);*/
             word-wrap: break-word;
             width: 100%;
         }
@@ -125,15 +125,15 @@
 <div>
     <span style="display: block ruby; padding-bottom: 8px; border-bottom: 1px solid black">
         <h3 class="forumTitle">@forum.Title</h3>
-        @if ( forum.Tags != null ) {
+        @if ( forum.Tags != null && !string.IsNullOrEmpty(forum.Tags)) {
             foreach ( var tag in forum.Tags.Split(',') ) {
                 <div class="forumTag noselect">@tag</div>
             }
         }
     </span>
     
-    <div class="forum-actions-container" style="margin-top: 10px">
-        @if ( this.User.CanDeletePost(forum) || this.User.IsAdminAccount() ) {
+    @if ( User.CanDeletePost(forum) || User.IsAdminAccount() ) {
+        <div class="forum-actions-container" style="margin-top: 10px">
             <div class="hovertip delete-post-action" onclick="DeletePost('@forum.Id')">
                 <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
                 <span class="hovertiptext-top">Delete post</span>
@@ -155,8 +155,8 @@
                     <span class="hovertiptext-top">Lock post</span>
                 }
             </div>
-        }
-    </div>
+        </div>
+    }
 
     <div class="forumBody">
         <div class="forum-author-container">
@@ -171,7 +171,7 @@
         </div>
 
         <div class="forumContent">
-            @if ( this.User.IsLoggedIn() ) {
+            @if ( User.IsLoggedIn() ) {
                 <div class="forum-actions-container hovertip float-right">
                     <img class="forum-action like-post-action" onclick="LikePost('@forum.Id')" src="https://illusivecdn.blob.core.windows.net/container-1/like_button_unchecked.png" alt="">
                     <span class="hovertiptext-top like-post-text"></span>
@@ -186,7 +186,7 @@
 
     <div style="width: 100%; border-bottom: 1px solid black;">
         <h4 style="display: inline-flex">Comments
-            @if ( !this.User.IsLoggedIn() ) {
+            @if ( !User.IsLoggedIn() ) {
                 <div style="font-size: 0.7rem; height: 100%; margin: auto auto auto 5px;">(<a asp-page="Login">Login</a> or <a asp-page="Signup">Sign up</a> to comment on a post!)</div>
             }
         </h4>
@@ -212,7 +212,7 @@
                 <div class="replyContent">
                     <span style="font-style: italic; font-size: 0.6rem; display: flex; margin-bottom: 10px">Commented @reply.TimeCreated.ToString("MMMM dd, yyyy") (@(reply.TimeCreated.TimeSince().Humanize()) ago)</span>
 
-                    @if ( this.User.CanDeleteReply(reply) || this.User.IsAdminAccount() ) {
+                    @if ( User.CanDeleteReply(reply) || User.IsAdminAccount() ) {
                         <div class="hovertip float-right" onclick="DeleteReply('@reply.Id');">
                             <img src="https://illusivecdn.blob.core.windows.net/container-1/trash_icon.png" height="28px" width="28px" alt=""/>
                             <span class="hovertiptext-top">Delete reply</span>
@@ -230,7 +230,7 @@
             <div class="container text-center m-3">
                 <p>You cannot comment because this forum has been locked.</p>
             </div>
-        } else if ( this.User.IsLoggedIn() ) {
+        } else if ( User.IsLoggedIn() ) {
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <textarea class="commentField" asp-route-id="@forum.Id" asp-for="ForumReply.Content" placeholder="Reply to this post" multiple></textarea><br/>

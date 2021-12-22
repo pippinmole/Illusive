@@ -10,7 +10,7 @@ namespace Illusive {
     public class Program {
         public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) {
+        private static IHostBuilder CreateHostBuilder(string[] args) {
             return Host.CreateDefaultBuilder(args)
                 .UseSerilog(ConfigureSerilog, true)
                 .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());

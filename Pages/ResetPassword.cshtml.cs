@@ -14,29 +14,29 @@ namespace Illusive.Pages {
         [BindProperty] public ResetPasswordForm Form { get; set; }
 
         public ResetPasswordModel(ILogger<ResetPasswordModel> logger, IAppUserManager userManager) {
-            this._logger = logger;
-            this._userManager = userManager;
+            _logger = logger;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> OnPostAsync(string email, string token) {
             if ( !ModelState.IsValid )
-                return this.Page();
+                return Page();
 
-            var form = this.Form;
+            var form = Form;
 
-            var user = await this._userManager.GetUserByEmailAsync(email);
-            if ( user == null ) return this.Forbid();
+            var user = await _userManager.GetUserByEmailAsync(email);
+            if ( user == null ) return Forbid();
 
-            var result = await this._userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(token), form.Password);
+            var result = await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(token), form.Password);
             if ( !result.Succeeded ) {
                 foreach ( var error in result.Errors ) {
                     ModelState.TryAddModelError(error.Code, error.Description);
                 }
 
-                return this.Page();
+                return Page();
             }
 
-            return this.LocalRedirect("/Login");
+            return LocalRedirect("/Login");
         }
         
         public class ResetPasswordForm {

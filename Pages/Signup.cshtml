@@ -18,45 +18,57 @@
 </head>
 <body>
 <div class="w-50 m-auto">
-    <h1 class="text-center display-4">Sign Up</h1>
+    
+    <div class="form-container">
+            <h1 class="text-center display-4">Sign Up</h1>
+    
+        <form method="post" id="loginField">
+            <div asp-validation-summary="All" class="text-danger"></div>
+    
+            <div class="input-group form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+                </div>
+                <input type="text" asp-for="SignupData.Username" id="info-username" class="form-control" placeholder="Username">
+            </div>
 
-    <form method="post" id="loginField" class="p-5">
-        <div asp-validation-summary="All" class="text-danger"></div>
-            
-        <div class="form-group">
-            <label for="info-username" class="col-xs-2 control-label">Username</label>
-            <input type="text" asp-for="SignupData.Username" id="info-username" class="form-control mb-4" placeholder="Username">
-        </div>
-        <div class="form-group">
-            <label for="info-email" class="col-xs-2 control-label">E-mail</label>
-            <input type="email" asp-for="SignupData.Email" id="info-email" class="form-control mb-4" placeholder="E-mail">
-        </div>
-        <div class="form-group">
-            <label for="info-password" class="col-xs-2 control-label">Password</label>
-            <input type="password" asp-for="SignupData.Password" id="info-password" class="form-control mb-4" placeholder="Password">
-        </div>
-        
-        <div class="d-flex justify-content-between">
-            <div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
-                    <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+            <div class="input-group form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+                </div>
+                <input type="email" asp-for="SignupData.Email" id="info-email" class="form-control" placeholder="E-mail">
+            </div>
+                
+            <div class="input-group form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+                </div>
+                <input type="password" asp-for="SignupData.Password" id="info-password" class="form-control" placeholder="Password">
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                        <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+                    </div>
+                </div>
+                <div>
+                    @* TODO: Add forgot password functionality *@
+                    @* <a href="">Forgot password?</a> *@
                 </div>
             </div>
-            <div>
-                @* TODO: Add forgot password functionality *@
-                @* <a href="">Forgot password?</a> *@
+                
+            <div class="d-inline-block m-3">
+                @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
             </div>
+                
+            <button class="btn btn-info btn-block my-4 debounce" type="submit" id="recaptcha">Sign Up</button>
+            @Html.AntiForgeryToken()
+        </form>
         </div>
-                    
-        <div class="d-inline-block m-3">
-            @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
-        </div>
-            
-        <button class="btn btn-info btn-block my-4 debounce" type="submit" id="recaptcha">Sign Up</button>
-        @Html.AntiForgeryToken()
-    </form>
-
+    
+    <!-- SEP -->
 </div>
 </body>
 </html>

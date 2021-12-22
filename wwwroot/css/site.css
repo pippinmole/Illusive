@@ -2,8 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 .darktheme {
-    
-    --container-colour-primary: #2d383c;
+    --container-colour-primary: rgba(66, 65, 77, 1);
     --container-colour-secondary: #5c6a6f;
     --container-colour-third: #79989f;
 
@@ -11,9 +10,7 @@ for details on configuring this project to bundle and minify static web assets. 
     
     --button-colour-primary: #769eae;
     
-    --navbar-background-color: #2d383c;
-    
-    --background-color: #414c50;
+    --background-color: rgb(43, 42, 51);
     
     --border-top-dim: 1px solid #192428;
     --border-bottom-dim: 1px solid #192428;
@@ -32,7 +29,7 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 .lighttheme {
 
-    --container-colour-primary: rgba(232, 242, 255, 0.4);
+    --container-colour-primary: #E3EBF8;
     --container-colour-secondary: #deebff;
     --container-colour-third: #dfedee;
 
@@ -40,8 +37,6 @@ for details on configuring this project to bundle and minify static web assets. 
 
     --button-colour-primary: #fff;
     
-    --navbar-background-color: #ffffff;
-
     --background-color: #f2f2f2;
     
     --border-top-dim: 1px solid #e5e5e5;
@@ -69,11 +64,11 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 .dropdown-menu {
-    background-color: var(--container-colour-secondary) !important;
+    background-color: var(--container-colour-primary) !important;
 }
 
 .navbar-color {
-    background-color: var(--navbar-background-color);
+    background-color: var(--container-colour-primary);
 }
 
 .nav-link {
@@ -237,10 +232,9 @@ body {
     z-index: 99;
     position: absolute;
     margin-top: 10px;
-    background-color: var(--container-colour-secondary);
+    background-color: var(--container-colour-primary);
     border-radius: 3px;
     box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
-    width: 250px;
     font-size: 16px;
 }
 
@@ -304,7 +298,7 @@ DETAILS[open] SUMMARY ~ * {
     border-radius: 5px;
     box-shadow: 0 .4rem .5rem rgba(0, 0, 0, .1);
 
-    background-color: var(--container-colour-secondary);
+    background-color: var(--container-colour-primary);
 }
 
 a {
@@ -344,9 +338,12 @@ a {
     height: 100px;
     display: grid;
     text-align: center;
-    border-radius: 4px;
+    
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    
     min-width: 100px;
-    background-color: var(--container-colour-third);
+    background-color: var(--container-colour-primary);
 }
 
 .forum-stats {
@@ -442,4 +439,21 @@ details > summary {
 }
 details > summary::-webkit-details-marker {
     display: none;
+}
+
+.form-container {
+    background-color: var(--container-colour-primary);
+    border-radius: 20px;
+    padding-bottom: 8px;
+}
+
+.form-container h1 {
+    border-bottom: 1px solid silver;
+    font-size: 2rem;
+    font-weight: 350;
+    padding: 20px 0;
+}
+
+.form-container form {
+    padding: 0 20px;
 }

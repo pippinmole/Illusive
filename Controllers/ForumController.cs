@@ -20,9 +20,9 @@ namespace Illusive.Controllers {
         private readonly IAppUserManager _userManager;
 
         public ForumController(ILogger<ForumController> logger, IForumService forumService, IAppUserManager userManager) {
-            this._logger = logger;
-            this._forumService = forumService;
-            this._userManager = userManager;
+            _logger = logger;
+            _forumService = forumService;
+            _userManager = userManager;
         }
 
         /// <summary>Returns the forum post data from a forum id</summary>
@@ -41,7 +41,7 @@ namespace Illusive.Controllers {
         /// <response code="400">Returns a null response</response>
         [HttpGet("{id}")]
         public ForumData GetForumPost(string id) {
-            var result = this._forumService.GetForumWhere(x => x.Id == id);
+            var result = _forumService.GetForumWhere(x => x.Id == id);
             return result;
         }
 
@@ -59,8 +59,8 @@ namespace Illusive.Controllers {
         /// <response code="400">Returns a null response</response>
         [HttpGet("getrandom")]
         public ForumData GetRandomForum() {
-            var random = new Random().Next(0, this._forumService.CollectionSize());
-            var result = this._forumService.GetForumIndex(random);
+            var random = new Random().Next(0, _forumService.CollectionSize());
+            var result = _forumService.GetForumIndex(random);
             return result;
         }
         
@@ -77,9 +77,9 @@ namespace Illusive.Controllers {
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CreatePost([FromBody] ForumData forumData) {
             
-            var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
+            var user = await _userManager.GetUserByIdAsync(User.GetUniqueId());
             if ( user == null )
-                return this.BadRequest("Bad Token");
+                return BadRequest("Bad Token");
 
             // Sanitise forum data from alteration of non-user-controlled properties. 
             var forumPost = new ForumData {
@@ -89,9 +89,9 @@ namespace Illusive.Controllers {
                 OwnerId = user.Id
             };
 
-            await this._forumService.AddForumPostAsync(forumPost);
+            await _forumService.AddForumPostAsync(forumPost);
             
-            this._logger.LogInformation($"{user.UserName} has created a new forum post through the WebAPI: {forumPost.Title}");
+            _logger.LogInformation($"{user.UserName} has created a new forum post through the WebAPI: {forumPost.Title}");
 
             return new JsonResult(forumPost);
         }
@@ -100,17 +100,17 @@ namespace Illusive.Controllers {
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> EditPost([FromBody] ForumData forumData) {
 
-            var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
+            var user = await _userManager.GetUserByIdAsync(User.GetUniqueId());
             if ( user == null )
-                return this.BadRequest("Bad Token");
+                return BadRequest("Bad Token");
 
-            var post = this._forumService.GetForumById(forumData.Id);
+            var post = _forumService.GetForumById(forumData.Id);
             if ( post == null )
-                return this.NotFound();
+                return NotFound();
 
             if ( user.Id != post.OwnerId ) {
-                this._logger.LogWarning($"Unauthorized user is trying to edit {post.Id}");
-                return this.StatusCode(403);
+                _logger.LogWarning($"Unauthorized user is trying to edit {post.Id}");
+                return StatusCode(403);
             }
             
             post.Title = forumData.Title;
@@ -120,7 +120,7 @@ namespace Illusive.Controllers {
             var builder = Builders<ForumData>.Update.Set(x => x.Title, post.Title)
                 .Set(x => x.Content, post.Content)
                 .Set(x => x.Tags, post.Tags);
-            await this._forumService.UpdateForumAsync(forumData.Id, builder);
+            await _forumService.UpdateForumAsync(forumData.Id, builder);
 
             return new JsonResult(post);
         }
@@ -129,21 +129,21 @@ namespace Illusive.Controllers {
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeletePost(string id) {
             
-            var user = await this._userManager.GetUserByIdAsync(this.User.GetUniqueId());
+            var user = await _userManager.GetUserByIdAsync(User.GetUniqueId());
             if ( user == null )
-                return this.BadRequest("Bad Token");
+                return BadRequest("Bad Token");
 
-            var post = this._forumService.GetForumById(id);
+            var post = _forumService.GetForumById(id);
             if ( post == null )
-                return this.NotFound();
+                return NotFound();
 
             if ( user.Id != post.OwnerId ) {
-                this._logger.LogWarning($"Unauthorized user is trying to delete {post.Id}");
-                return this.StatusCode(403);
+                _logger.LogWarning($"Unauthorized user is trying to delete {post.Id}");
+                return StatusCode(403);
             }
 
-            this._forumService.DeleteForum(x => x.Id == id);
-            return this.Ok();
+            _forumService.DeleteForum(x => x.Id == id);
+            return Ok();
         }
     }
 }

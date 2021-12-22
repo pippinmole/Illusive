@@ -18,56 +18,56 @@ namespace Illusive.Pages {
         [BindProperty] public ForumData NewForumData { get; set; } = new ForumData();
 
         public CreatePostModel(ILogger<CreatePostModel> logger, IForumService forumService, IRecaptchaService recaptchaService) {
-            this._logger = logger;
-            this._forumService = forumService;
-            this._recaptchaService = recaptchaService;
+            _logger = logger;
+            _forumService = forumService;
+            _recaptchaService = recaptchaService;
         }
         
         public IActionResult OnGet() {
-            if ( !this.User.IsLoggedIn() )
-                return this.LocalRedirect("/");
+            if ( !User.IsLoggedIn() )
+                return LocalRedirect("/");
 
-            return this.Page();
+            return Page();
         }
         
         public async Task<IActionResult> OnPostAsync() {
-            if ( !this.User.IsLoggedIn() || !this.ModelState.IsValid )
-                return this.Page();
+            if ( !User.IsLoggedIn() || !ModelState.IsValid )
+                return Page();
 
-            var result = await this._recaptchaService.Validate(this.Request);
+            var result = await _recaptchaService.Validate(Request);
             if ( !result.success ) {
-                this.ModelState.AddModelError("", "Recaptcha failed.");
-                return this.Page();
+                ModelState.AddModelError("", "Recaptcha failed.");
+                return Page();
             }
             
-            var user = this.HttpContext.User;
+            var user = HttpContext.User;
             if ( !user.IsLoggedIn() ) {
-                this._logger.LogWarning("Redirecting unauthenticated user to /Index");
-                return this.RedirectToPage("/Index");
+                _logger.LogWarning("Redirecting unauthenticated user to /Index");
+                return RedirectToPage("/Index");
             }
 
-            var forumPost = this.NewForumData.AssignOwner(user);
+            var forumPost = NewForumData.AssignOwner(user);
             if ( forumPost.Tags != null ) {
                 forumPost.Tags = forumPost.Tags.ToLower();
 
                 // Sanitise tags
                 var tags = forumPost.Tags.Trim().Split(',');
                 if ( tags.Any(string.IsNullOrEmpty) ) {
-                    this.ModelState.AddModelError("", "The forum tag format is invalid.");
-                    return this.Page();
+                    ModelState.AddModelError("", "The forum tag format is invalid.");
+                    return Page();
                 }
 
                 if ( tags.Distinct().Count() != tags.Length ) {
-                    this.ModelState.AddModelError("", "The forum has duplicate tags.");
-                    return this.Page();
+                    ModelState.AddModelError("", "The forum has duplicate tags.");
+                    return Page();
                 }
             }
 
-            await this._forumService.AddForumPostAsync(forumPost);
+            await _forumService.AddForumPostAsync(forumPost);
             
-            this._logger.LogInformation($"User {user.GetUniqueId()} created post titled {forumPost.Title}");
+            _logger.LogInformation($"User {user.GetUniqueId()} created post titled {forumPost.Title}");
 
-            return this.Redirect("/Forum");
+            return Redirect("/Forum");
         }
     }
 }

@@ -19,24 +19,25 @@ namespace Illusive.Pages {
         public ForumResult Forums { get; set; }
         
         public ForumModel(ILogger<ForumModel> logger, IConfiguration configuration, IForumService forumService) {
-            this._logger = logger;
-            this._forumService = forumService;
+            _logger = logger;
+            _forumService = forumService;
         }
 
-        public async Task<IActionResult> OnGetAsync() {
-            var orderByParam = this.HttpContext.Request.Query["OrderBy"];
+        public async Task<IActionResult> OnGetAsync()
+        {
+            var orderByParam = HttpContext.Request.Query["OrderBy"];
             if ( string.IsNullOrEmpty(orderByParam) ) {
-                return this.RedirectToPage("/Forum", new { orderby = "views-asc" });
+                return RedirectToPage("/Forum", new { orderby = "views-asc" });
             }
             
-            var pageCount = this.HttpContext.Request.Query["pageCount"];
+            var pageCount = HttpContext.Request.Query["pageCount"];
             if ( string.IsNullOrEmpty(pageCount) || !int.TryParse(pageCount, out var pageCountQuery) || pageCountQuery < 0 || pageCountQuery > 30) {
-                return this.RedirectToPage("/Forum", new {orderby = orderByParam, pageCount = 1});
+                return RedirectToPage("/Forum", new {orderby = orderByParam, pageCount = 1});
             }
             
-            this.Forums = await this.GetForumsAsync();
+            Forums = await GetForumsAsync();
             
-            return this.Page();
+            return Page();
         }
 
         public class ForumResult {
@@ -45,9 +46,9 @@ namespace Illusive.Pages {
             public readonly IEnumerable<ForumData> Posts;
 
             public ForumResult(int page, int pageCount, IEnumerable<ForumData> posts) {
-                this.Page = page;
-                this.PageCount = pageCount;
-                this.Posts = posts;
+                Page = page;
+                PageCount = pageCount;
+                Posts = posts;
             }
         }
         
@@ -58,12 +59,12 @@ namespace Illusive.Pages {
         /// <returns></returns>
         private async Task<ForumResult> GetForumsAsync() {
             // Accept Query parameters
-            var order = this.HttpContext.Request.Query["OrderBy"];
-            var pageNumberParam = Convert.ToInt32(this.HttpContext.Request.Query["pageCount"]);
+            var order = HttpContext.Request.Query["OrderBy"];
+            var pageNumberParam = Convert.ToInt32(HttpContext.Request.Query["pageCount"]);
             var forumLength = 15;
 
             // Filter post
-            var allPosts = await this._forumService.GetForumDataAsync();
+            var allPosts = await _forumService.GetForumDataAsync();
             var filteredPosts = allPosts.OrderBy(order).Skip((pageNumberParam - 1) * forumLength).Take(forumLength);
             var pageCount = (int)Math.Ceiling(allPosts.Count / (float)forumLength);
             
