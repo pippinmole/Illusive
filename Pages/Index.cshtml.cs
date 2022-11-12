@@ -12,7 +12,7 @@ namespace Illusive.Pages {
         }
 
         public IActionResult OnGet() {
-            return LocalRedirect("/Forum");
+            return RedirectToPage("Forum");
         }
     }
 }

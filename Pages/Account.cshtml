@@ -18,13 +18,12 @@
     ViewData["Description"] = $"{user.Bio}";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
+@section Scripts {
     <script src="~/js/Account/requests.js"></script>
-    
-    <style type="text/css">
+}
+
+@section Styles {
+    <style>
         .cover-sec {
             width: 100%;
         }
@@ -218,11 +217,9 @@
             margin-right: 0;
         }
     </style>
-</head>
-<body>
+}
 
 @functions {
-
     static HtmlString SocialLinkFor(string profileUrl, string accountName, string classTags, string color) {
         if ( string.IsNullOrEmpty(accountName) )
             return HtmlString.Empty;
@@ -354,5 +351,3 @@
         </div>
     </div>
 </main>
-</body>
-</html>

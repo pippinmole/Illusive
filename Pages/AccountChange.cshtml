@@ -10,7 +10,9 @@
     var user = await UserManager.GetUserByIdAsync(User.GetUniqueId());
 }
 
-<script src="~/js/Account/requests.js"></script>
+@section Scripts {
+    <script src="~/js/Account/requests.js"></script>
+}
 
 <div class="w-100 mt-2">
     <h4 class="text-center">Change profile settings</h4>

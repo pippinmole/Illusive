@@ -32,7 +32,9 @@
     <div class="user"><a asp-page="Account" asp-route-id="@forumOwner?.Id">[@forumOwner?.UserName]</a> <a asp-page="/ForumPost" asp-route-id="@forum.Id"> @forum.Title </a></div>
     @if ( forum.Tags != null  && !string.IsNullOrEmpty(forum.Tags)) {
         foreach ( var tag in forum.Tags.Split(',') ) {
-            <div class="forumTag noselect">@tag</div>
+            <div class="forumTag noselect">
+                <a asp-page="Forum" asp-route-tags="@tag.Trim()">@tag</a>
+            </div>
         }
     }
 </div>

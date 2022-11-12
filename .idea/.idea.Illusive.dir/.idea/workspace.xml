@@ -6,57 +6,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="833091e6-0255-4886-a0e7-04841c1da4f5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Illusive.dir/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Illusive.dir/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Illusive.dir/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Illusive.dir/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Attributes/AllowedFormFileExtensionsAttribute.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Attributes/AllowedFormFileExtensionsAttribute.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Attributes/FormFileSizeLimit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Attributes/FormFileSizeLimit.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/ForumController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ForumController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/Content Delivery/Behaviour/ContentService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/Content Delivery/Behaviour/ContentService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/Data/UserNotification.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/Data/UserNotification.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/Database/Behaviour/DatabaseContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/Database/Behaviour/DatabaseContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/Database/Data/ForumData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/Database/Data/ForumData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/Database/Data/ForumReply.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/Database/Data/ForumReply.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/Database/Services/ForumService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/Database/Services/ForumService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/Database/Services/NotificationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/Database/Services/NotificationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/Mail/Behaviour/MailSender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/Mail/Behaviour/MailSender.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/User Management/Behaviour/AppUserManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/User Management/Behaviour/AppUserManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/User Management/Data/ApplicationUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/User Management/Data/ApplicationUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.Core/User Management/Maps/AppUserMapProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Core/User Management/Maps/AppUserMapProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Illusive.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Illusive.Utilities/RedirectUtilities.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Illusive.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Illusive.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Illusive.Utilities/Forum Filters/ForumFilters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Utilities/Forum Filters/ForumFilters.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Illusive.Utilities/StringUtilities.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Illusive.Utilities/StringUtilities.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/Account.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Account.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Account.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Account.cshtml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/AccountChange.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/AccountChange.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/AccountChange.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/AccountChange.cshtml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/CreatePost.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/CreatePost.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/CreatePost.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/CreatePost.cshtml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/EditPost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/EditPost.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/EditPost.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/EditPost.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/ForgotPassword.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/ForgotPassword.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/ForgotPassword.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/ForgotPassword.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/Error.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Error.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/Forum.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Forum.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/Forum.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Forum.cshtml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/ForumPost.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/ForumPost.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/ForumPost.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/ForumPost.cshtml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/Index.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Index.cshtml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Login.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Login.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Login.cshtml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Logout.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Logout.cshtml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Partials/_AccountDropdown.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Partials/_AccountDropdown.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Partials/_AccountSettings.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Partials/_AccountSettings.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/Partials/_ForumPostComponent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Partials/_ForumPostComponent.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Partials/_NotificationDropdown.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Partials/_NotificationDropdown.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Privacy.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Privacy.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/ResetPassword.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/ResetPassword.cshtml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Shared/_Layout.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pages/Signup.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Signup.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Signup.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Signup.cshtml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/wwwroot/css/site.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -65,7 +31,19 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c4760842fced4403b60fd5c8ed78484c0321cfe681268bdeec913d1bc11a57/RazorPage.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Pages/AccountChange.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eea06429a9cd2498c4e6ea51173cfd340621cc0b22b4dbd89fd42cb1e18efc/StringValues.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Pages/AccountChange.cshtml.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Illusive.Utilities/RedirectUtilities.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7f843899328a7df3436747effa5cbe2b974ab017c11729ce9416dc29e760d7/RedirectToPageResult.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f8aba0fbede3412e9d393b3f466b8f9681400/f3/f543bd7c/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/85efb88f31f613caf9a2811863b320cb77bfd4d42f65181643278a7bcf8ce580/PageModel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/916f8567399ecba0fdba7a15647b76fca37d27622e38ba69d23b4c39c498cda/PageResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Pages/Forum.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Pages/Forum.cshtml.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/811cef5957787344f21dc47f7733c63cefc73cd2dd902c78691bfacd195a1d/ActionResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Controllers/AccountController.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -139,7 +117,13 @@
       <workItem from="1639951490930" duration="801000" />
       <workItem from="1640020366397" duration="2729000" />
       <workItem from="1640041333280" duration="89000" />
-      <workItem from="1640120950027" duration="4431000" />
+      <workItem from="1640120950027" duration="4812000" />
+      <workItem from="1640201143150" duration="3138000" />
+      <workItem from="1640283326653" duration="859000" />
+      <workItem from="1640301787809" duration="8329000" />
+      <workItem from="1640434019326" duration="411000" />
+      <workItem from="1640492377558" duration="2844000" />
+      <workItem from="1640530172874" duration="1263000" />
     </task>
     <servers />
   </component>
@@ -163,5 +147,9 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

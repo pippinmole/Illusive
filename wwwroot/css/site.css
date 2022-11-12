@@ -177,7 +177,7 @@ body {
     padding: 15px;
     border: none;
     border-radius: 6px;
-    background: var(--container-colour-secondary);
+    background: var(--container-colour-primary);
     display: -webkit-flex;
     color: inherit;
 }

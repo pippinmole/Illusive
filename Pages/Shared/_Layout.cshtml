@@ -22,6 +22,8 @@
     
     <title>@ViewData["Title"] - Illusive</title>
 
+    @await RenderSectionAsync("Styles", required: false)
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" id="theme-link" as="style"/>
@@ -63,7 +65,8 @@
     </nav>
 </header>
 
-<div class="container">
+
+<div class="container col-lg-9">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>

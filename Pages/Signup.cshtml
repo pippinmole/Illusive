@@ -10,17 +10,13 @@
     ViewData["Description"] = "Create an account or sign in!";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
+@section Styles {
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700" rel="stylesheet" type="text/css">
-</head>
-<body>
+}
+
 <div class="w-50 m-auto">
-    
     <div class="form-container">
-            <h1 class="text-center display-4">Sign Up</h1>
+        <h1 class="text-center display-4">Sign Up</h1>
     
         <form method="post" id="loginField">
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -66,9 +62,5 @@
             <button class="btn btn-info btn-block my-4 debounce" type="submit" id="recaptcha">Sign Up</button>
             @Html.AntiForgeryToken()
         </form>
-        </div>
-    
-    <!-- SEP -->
+    </div>
 </div>
-</body>
-</html>
